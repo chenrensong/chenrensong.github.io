@@ -1,59 +1,94 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://chenrensong.github.io</id>
-    <title>Gridea</title>
-    <updated>2019-05-26T10:26:46.366Z</updated>
-    <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://chenrensong.github.io"/>
-    <link rel="self" href="https://chenrensong.github.io/atom.xml"/>
-    <subtitle>温故而知新</subtitle>
-    <logo>https://chenrensong.github.io/images/avatar.png</logo>
-    <icon>https://chenrensong.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2019, Gridea</rights>
-    <entry>
-        <title type="html"><![CDATA[抓取RTMP视频&音频数据]]></title>
-        <id>https://chenrensong.github.io/post/rtmp-capture</id>
-        <link href="https://chenrensong.github.io/post/rtmp-capture">
-        </link>
-        <updated>2019-05-26T10:26:19.000Z</updated>
-        <content type="html"><![CDATA[<p>需要的工具：抓包工具（这里我使用的是<code>WireShark</code>）、<code>Rtmpdump</code></p>
-<p>一开始我思路是想分析下html查看下是否有直接的下载地址：
-<img src="/data/2017/2/rtmp_1.png" alt="">
-查询到了meta.xml,在里面发现了stream的path，这时候发现是rtmp的无法直接下载， 于是想到使用WireShark工具抓包,利用meta.xml里面的 cp11276.edgefcs.net/ondemand ，首先ping 获取ip
-<img src="/data/2017/2/rtmp_2.png" alt="">
-得到96.17.102.28，通过过滤ip得到下面rtmp的信息
-<img src="/data/2017/2/rtmp_3.png" alt="">
-url:</p>
-<pre><code>rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net
-</code></pre>
-<p>path:</p>
-<pre><code>mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod
-</code></pre>
-<p>在RtmpDump下面执行</p>
-<pre><code>rtmpdump -r &quot;rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net&quot; -y &quot;mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod&quot; -o webcast.mp3
-</code></pre>
-<p><img src="/data/2017/2/rtmp_4.png" alt="">
-下载成功得到webcast.mp3
-<img src="/data/2017/2/rtmp_5.png" alt=""></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[关于]]></title>
-        <id>https://chenrensong.github.io/post/about</id>
-        <link href="https://chenrensong.github.io/post/about">
-        </link>
-        <updated>2019-05-26T10:17:20.000Z</updated>
-        <content type="html"><![CDATA[<p>Github：https://github.com/chenrensong
-Weibo：https://weibo.com/songsongorg</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[C#基础 - Lazy<T>]]></title>
-        <id>https://chenrensong.github.io/post/c-lazy</id>
-        <link href="https://chenrensong.github.io/post/c-lazy">
-        </link>
-        <updated>2015-03-18T10:18:53.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="1-lazyt-概述">1. <code>Lazy&lt;T&gt;</code> 概述</h2>
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C#基础 - Lazy&lt;T&gt; | Gridea</title>
+<link rel="shortcut icon" href="https://chenrensong.github.io/favicon.ico?v=1558866404854">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://chenrensong.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://chenrensong.github.io">
+  <img class="avatar" src="https://chenrensong.github.io/images/avatar.png?v=1558866404854" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/chenrensong" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              C#基础 - Lazy&lt;T&gt;
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2015-03-18 ·
+              </time>
+              
+            </div>
+            
+            <div class="post-content">
+              <h2 id="1-lazyt-概述">1. <code>Lazy&lt;T&gt;</code> 概述</h2>
 <p>往往有这样的情景，我们需要创建一个大对象，这样的对象往往需要较长的时间和较多的空间，为了避免在每次运行时创建这种家伙，在.NET Framework 4 后提供一种便捷的方式：<code>Lazy&lt;T&gt;</code>（称之为懒对象）。</p>
 <h2 id="2-lazyt-的使用">2. <code>Lazy&lt;T&gt;</code> 的使用</h2>
 <p>我们就来看下Lazy<T>如何使用。</p>
@@ -148,6 +183,51 @@ private class Boxed
 使用锁来确保只有一个线程可以在线程安全的方式下初始化 <code>Lazy&lt;T&gt;</code> 实例。 如果初始化方法（如果没有初始化方法，则为默认构造函数）在内部使用锁，则可能会发生死锁。 如果您使用指定初始化方法（valueFactory 参数的 <code>Lazy&lt;T&gt;</code> 构造函数，并且如果首次调用 <code>Lazy&lt;T&gt;.Value</code> 属性时，该初始化方法引发异常（或者无法处理异常），则该异常将在 <code>Lazy&lt;T&gt;.Value</code> 属性的后续调用上再次缓存和引发该异常。 如果您使用不指定初始化方法的 <code>Lazy&lt;T&gt;</code> 构造函数，则不会缓存 T 默认构造函数引发的异常。 在这种情况下，随后调用 <code>Lazy&lt;T&gt;.Value</code> 属性可能会成功地初始化 <code>Lazy&lt;T&gt;</code> 实例。 如果初始化方法递归访问 <code>Lazy&lt;T&gt;</code> 实例的 Value 属性，则引发 InvalidOperationException。</p>
 <p>具体可参考下面链接
 <a href="http://msdn.microsoft.com/en-us/library/system.threading.lazythreadsafetymode%28VS.100%29.aspx">http://msdn.microsoft.com/en-us/library/system.threading.lazythreadsafetymode%28VS.100%29.aspx</a></p>
-]]></content>
-    </entry>
-</feed>
+
+            </div>
+          </article>
+        </div>
+
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '382981c785b131b4a314',
+    clientSecret: '048bc4e7cb57301643ef37a9b2a2ab6a08299deb',
+    repo: 'chenrensong.github.io',
+    owner: 'chenrensong',
+    admin: ['chenrensong'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://chenrensong.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>
