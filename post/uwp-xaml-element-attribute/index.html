@@ -1,0 +1,233 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UWP基础教程 - XAML对象元素和属性 | 陈仁松博客</title>
+<link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972430242">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://songsong.org/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://songsong.org">
+  <img class="avatar" src="https://songsong.org/images/avatar.png?v=1558972430242" alt="">
+  </a>
+  <h1 class="site-title">
+    陈仁松博客
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/chenrensong" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              UWP基础教程 - XAML对象元素和属性
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2017-04-12 ·
+              </time>
+              
+                <a href="https://songsong.org/tag/UWP" class="post-tag">
+                  # UWP
+                </a>
+              
+            </div>
+            
+            <div class="post-content">
+              <h2 id="元素">元素</h2>
+<p>XAML的对象元素是指XAML中一个完整的节点，一个XAML文件始终只有一个根元素，在Windows 10 UWP 应用中通常是采用Page作为根元素，这个根元素就是当前页面最顶层的元素，而其他元素都是子元素。在XAML中根元素有且只能有一个，而子元素可以有一个或者多个，这是由根元素来决定的。
+在XAML代码中，一个Element(元素)通常是一个Object（对象）,在代码中映射对应.Net类。简单理解，在XAML中声明一个Element元素，其实就是对相应公共语言运行类库进行一次实例化操作。 
+XAML代码声明一个元素对象，必须由一个开始标签“<Element>”和一个结束标签“</Element>”构成，基本语法如下：</p>
+<pre><code>&lt;Element&gt;&lt;/Element&gt;
+</code></pre>
+<p>或者你也可以这么来写</p>
+<pre><code>&lt;Element/&gt;
+</code></pre>
+<p>该语法格式省略<code>&lt;/元素对象&gt;</code>结束标签，使用“/”符号作为元素结束符。
+值得注意的是，XAML中Elements（元素）和Attributes（特性）名称是字符大小写敏感型，也就是大写和小写字符命名具有不同的含义。在上述代码中，如果使用<code>&lt;element&gt;</code>，XAML语法解析器将返回错误信息，无法对Element元素进行实例化。</p>
+<h2 id="属性">属性</h2>
+<p>在XAML中，属性也是可以使用多种语法来进行设置的，不同的属性类型也有不同的设置方式，并不是所有的属性设置都是通用的。总的来说，可以通过下面的三种方式来设置对象属性。</p>
+<ul>
+<li>使用Attribute特性语法</li>
+<li>使用Property元素语法</li>
+<li>使用隐式对象语法</li>
+</ul>
+<p>这三种设置属性的方法，并不是对所有属性都适用的，有些属性只适用一种方式来设置；有些熟悉则可以使用多种方式来设置，这取决于属性对象的特性。下面我会详细的介绍这三种设置方法。</p>
+<h3 id="1-使用attribute特性语法">1、使用Attribute特性语法</h3>
+<pre><code>&lt;元素对象 属性名=“属性值” 属性名=“属性值” …&gt;&lt;/元素对象&gt; 
+</code></pre>
+<p>或者</p>
+<pre><code>&lt;元素对象 属性名=“属性值” 属性名=“属性值” …/&gt;
+</code></pre>
+<p>下面来看一个具体的实例</p>
+<pre><code>&lt;Rectange x:Name=&quot;rectange&quot; Width=&quot;100&quot; Height=&quot;100&quot; Fill=&quot;Red&quot; /&gt;
+</code></pre>
+<p>由于元素对象属性名在开始标签内部，所以这种表达方式也被称为“<strong>内联属性</strong>”。</p>
+<p>XAML分析器会把上面的代码解析成为C#的类，当然也可以直接使用C#的代码来实现元素和属性设置，下面来看看上面这个例子的C#代码实现</p>
+<pre><code>Rectange r = new Rectange();
+r.Name = &quot;rectange&quot;;
+r.Width = 100.0;
+r.Height = 100.0;
+r.Fill = new SoildColorBrush(Colors.Red);
+</code></pre>
+<h3 id="2-使用property元素语法">2、使用Property元素语法</h3>
+<p>使用XAML的Attribute特性可以简单快捷的设置对象的属性，其属性值局限于简单的字符形式。在实际项目中，经常会遇到复合型控件或者自定义控件引用较为复杂的对象属性，以达到个性化的效果。对此Attribute特性无法支持，从而引入Property属性元素的概念。
+下面用伪代码来表示使用Property元素语法来实现属性的设置</p>
+<pre><code>&lt;元素对象&gt;
+  &lt;元素对象.属性&gt;
+     &lt;属性设置器 属性值=“”&gt;
+  &lt;/元素对象.属性&gt;
+&lt;/元素对象&gt;
+</code></pre>
+<p>其中，属性设置器可以设置为较为复杂的对象元素，例如布局控件元素，自定义控件元素等。
+下面是用一个矩形控件演示Property属性的作用，设置矩形的填充使用Fill属性，使用Attribute特性设置上面的Rectange的内容，如下代码:</p>
+<pre><code>&lt;Rectange x:Name=&quot;rectange&quot; Width=&quot;100&quot; Height=&quot;100&quot;&gt;
+    &lt;Rectange.Fill&gt;
+        &lt;SoildColorBrush Color = &quot;Red&quot;/&gt;
+    &lt;/Rectange.Fill&gt;
+&lt;/Rectange&gt;
+</code></pre>
+<p>再来看一个Button中添加一个文字</p>
+<pre><code>        &lt;Button&gt;
+            &lt;Button.Content&gt;
+                &lt;TextBlock Text=&quot;陈仁松XAML教程&quot;/&gt;
+            &lt;/Button.Content&gt;
+        &lt;/Button&gt;
+</code></pre>
+<p>还可以这么写</p>
+<pre><code>        &lt;Button&gt;
+            &lt;Button.Content&gt;
+                陈仁松XAML教程
+            &lt;/Button.Content&gt;
+        &lt;/Button&gt;
+</code></pre>
+<p>其运行效果和Attribute特性设置按钮内容相同。从示例中可以看出，使用元素对象的Property属性设置方法，比Attribute特性要灵活和强大。</p>
+<h3 id="3-使用隐式对象语法">3、使用隐式对象语法</h3>
+<p>通过学习Property属性元素，可以了解到XAML的元素对象属性，不仅包含单一对象属性，同时还支持复杂属性，属性值可以为简单的字符数据类型，同时也可以是一个数据集。
+为了简化XAML代码复杂性，提高代码易读性，XAML提供隐式数据集设置对象属性方法。上面设置Button的Content属性还可以这样写：</p>
+<pre><code>        &lt;Button&gt;
+            &lt;TextBlock Text=&quot;陈仁松XAML教程&quot;/&gt;
+        &lt;/Button&gt;
+</code></pre>
+<p>或者</p>
+<pre><code>        &lt;Button&gt;
+            陈仁松XAML教程
+        &lt;/Button&gt;
+</code></pre>
+<p>从对比以上代码可以看出&lt;Button.Content&gt;被删除后，仍旧可以对Content进行赋值操作。其运行结果和使用Property属性元素属性赋值相同,使用隐式对象语法属性赋值在Windows 10 UWP自定义控件模板和样式中经常用到，是常用属性赋值方法之一。</p>
+<p>本篇就介绍到这里，下一篇将会给大家介绍XAML依赖属性和附加属性。</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://songsong.org/post/uwp-xaml-start-namespace">
+              <h3 class="post-title">
+                UWP基础教程 - XAML开篇
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '382981c785b131b4a314',
+    clientSecret: '048bc4e7cb57301643ef37a9b2a2ab6a08299deb',
+    repo: 'chenrensong.github.io',
+    owner: 'chenrensong',
+    admin: ['chenrensong'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  京ICP备14060483号 | 
+  <a class="rss" href="https://songsong.org/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

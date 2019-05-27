@@ -1,0 +1,239 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UWP基础教程 - RelativePanel | 陈仁松博客</title>
+<link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972430242">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://songsong.org/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://songsong.org">
+  <img class="avatar" src="https://songsong.org/images/avatar.png?v=1558972430242" alt="">
+  </a>
+  <h1 class="site-title">
+    陈仁松博客
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/chenrensong" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              UWP基础教程 - RelativePanel
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2017-06-22 ·
+              </time>
+              
+                <a href="https://songsong.org/tag/UWP" class="post-tag">
+                  # UWP
+                </a>
+              
+            </div>
+            
+            <div class="post-content">
+              <p>在Windows10 UWP开发中，新增和改变了很多特性，这次给大家介绍下<code>RelativePanel</code>,这个控件其实和<code>RelativeLayout</code>基本一种使用方式,大大方便Android开发人员转行做UWP开发哈。</p>
+<p>来看下官方的例子
+::: hljs-center</p>
+<p><img src="/data/2017/2/relativepanel.png" alt=""></p>
+<p>:::</p>
+<pre><code>&lt;RelativePanel BorderBrush=&quot;Gray&quot; BorderThickness=&quot;10&quot;&gt; 
+&lt;Rectangle x:Name=&quot;RedRect&quot; Fill=&quot;Red&quot; MinHeight=&quot;100&quot; MinWidth=&quot;100&quot;/&gt; 
+&lt;Rectangle x:Name=&quot;BlueRect&quot; Fill=&quot;Blue&quot; MinHeight=&quot;100&quot; MinWidth=&quot;100&quot; RelativePanel.RightOf=&quot;RedRect&quot; /&gt; 
+&lt;!-- Width is not set on the green and yellow rectangles. It's determined by the RelativePanel properties. --&gt; 
+&lt;Rectangle x:Name=&quot;GreenRect&quot; Fill=&quot;Green&quot; MinHeight=&quot;100&quot; Margin=&quot;0,5,0,0&quot; RelativePanel.Below=&quot;RedRect&quot; RelativePanel.AlignLeftWith=&quot;RedRect&quot; RelativePanel.AlignRightWith=&quot;BlueRect&quot;/&gt; 
+&lt;Rectangle Fill=&quot;Yellow&quot; MinHeight=&quot;100&quot; RelativePanel.Below=&quot;GreenRect&quot; RelativePanel.AlignLeftWith=&quot;BlueRect&quot; RelativePanel.AlignRightWithPanel=&quot;True&quot;/&lt;/RelativePanel&gt;
+</code></pre>
+<p>具体的用法大家可以参考下各个属性的介绍。</p>
+<table>
+<thead>
+<tr>
+<th>用法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RelativePanel.Above</td>
+<td>设置当前element为目标element的上方</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignBottomWith</td>
+<td>设置当前element与目标element底部对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignBottomWithPanel</td>
+<td>设置当前element与RelativePanel底部对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignHorizontalCenterWith</td>
+<td>设置当前element与目标element水平中心对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignHorizontalCenterWithPanel</td>
+<td>设置当前element与RelativePanel水平中心对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignLeftWith</td>
+<td>设置当前element与目标element左边框对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignLeftWithPanel</td>
+<td>设置当前element与RelativePanel左边框对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignRightWith</td>
+<td>设置当前element与目标element右边框对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignRightWithPanel</td>
+<td>设置当前element与RelativePanel右边框对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignTopWith</td>
+<td>设置当前element与目标element顶部对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignTopWithPanel</td>
+<td>设置当前element与RelativePanel顶部对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignVerticalCenterWith</td>
+<td>设置当前element与目标element垂直中心对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignVerticalCenterWithPanel</td>
+<td>设置当前element与RelativePanel垂直中心对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.Below</td>
+<td>设置当前element为目标element的下方</td>
+</tr>
+<tr>
+<td>RelativePanel.LeftOf</td>
+<td>设置当前element为目标element的左边</td>
+</tr>
+<tr>
+<td>RelativePanel.RightOf</td>
+<td>设置当前element为目标element的右边</td>
+</tr>
+</tbody>
+</table>
+<p>这个控件相比Grid更加灵活，比较麻烦的地方是使用该控件布局需要对里面的子元素都加上{x:Name}扩展标记，对于我这种不爱命名的程序员，还是更喜欢用Grid。</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://songsong.org/post/uwp-auotmationpropertiesname">
+              <h3 class="post-title">
+                UWP基础教程 - AuotmationProperties.Name
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '382981c785b131b4a314',
+    clientSecret: '048bc4e7cb57301643ef37a9b2a2ab6a08299deb',
+    repo: 'chenrensong.github.io',
+    owner: 'chenrensong',
+    admin: ['chenrensong'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  京ICP备14060483号 | 
+  <a class="rss" href="https://songsong.org/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

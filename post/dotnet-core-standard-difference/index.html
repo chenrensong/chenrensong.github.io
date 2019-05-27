@@ -1,0 +1,176 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>【译】.NET Core和.NET Standard有什么不同 | 陈仁松博客</title>
+<link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972430242">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://songsong.org/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://songsong.org">
+  <img class="avatar" src="https://songsong.org/images/avatar.png?v=1558972430242" alt="">
+  </a>
+  <h1 class="site-title">
+    陈仁松博客
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/chenrensong" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              【译】.NET Core和.NET Standard有什么不同
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2017-10-01 ·
+              </time>
+              
+                <a href="https://songsong.org/tag/dotnet" class="post-tag">
+                  # dotnet
+                </a>
+              
+            </div>
+            
+            <div class="post-content">
+              <p>近日，微软发布了<a href="https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-core-2-0/">.NET Core 2.0</a>，但是开发人员中间仍然存在一些疑惑，就是<a href="https://msdn.microsoft.com/en-us/magazine/mt842506">.NET Core、.NET Standard、Xamarin和.NET Framework有什么不同</a>。</p>
+<p>.NET Framework用于构建桌面应用程序和运行在互联网信息服务器（IIS）上的ASP.NET应用程序。它是第一个托管框架。</p>
+<p>Xamarin是一个用于构建iOS、Android、macOS和桌面应用程序的框架。</p>
+<p><strong>.NET Core</strong></p>
+<p><a href="https://docs.microsoft.com/en-us/dotnet/core/index">.NET Core</a>是免费、跨平台的，是托管框架的开源实现。它支持4种类型的应用程序：控制台、<a href="https://en.wikipedia.org/wiki/ASP.NET_Core">ASP.NET Core</a>、云和<a href="https://en.wikipedia.org/wiki/Universal_Windows_Platform_apps">通用Windows平台</a>（UWP）。<a href="https://en.wikipedia.org/wiki/Windows_Forms">Windows Forms</a>和<a href="https://en.wikipedia.org/wiki/Windows_Presentation_Foundation">Windows Presentation Foundation</a>（WPF）并不包含在.NET Core中。</p>
+<p>从技术上讲，.NET Core<a href="https://docs.microsoft.com/en-us/dotnet/core/index">仅支持控制台应用程序</a>。ASP.NET Core和UWP是以.NET Core为基础构建的应用程序模型。</p>
+<p><a href="https://msdn.microsoft.com/magazine/mt694084">与.NET Framework不同，.NET Core没有作为Windows组件考虑</a>。因此，更新是以NutGet包的形式，而不是通过Windows Update。由于.NET Core运行时安装成了App-Local，而应用程序升级是通过包管理器完成的，所以应用程序可以关联特定的.NET Core版本以及单独升级。</p>
+<p><strong>.NET Standard</strong></p>
+<p>托管框架的每一种实现都有一套自己的基类库。基类库（BCL）包含诸如异常处理、字符串、XML、I/O、网络和集合这样的类。</p>
+<p><a href="https://blogs.msdn.microsoft.com/dotnet/2016/09/26/introducing-net-standard/">.NET Standard</a>是一项实现BCL的规范。由于.NET实现需要遵循这项规范，所以应用程序开发人员就不用担心每一种托管框架实现的BCL不同。</p>
+<p>框架类库（FCL），如WPF、WCF、ASP.NET，不包含在BCL中，因此，也就不包含在.NET Standard中。</p>
+<p>.NET Standard与.NET实现之间的关系就和HTML规范与浏览器之间的关系一样。后者是前者的实现。</p>
+<p>因此，.NET Framework、Xamarin和.NET Core，每一种托管框架都实现了.NET Standard中的BCL。随着计算机工业不断推出新的硬件和操作系统，将来还会出现新的.NET托管框架。该标准让应用程序开发人员知道，他们可以依赖于一套始终如一的API。</p>
+<p>每个.NET版本都对应一个.NET Standard版本。</p>
+<p>API一致，将应用程序移植到不同的托管实现以及提供工具都会更简单。</p>
+<p>.NET Standard被定义为一个单独的NuGet包，因为所有的.NET实现都必须支持它。工具变得简单了，因为对于特定的版本，它们有一套相同的API。你还可以针对多个.NET实现构建一个库项目。</p>
+<p>你还可以构建特定平台API的.NET Standard封装器。</p>
+<p><strong>.NET Standard vs 可移植类库</strong></p>
+<p>可移植类库做的不是同一件事吗？</p>
+<p><a href="https://andrewlock.net/understanding-net-core-netstandard-and-asp-net-core/">可移植类使用多个平台均都支持的通用API</a>。因此，支持的平台越多，可用的API就越少，而且，对于特定的平台组合，很难知道到底支持哪些API。对于一个新平台，已有的PCL必须重新编译。PCL还需要微软针对每个平台创建一个新的框架实现分支。</p>
+<p>由于.NET Standard确定了API，而不是一个实现，所以不需要重新编译应用程序。任何新发布的.NET实现都实现了必须的库。应用程序不需要重新编译就可以运行在新的硬件平台或操作系统上。从理论上讲，在调用API时可能会捕获到NotSupportedException异常，但那种情况应该很少见。</p>
+<p><strong>小结</strong></p>
+<p>.NET Standard是一项API规范，每一个特定的版本，都定义了必须实现的基类库。</p>
+<p>.NET Core是一个托管框架，针对构建控制台、云、ASP.NET Core和UWP应用程序进行了优化。每一种托管实现（如Xamarin、.NET Core或.NET Framework）都必须遵循.NET Standard实现BCL。</p>
+<p><strong>查看英文原文</strong>：<a href="https://www.infoq.com/news/2017/10/dotnet-core-standard-difference">.NET Core and .NET Standard: What Is the Difference?</a></p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://songsong.org/post/uwp-app-language">
+              <h3 class="post-title">
+                UWP基础教程 - App多语言支持
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '382981c785b131b4a314',
+    clientSecret: '048bc4e7cb57301643ef37a9b2a2ab6a08299deb',
+    repo: 'chenrensong.github.io',
+    owner: 'chenrensong',
+    admin: ['chenrensong'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  京ICP备14060483号 | 
+  <a class="rss" href="https://songsong.org/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

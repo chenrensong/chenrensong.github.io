@@ -1,0 +1,303 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UWP应用中的PRI文件反编译 | 陈仁松博客</title>
+<link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972430242">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://songsong.org/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://songsong.org">
+  <img class="avatar" src="https://songsong.org/images/avatar.png?v=1558972430242" alt="">
+  </a>
+  <h1 class="site-title">
+    陈仁松博客
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/chenrensong" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              UWP应用中的PRI文件反编译
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2017-03-03 ·
+              </time>
+              
+                <a href="https://songsong.org/tag/UWP" class="post-tag">
+                  # UWP
+                </a>
+              
+            </div>
+            
+            <div class="post-content">
+              <p>PRI全称Package Resources Index, <a href="https://msdn.microsoft.com/zh-cn/library/windows/apps/jj552947.aspx">MSDN官方解释</a></p>
+<p>pri文件是通过微软提供的工具makepri.exe提供了打包、解包PRI功能的。</p>
+<p>Windows 8.1版本的makepri.exe路径：</p>
+<blockquote>
+<p> C:\Program Files (x86)\Windows Kits\8.1\bin\x86\makepri.exe</p>
+</blockquote>
+<p>Windows 10版本的makepri.exe路径： </p>
+<blockquote>
+<p>C:\Program Files (x86)\Windows Kits\10\bin\x64\makepri.exe</p>
+</blockquote>
+<p>如果要反编译Pri to Xml 直接输入命令</p>
+<blockquote>
+<p>“C:\Program Files (x86)\Windows Kits\10\bin\x64\makepri.exe” dump  /if “c:\resources.pri” /of “c:\resources.pri.xml”</p>
+</blockquote>
+<p>这时候会在c盘得到resources.pri.xml文件，里面就包含pri的各种信息，下面就是一个pri.xml文件的例子：</p>
+<pre><code class="language-&lt;?xml">&lt;PriInfo&gt;
+	&lt;ResourceMap name=&quot;9452VitorCid.PocketExtractor&quot; version=&quot;1.0&quot; primary=&quot;true&quot;&gt;
+		&lt;Qualifiers&gt;
+			&lt;Language&gt;EN-US&lt;/Language&gt;
+			&lt;Scale&gt;240&lt;/Scale&gt;
+			&lt;TargetSize&gt;256,16,32,48&lt;/TargetSize&gt;
+		&lt;/Qualifiers&gt;
+		&lt;ResourceMapSubtree name=&quot;Files&quot;&gt;
+			&lt;NamedResource name=&quot;App.xbf&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/App.xbf&quot;&gt;
+				&lt;Candidate type=&quot;Path&quot;&gt;
+					&lt;Value&gt;App.xbf&lt;/Value&gt;
+				&lt;/Candidate&gt;
+			&lt;/NamedResource&gt;
+			&lt;NamedResource name=&quot;FileIcon.png&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/FileIcon.png&quot;&gt;
+				&lt;Candidate type=&quot;Path&quot;&gt;
+					&lt;Value&gt;FileIcon.png&lt;/Value&gt;
+				&lt;/Candidate&gt;
+			&lt;/NamedResource&gt;
+			&lt;NamedResource name=&quot;IntroPage.xbf&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/IntroPage.xbf&quot;&gt;
+				&lt;Candidate type=&quot;Path&quot;&gt;
+					&lt;Value&gt;IntroPage.xbf&lt;/Value&gt;
+				&lt;/Candidate&gt;
+			&lt;/NamedResource&gt;
+			&lt;NamedResource name=&quot;MobileZip.xr.xml&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/MobileZip.xr.xml&quot;&gt;
+				&lt;Candidate type=&quot;Path&quot;&gt;
+					&lt;Value&gt;MobileZip.xr.xml&lt;/Value&gt;
+				&lt;/Candidate&gt;
+			&lt;/NamedResource&gt;
+			&lt;NamedResource name=&quot;PivotPage.xbf&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/PivotPage.xbf&quot;&gt;
+				&lt;Candidate type=&quot;Path&quot;&gt;
+					&lt;Value&gt;PivotPage.xbf&lt;/Value&gt;
+				&lt;/Candidate&gt;
+			&lt;/NamedResource&gt;
+			&lt;NamedResource name=&quot;WindowsStoreProxy.xml&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/WindowsStoreProxy.xml&quot;&gt;
+				&lt;Candidate type=&quot;Path&quot;&gt;
+					&lt;Value&gt;WindowsStoreProxy.xml&lt;/Value&gt;
+				&lt;/Candidate&gt;
+			&lt;/NamedResource&gt;
+			&lt;ResourceMapSubtree name=&quot;Assets&quot;&gt;
+				&lt;NamedResource name=&quot;BadgeLogo.png&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/Assets/BadgeLogo.png&quot;&gt;
+					&lt;Candidate qualifiers=&quot;Scale-240&quot; isDefault=&quot;true&quot; type=&quot;Path&quot;&gt;
+						&lt;Value&gt;Assets\BadgeLogo.scale-240.png&lt;/Value&gt;
+					&lt;/Candidate&gt;
+				&lt;/NamedResource&gt;
+				&lt;NamedResource name=&quot;FileIcon.png&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/Assets/FileIcon.png&quot;&gt;
+					&lt;Candidate type=&quot;Path&quot;&gt;
+						&lt;Value&gt;Assets\FileIcon.png&lt;/Value&gt;
+					&lt;/Candidate&gt;
+				&lt;/NamedResource&gt;
+				&lt;NamedResource name=&quot;Icon.png&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/Assets/Icon.png&quot;&gt;
+					&lt;Candidate qualifiers=&quot;TargetSize-48&quot; isDefault=&quot;true&quot; type=&quot;Path&quot;&gt;
+						&lt;Value&gt;Assets\Icon.targetsize-48.png&lt;/Value&gt;
+					&lt;/Candidate&gt;
+					&lt;Candidate qualifiers=&quot;TargetSize-32&quot; isDefault=&quot;true&quot; type=&quot;Path&quot;&gt;
+						&lt;Value&gt;Assets\Icon.targetsize-32.png&lt;/Value&gt;
+					&lt;/Candidate&gt;
+					&lt;Candidate qualifiers=&quot;TargetSize-256&quot; isDefault=&quot;true&quot; type=&quot;Path&quot;&gt;
+						&lt;Value&gt;Assets\Icon.targetsize-256.png&lt;/Value&gt;
+					&lt;/Candidate&gt;
+					&lt;Candidate qualifiers=&quot;TargetSize-16&quot; isDefault=&quot;true&quot; type=&quot;Path&quot;&gt;
+						&lt;Value&gt;Assets\Icon.targetsize-16.png&lt;/Value&gt;
+					&lt;/Candidate&gt;
+				&lt;/NamedResource&gt;
+				&lt;NamedResource name=&quot;Logo.png&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/Assets/Logo.png&quot;&gt;
+					&lt;Candidate qualifiers=&quot;Scale-240&quot; isDefault=&quot;true&quot; type=&quot;Path&quot;&gt;
+						&lt;Value&gt;Assets\Logo.scale-240.png&lt;/Value&gt;
+					&lt;/Candidate&gt;
+				&lt;/NamedResource&gt;
+				&lt;NamedResource name=&quot;SmallLogo.png&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/Assets/SmallLogo.png&quot;&gt;
+					&lt;Candidate qualifiers=&quot;Scale-240&quot; isDefault=&quot;true&quot; type=&quot;Path&quot;&gt;
+						&lt;Value&gt;Assets\SmallLogo.scale-240.png&lt;/Value&gt;
+					&lt;/Candidate&gt;
+				&lt;/NamedResource&gt;
+				&lt;NamedResource name=&quot;SplashScreen.png&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/Assets/SplashScreen.png&quot;&gt;
+					&lt;Candidate qualifiers=&quot;Scale-240&quot; isDefault=&quot;true&quot; type=&quot;Path&quot;&gt;
+						&lt;Value&gt;Assets\SplashScreen.scale-240.png&lt;/Value&gt;
+					&lt;/Candidate&gt;
+				&lt;/NamedResource&gt;
+				&lt;NamedResource name=&quot;Square71x71Logo.png&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/Assets/Square71x71Logo.png&quot;&gt;
+					&lt;Candidate qualifiers=&quot;Scale-240&quot; isDefault=&quot;true&quot; type=&quot;Path&quot;&gt;
+						&lt;Value&gt;Assets\Square71x71Logo.scale-240.png&lt;/Value&gt;
+					&lt;/Candidate&gt;
+				&lt;/NamedResource&gt;
+				&lt;NamedResource name=&quot;StoreLogo.png&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/Assets/StoreLogo.png&quot;&gt;
+					&lt;Candidate qualifiers=&quot;Scale-240&quot; isDefault=&quot;true&quot; type=&quot;Path&quot;&gt;
+						&lt;Value&gt;Assets\StoreLogo.scale-240.png&lt;/Value&gt;
+					&lt;/Candidate&gt;
+				&lt;/NamedResource&gt;
+				&lt;ResourceMapSubtree name=&quot;icons&quot;&gt;
+					&lt;NamedResource name=&quot;ZipIconDark.png&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/Assets/icons/ZipIconDark.png&quot;&gt;
+						&lt;Candidate type=&quot;Path&quot;&gt;
+							&lt;Value&gt;Assets\icons\ZipIconDark.png&lt;/Value&gt;
+						&lt;/Candidate&gt;
+					&lt;/NamedResource&gt;
+					&lt;NamedResource name=&quot;ZipIconLight.png&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/Assets/icons/ZipIconLight.png&quot;&gt;
+						&lt;Candidate type=&quot;Path&quot;&gt;
+							&lt;Value&gt;Assets\icons\ZipIconLight.png&lt;/Value&gt;
+						&lt;/Candidate&gt;
+					&lt;/NamedResource&gt;
+				&lt;/ResourceMapSubtree&gt;
+			&lt;/ResourceMapSubtree&gt;
+			&lt;ResourceMapSubtree name=&quot;Common&quot;&gt;
+				&lt;NamedResource name=&quot;ReadMe.txt&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/Common/ReadMe.txt&quot;&gt;
+					&lt;Candidate type=&quot;Path&quot;&gt;
+						&lt;Value&gt;Common\ReadMe.txt&lt;/Value&gt;
+					&lt;/Candidate&gt;
+				&lt;/NamedResource&gt;
+			&lt;/ResourceMapSubtree&gt;
+			&lt;ResourceMapSubtree name=&quot;DataModel&quot;&gt;
+				&lt;NamedResource name=&quot;SampleData.json&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Files/DataModel/SampleData.json&quot;&gt;
+					&lt;Candidate type=&quot;Path&quot;&gt;
+						&lt;Value&gt;DataModel\SampleData.json&lt;/Value&gt;
+					&lt;/Candidate&gt;
+				&lt;/NamedResource&gt;
+			&lt;/ResourceMapSubtree&gt;
+		&lt;/ResourceMapSubtree&gt;
+		&lt;ResourceMapSubtree name=&quot;Resources&quot;&gt;
+			&lt;ResourceMapSubtree name=&quot;AddAppBarButton&quot;&gt;
+				&lt;NamedResource name=&quot;Label&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Resources/AddAppBarButton/Label&quot;&gt;
+					&lt;Candidate qualifiers=&quot;Language-EN-US&quot; isDefault=&quot;true&quot; type=&quot;String&quot;&gt;
+						&lt;Value&gt;add&lt;/Value&gt;
+					&lt;/Candidate&gt;
+				&lt;/NamedResource&gt;
+			&lt;/ResourceMapSubtree&gt;
+			&lt;ResourceMapSubtree name=&quot;Header&quot;&gt;
+				&lt;NamedResource name=&quot;Text&quot; uri=&quot;ms-resource://9452VitorCid.PocketExtractor/Resources/Header/Text&quot;&gt;
+					&lt;Candidate qualifiers=&quot;Language-EN-US&quot; isDefault=&quot;true&quot; type=&quot;String&quot;&gt;
+						&lt;Value&gt;MOBILE ZIP&lt;/Value&gt;
+					&lt;/Candidate&gt;
+				&lt;/NamedResource&gt;
+			&lt;/ResourceMapSubtree&gt;
+		&lt;/ResourceMapSubtree&gt;
+	&lt;/ResourceMap&gt;
+&lt;/PriInfo&gt;
+
+</code></pre>
+<p>pri文件的反编译不仅可以用于UWP，Modern应用，还有一个比较成功的案例<a href="https://github.com/PFCKrutonium/Windows-10-Login-Background-Changer">Windows-10-Login-Background-Changer</a>，用于更换Win10登录背景的工具。</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://songsong.org/post/dotnet-tool">
+              <h3 class="post-title">
+                .NET开发人员必备工具推荐
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '382981c785b131b4a314',
+    clientSecret: '048bc4e7cb57301643ef37a9b2a2ab6a08299deb',
+    repo: 'chenrensong.github.io',
+    owner: 'chenrensong',
+    admin: ['chenrensong'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  京ICP备14060483号 | 
+  <a class="rss" href="https://songsong.org/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

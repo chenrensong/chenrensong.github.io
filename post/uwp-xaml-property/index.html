@@ -1,0 +1,239 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UWP基础教程 - XAML依赖属性和附加属性 | 陈仁松博客</title>
+<link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972430242">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://songsong.org/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://songsong.org">
+  <img class="avatar" src="https://songsong.org/images/avatar.png?v=1558972430242" alt="">
+  </a>
+  <h1 class="site-title">
+    陈仁松博客
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/chenrensong" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              UWP基础教程 - XAML依赖属性和附加属性
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2017-04-15 ·
+              </time>
+              
+                <a href="https://songsong.org/tag/XAML" class="post-tag">
+                  # XAML
+                </a>
+              
+                <a href="https://songsong.org/tag/UWP" class="post-tag">
+                  # UWP
+                </a>
+              
+            </div>
+            
+            <div class="post-content">
+              <p>前面两章介绍了XAML的命名空间、元素和属性的概念，从本篇开始接下来会介绍XAML的高级特性，本篇主要会介绍两个概念：</p>
+<ul>
+<li>依赖属性（Dependency Properties）</li>
+<li>附加属性（Attached Properties)</li>
+</ul>
+<h2 id="依赖属性"><strong>依赖属性</strong></h2>
+<p>英文称为Dependency Properties，是XAML特有的属性系统。在传统.Net应用开发中，CLR属性是面向对象编程的基础，主要提供对私有字段的访问封装，开发人员可以使用get和set访问器实现读写属性操作。在UWP应用开发中，依赖属性和CLR属性类似，同样提供一个实例级私有字段的访问封装，通过GetValue和SetValue访问器实现属性的读写操作。依赖属性最重要的一个特点是属性值依赖于一个或者多个数据源，提供这些数据源的方式也可以不同，例如，通过数据绑定提供数据源，通过动画，模板资源，样式等方式提供数据源等，在不同的方式数据源下，依赖属性可以实时对属性值进行改变。也正是因为依赖多数据源的缘故，所以称之为<strong>依赖属性</strong>。</p>
+<p>依赖属性可以通过多种不同类型的数据源进行赋值，其赋值顺序的不同影响着属性值的改变。为了能够获取准确的依赖属性值，需要了解不同数据源的优先级别，如下图：
+<img src="/data/2017/2/depLevel.png" alt=""></p>
+<ol>
+<li>从图中可以看到，应用动画占有对以来属性控制的最高优先级，简单理解，无论动画代码定义在当前页面内，还是定义在模板代码内，动画都将获得对页面内依赖属性的最优先控制权。</li>
+<li>次一级的是依赖属性本地化操作，分别包括其中包括<strong>依赖属性赋值</strong>，<strong>数据绑定</strong>，<strong>资源引用</strong>等。依赖属性使用方式和CLR属性使用类似，可以使用以下格式对依赖属性进行赋值操作：<code>元素对象.依赖属性 = 属性值</code> 例如：按钮控件中，宽度属性属于依赖属性,其赋值方法是：<code>Button.Width = 160;</code></li>
+<li>第三优先级是<strong>数据模板</strong>和<strong>控件模板</strong>对依赖属性的控制；</li>
+<li>第四是<em>样式控制器</em>对依赖属性的控制优先级；</li>
+<li>最弱的是<em>属性默认值</em>,也就是使用GetValue和SetValue对属性默认的赋值。
+开发人员可以通过对依赖属性不同优先级的控制，操作页面属性值，使控件或者页面达到需求运行效果。</li>
+</ol>
+<p>我们来看个例子</p>
+<pre><code>        &lt;Style x:Key=&quot;TextBlockStyle1&quot; TargetType=&quot;TextBlock&quot;&gt;
+            &lt;Setter Property=&quot;Foreground&quot; Value=&quot;Red&quot;/&gt;
+        &lt;/Style&gt;
+</code></pre>
+<p>上面的例子我定义了一个TextBlock的样式，将Foreground设置为Red，也就是红色</p>
+<pre><code>&lt;Button&gt;
+    &lt;TextBlock Style=&quot;{StaticResource TextBlockStyle1}&quot; Text=&quot;陈仁松XAML教程&quot;/&gt;
+&lt;/Button&gt;
+</code></pre>
+<p>这里的TextBlock使用了样式TextBlockStyle1那么现实出来的Button字体是红色。如果给在TextBlock中也添加属性Foreground，如下图代码，那么Button的字体则会变为白色。</p>
+<pre><code>&lt;Button&gt;
+    &lt;TextBlock Foreground=&quot;White&quot; Style=&quot;{StaticResource TextBlockStyle1}&quot; Text=&quot;陈仁松XAML教程&quot;/&gt;
+&lt;/Button&gt;
+</code></pre>
+<p>根据前文讲述的依赖属性执行优先级，按钮控件本地赋值优先于控件样式，所以以上代码中，忽略了TextBlockStyle1样式，使用本地的样式赋值。</p>
+<h2 id="附加属性">附加属性</h2>
+<p>附加属性(Attached Properties)，该属性是一种特殊的依赖属性，同时也是XAML中特有的属性之一。其语法调用格式如下：</p>
+<pre><code>&lt;控件元素对象 附加元素对象.附加属性名 = 属性值 /&gt;
+</code></pre>
+<p>我们可以通过以下几个实例理解附加属性，例如，在布局控件Canvas中定义一个按钮控件，而按钮本身没有任何属性可以控制其在布局控件Canvas中的位置，而在Canvas中，定义了两个依赖属性作为按钮控件的附加属性，帮助按钮控制在Canvas中的位置，其代码如下：</p>
+<pre><code>&lt;Canvas&gt;
+    &lt;TextBlock Canvas.Top=&quot;10&quot; Canvas.Left=&quot;10&quot; Text=&quot;陈仁松XAML教程&quot;/&gt;
+&lt;/Canvas&gt;
+</code></pre>
+<p>在<TextBlock>控件中，使用了“Canvas.附加属性”，效果如同按钮控件从布局控件中继承了Left和Top两个属性值，这时尽管这两个属性仍旧属于Canvas控件，但是属性值已经附加到了按钮控件上，并产生了效果。
+ 
+另外一个附加属性的实例是TooltipService工具提示服务控件，默认控件生成，不具备动态提示功能，而如果在控件中附加了<code>TooltipService.ToolTip</code>属性，就可以生成动态显示指定提示内容的效果。例如:</p>
+<pre><code>&lt;Button ToolTipService.ToolTip=&quot;附加属性测试&quot;&gt;
+    &lt;TextBlock Foreground=&quot;White&quot; Style=&quot;{StaticResource TextBlockStyle1}&quot; Text=&quot;陈仁松XAML教程&quot;/&gt;
+&lt;/Button&gt;
+</code></pre>
+<p>和Canvas控件的<code>Canvas.Left</code>和<code>Canvas.Top</code>道理相同，按钮控件中并没有ToolTip属性，只是附加或者可以理解为“继承”了ToolTipService类，生成以上效果。
+从上面的代码可以看出，附加属性主要目的是为了简化代码，增强XAML代码对元素对象的控制。通过对已知类属性的“继承”或者“附加”，在元素对象上实现特有的效果。</p>
+<p>附加属性的例子还有很多如<code>Storyboard.TargetProperty</code>、<code>Grid.Row</code>、'Grid.Cloumn'等等，当然你也可以选择自定义一个附加属性。</p>
+<pre><code>class RotationManager : DependencyObject
+{
+    public static double GetAngle(DependencyObject obj)
+    {
+        return (double)obj.GetValue(AngleProperty);
+    }
+
+    public static void SetAngle(DependencyObject obj, double value)
+    {
+        obj.SetValue(AngleProperty, value);
+    }
+
+    public static readonly DependencyProperty AngleProperty =
+        DependencyProperty.RegisterAttached(&quot;Angle&quot;, typeof(double), typeof(RotationManager), new PropertyMetadata(0.0, OnAngleChanged));
+
+    private static void OnAngleChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+    {
+        var element = obj as UIElement;
+        if (element != null)
+        {
+            element.RenderTransformOrigin = new Point(0.5, 0.5);
+            element.RenderTransform = new RotateTransform((double)e.NewValue);
+        }
+    }
+}
+</code></pre>
+<p>上面演示了一个附加属性类的写法，你可以在Xaml中使用如下代码：</p>
+<pre><code>local:RotationManager.Angel = &quot;30&quot;
+</code></pre>
+<p>这样控件就能进行旋转30度</p>
+<p><code>附加属性</code>的用处很广，如<code>下拉刷新</code>、<code>动画</code>、<code>延迟加载</code>这些效果都能使用<strong>附加属性</strong>的方式来实现。</p>
+<p>本章就介绍到这里，有什么问题欢迎留言讨论。</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://songsong.org/post/uwp-capture-disabled">
+              <h3 class="post-title">
+                UWP基础教程 - 禁用&amp;开启截取应用屏幕
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '382981c785b131b4a314',
+    clientSecret: '048bc4e7cb57301643ef37a9b2a2ab6a08299deb',
+    repo: 'chenrensong.github.io',
+    owner: 'chenrensong',
+    admin: ['chenrensong'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  京ICP备14060483号 | 
+  <a class="rss" href="https://songsong.org/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>抓取RTMP视频&amp;音频数据 | 陈仁松博客</title>
+<title>UWP基础教程 - {x:DeferLoadStrategy} | 陈仁松博客</title>
 <link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972430242">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
@@ -78,42 +78,37 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              抓取RTMP视频&amp;音频数据
+              UWP基础教程 - {x:DeferLoadStrategy}
             </h2>
             <div class="post-info">
               <time class="post-time">
-                · 2015-10-24 ·
+                · 2017-07-11 ·
               </time>
               
-                <a href="https://songsong.org/tag/RTMP" class="post-tag">
-                  # RTMP
+                <a href="https://songsong.org/tag/UWP" class="post-tag">
+                  # UWP
                 </a>
               
             </div>
             
-              <div class="post-feature-image" style="background-image: url('https://songsong.org/post-images/rtmp-capture.png')">
-              </div>
-            
             <div class="post-content">
-              <p>需要的工具：抓包工具（这里我使用的是<code>WireShark</code>）、<code>Rtmpdump</code></p>
-<p>一开始我思路是想分析下html查看下是否有直接的下载地址：
-<img src="https://songsong.org/post-images/1558970800340.png" alt="">
-查询到了meta.xml,在里面发现了stream的path，这时候发现是rtmp的无法直接下载， 于是想到使用WireShark工具抓包,利用meta.xml里面的 cp11276.edgefcs.net/ondemand ，首先ping 获取ip
-<img src="https://songsong.org/post-images/1558970807504.png" alt="">
-得到96.17.102.28，通过过滤ip得到下面rtmp的信息
-<img src="https://songsong.org/post-images/1558970820436.png" alt=""></p>
-<p>url:</p>
-<pre><code>rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net
+              <p>x:DeferLoadStrategy扩展标记是Windows10 UWP开发的新特性，这个特性可以用于优化启动性能，使用 x:DeferLoadStrategy=&quot;Lazy&quot; 会延迟元素及其子元素的创建，通过不需要创建元素减少启动时间和内存使用量。</p>
+<p>但是使用该扩展标记每个元素会向添加600个字节的内存，你延迟的元素树越大，将节省的时间也就越多，不过内存占用也会有所增加。 所以如果你的应用性能太低，可以使用内存来换取性能。</p>
+<p>讲了这么多，有的同学估计还是一头雾水，那么我们来看下实际的应用吧，在之前要让一个应用隐藏，之前也说过通常设置<code>Visibility</code>或者<code>Opacity</code>,但是不管用哪种方式，这些元素依然加载了，并且消耗了资源。</p>
+<pre><code>&lt;Image x:Name='img1' Source=&quot;/Assets/imgs/001.jpg&quot; Visibility=&quot;Collapsed&quot;/&gt;
+&lt;Image x:Name='img2' Source=&quot;/Assets/imgs/002.jpg&quot; Opacity=&quot;0&quot;/&gt;
 </code></pre>
-<p>path:</p>
-<pre><code>mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod
+<p>给元素添加上<code>x:DeferLoadStrategy=&quot;Lazy&quot;</code>其实同样能达到不可见的效果</p>
+<pre><code>&lt;Image x:Name='img3' Source=&quot;/Assets/imgs/003.jpg&quot; x:DeferLoadStrategy=&quot;Lazy&quot;/&gt;  
 </code></pre>
-<p>在RtmpDump下面执行</p>
-<pre><code>rtmpdump -r &quot;rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net&quot; -y &quot;mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod&quot; -o webcast.mp3
+<p>使用该扩展标记，并不会将代码加入Xaml元素树,你必须在代码中使用<code>this.FindName</code></p>
+<pre><code>private void RealizeElements_Click(object sender, RoutedEventArgs e)
+{
+    this.FindName(&quot;img3&quot;); 
+}
 </code></pre>
-<p><img src="https://songsong.org/post-images/1558970970320.png" alt="">
-下载成功得到webcast.mp3</p>
-<p><img src="https://songsong.org/post-images/1558970974335.png" alt=""></p>
+<p>在使用<code>FindName</code>后该控件才能被正确的使用。</p>
+<p>我们可以将<code>x:DeferLoadStrategy</code>用在哪些数据没ready的情况下不显示控件的场景，这样可以大大优化应用程序的性能。</p>
 
             </div>
           </article>
@@ -122,9 +117,9 @@
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://songsong.org/post/c-lazy">
+            <a href="https://songsong.org/post/uwp-protocol">
               <h3 class="post-title">
-                C#基础 - Lazy&lt;T&gt;
+                UWP基础教程 - 使用协议来启动应用
               </h3>
             </a>
           </div>

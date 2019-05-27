@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://songsong.org</id>
     <title>陈仁松博客</title>
-    <updated>2019-05-27T15:34:38.103Z</updated>
+    <updated>2019-05-27T15:53:51.627Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://songsong.org"/>
     <link rel="self" href="https://songsong.org/atom.xml"/>
@@ -11,200 +11,488 @@
     <icon>https://songsong.org/favicon.ico</icon>
     <rights>All rights reserved 2019, 陈仁松博客</rights>
     <entry>
-        <title type="html"><![CDATA[常用正则表达式汇总]]></title>
-        <id>https://songsong.org/post/regex-common</id>
-        <link href="https://songsong.org/post/regex-common">
+        <title type="html"><![CDATA[【译】在 ASP.NET Core 中使用 SignalR]]></title>
+        <id>https://songsong.org/post/aspnet-core-signalr</id>
+        <link href="https://songsong.org/post/aspnet-core-signalr">
         </link>
-        <updated>2016-03-27T15:33:24.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="1-校验数字的表达式">1. 校验数字的表达式</h2>
-<p>1.1 数字：<code>^[0-9]*$</code>
-1.2 n位的数字：<code>^\d{n}$</code>
-1.3 至少n位的数字：<code>^\d{n,}$</code>
-1.4 m-n位的数字：<code>^\d{m,n}$</code>
-1.5 零和非零开头的数字：<code>^(0|[1-9][0-9]*)$</code>
-1.6 非零开头的最多带两位小数的数字：<code>^([1-9][0-9]*)+(.[0-9]{1,2})?$</code>
-1.7 带1-2位小数的正数或负数：<code>^(\-)?\d+(\.\d{1,2})?$</code>
-1.8 正数、负数、和小数：<code>^(\-|\+)?\d+(\.\d+)?$</code>
-1.9 有两位小数的正实数：<code>^[0-9]+(.[0-9]{2})?$</code>
-1.10 有1~3位小数的正实数：<code>^[0-9]+(.[0-9]{1,3})?$</code>
-1.11 非零的正整数：<code>^[1-9]\d*$</code> 或 <code>^([1-9][0-9]*){1,3}$</code> 或 <code>^\+?[1-9][0-9]*$</code>
-1.12 非零的负整数：<code>^\-[1-9][]0-9&quot;*$</code> 或 <code>^-[1-9]\d*$</code>
-1.13 非负整数：<code>^\d+$</code> 或 <code>^[1-9]\d*|0$</code>
-1.14 非正整数：<code>^-[1-9]\d*|0$</code> 或 <code>^((-\d+)|(0+))$</code>
-1.15 非负浮点数：<code>^\d+(\.\d+)?$</code> 或 <code>^[1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0$</code>
-1.16 非正浮点数：<code>^((-\d+(\.\d+)?)|(0+(\.0+)?))$</code> 或 <code>^(-([1-9]\d*\.\d*|0\.\d*[1-9]\d*))|0?\.0+|0$</code>
-1.17 正浮点数：<code>^[1-9]\d*\.\d*|0\.\d*[1-9]\d*$</code> 或 <code>^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))$</code>
-1.18 负浮点数：<code>^-([1-9]\d*\.\d*|0\.\d*[1-9]\d*)$</code> 或 <code>^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$</code>
-1.19 浮点数：<code>^(-?\d+)(\.\d+)?$</code> 或 <code>^-?([1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0)$</code></p>
-<h2 id="2-校验字符的表达式">2. 校验字符的表达式</h2>
-<p>2.1 汉字：<code>^[\u4e00-\u9fa5]{0,}$</code>
-2.2 英文和数字：<code>^[A-Za-z0-9]+$</code> 或 <code>^[A-Za-z0-9]{4,40}$</code>
-2.3 长度为3-20的所有字符：<code>^.{3,20}$</code>
-2.4 由26个英文字母组成的字符串：<code>^[A-Za-z]+$</code>
-2.5 由26个大写英文字母组成的字符串：<code>^[A-Z]+$</code>
-2.6 由26个小写英文字母组成的字符串：<code>^[a-z]+$</code>
-2.7 由数字和26个英文字母组成的字符串：<code>^[A-Za-z0-9]+$</code>
-2.8 由数字、26个英文字母或者下划线组成的字符串：<code>^\w+$</code> 或 <code>^\w{3,20}$</code>
-2.9 中文、英文、数字包括下划线：<code>^[\u4E00-\u9FA5A-Za-z0-9_]+$</code>
-2.10 中文、英文、数字但不包括下划线等符号：<code>^[\u4E00-\u9FA5A-Za-z0-9]+$</code> 或 <code>^[\u4E00-\u9FA5A-Za-z0-9]{2,20}$</code>
-2.11 可以输入含有^%&amp;<code>,;=?$\&quot;等字符：</code>[^%&amp;<code>,;=?$\x22]+</code>
-2.12 禁止输入含有~的字符：<code>[^~\x22]+</code></p>
-<h2 id="3-特殊需求表达式">3. 特殊需求表达式</h2>
-<p>3.1 Email地址：<code>^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$</code>
-3.2 域名：<code>[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(/.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+/.?</code>
-3.3 InternetURL：<code>[a-zA-z]+://[^\s]* 或 ^http://([\w-]+\.)+[\w-]+(/[\w-./?%&amp;=]*)?$</code>
-3.4 手机号码：<code>^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$</code>
-3.5 电话号码(&quot;XXX-XXXXXXX&quot;、&quot;XXXX-XXXXXXXX&quot;、&quot;XXX-XXXXXXX&quot;、&quot;XXX-XXXXXXXX&quot;、&quot;XXXXXXX&quot;和&quot;XXXXXXXX)：<code>^(\(\d{3,4}-)|\d{3.4}-)?\d{7,8}$</code>
-3.6 国内电话号码(0511-4405222、021-87888822)：<code>\d{3}-\d{8}|\d{4}-\d{7}</code>
-3.7 身份证号：
-3.7.1 15位或18位身份证：<code>^\d{15}|\d{18}$</code>
-3.7.2 15位身份证：<code>^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$</code>
-3.7.3 18位身份证：<code>^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{4}$</code>
-3.8 帐号是否合法(字母开头，允许5-16字节，允许字母数字下划线)：<code>^[a-zA-Z][a-zA-Z0-9_]{4,15}$</code>
-3.9 密码(以字母开头，长度在6~18之间，只能包含字母、数字和下划线)：<code>^[a-zA-Z]\w{5,17}$</code>
-3.10 强密码(必须包含大小写字母和数字的组合，不能使用特殊字符，长度在8-10之间)：<code>^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,10}$</code>
-3.11 日期格式：<code>^\d{4}-\d{1,2}-\d{1,2}</code>
-3.12 一年的12个月(01～09和1～12)：<code>^(0?[1-9]|1[0-2])$</code>
-3.13 一个月的31天(01～09和1～31)：<code>^((0?[1-9])|((1|2)[0-9])|30|31)$</code>
-3.14 xml文件：<code>^([a-zA-Z]+-?)+[a-zA-Z0-9]+\\.[x|X][m|M][l|L]$</code>
-3.15 中文字符的正则表达式：<code>[\u4e00-\u9fa5]</code>
-3.16 双字节字符：<code>[^\x00-\xff]</code> (包括汉字在内，可以用来计算字符串的长度(一个双字节字符长度计2，ASCII字符计1))
-3.17 空白行的正则表达式：<code>\n\s*\r</code> (可以用来删除空白行)
-3.18 HTML标记的正则表达式：<code>&lt;(\S*?)[^&gt;]*&gt;.*?&lt;/\1&gt;|&lt;.*? /&gt;</code> (网上流传的版本太糟糕，上面这个也仅仅能部分，对于复杂的嵌套标记依旧无能为力)
-3.19 首尾空白字符的正则表达式：<code>^\s*|\s*$或(^\s*)|(\s*$)</code> (可以用来删除行首行尾的空白字符(包括空格、制表符、换页符等等)，非常有用的表达式)
-3.20 腾讯QQ号：<code>[1-9][0-9]{4,}</code> (腾讯QQ号从10000开始)
-3.21 中国邮政编码：<code>[1-9]\d{5}(?!\d)</code> (中国邮政编码为6位数字)
-3.22 IPV4地址：<code>\d+\.\d+\.\d+\.\d+</code> (提取IPV4地址时有用)</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[抓取RTMP视频&音频数据]]></title>
-        <id>https://songsong.org/post/rtmp-capture</id>
-        <link href="https://songsong.org/post/rtmp-capture">
-        </link>
-        <updated>2015-10-24T10:26:19.000Z</updated>
-        <content type="html"><![CDATA[<p>需要的工具：抓包工具（这里我使用的是<code>WireShark</code>）、<code>Rtmpdump</code></p>
-<p>一开始我思路是想分析下html查看下是否有直接的下载地址：
-<img src="https://songsong.org/post-images/1558970800340.png" alt="">
-查询到了meta.xml,在里面发现了stream的path，这时候发现是rtmp的无法直接下载， 于是想到使用WireShark工具抓包,利用meta.xml里面的 cp11276.edgefcs.net/ondemand ，首先ping 获取ip
-<img src="https://songsong.org/post-images/1558970807504.png" alt="">
-得到96.17.102.28，通过过滤ip得到下面rtmp的信息
-<img src="https://songsong.org/post-images/1558970820436.png" alt=""></p>
-<p>url:</p>
-<pre><code>rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net
+        <updated>2017-10-02T15:53:32.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="介绍">介绍</h2>
+<p><strong>SignalR</strong>是一个用于网站实现实时通信.NET库。可用多种技术来实现服务器与客户端间的双向通信，服务器可以随时将消息推送到连接的客户端。</p>
+<p>现在可在 ASP.NET Core 预发行版本中使用。我已经介绍过几次 SignalR 了。</p>
+<h2 id="安装">安装</h2>
+<p>您将需要安装 Microsoft.AspNetCore.SignalR.Client 和 Microsoft.AspNetCore.SignalR Nuget 预发行包。此外，您将需要 <a href="https://www.npmjs.com/">NPM</a>（Node 包管理器）。安装 NPM 后，您需要获取 <a href="https://www.npmjs.com/package/@aspnet/signalr-client">@aspnet/signalr-client</a> 包，之后您需要从 <strong>node_modules@aspnet\signalr-client\dist\browser</strong> 文件夹中 获取 <strong>signalr-client-1.0.0-alpha1-final.js</strong> 文件（版本可能不同） ，并将其放置在 <strong>wwwroot</strong> 文件夹下，以便您可以从页面引用到它。</p>
+<p>接下来，我们需要在使用之前在 <strong>ConfigureServices</strong> 中注册所需的服务：</p>
+<pre><code>services.AddSignalR();
 </code></pre>
-<p>path:</p>
-<pre><code>mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod
-</code></pre>
-<p>在RtmpDump下面执行</p>
-<pre><code>rtmpdump -r &quot;rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net&quot; -y &quot;mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod&quot; -o webcast.mp3
-</code></pre>
-<p><img src="https://songsong.org/post-images/1558970970320.png" alt="">
-下载成功得到webcast.mp3</p>
-<p><img src="https://songsong.org/post-images/1558970974335.png" alt=""></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[C#基础 - Lazy<T>]]></title>
-        <id>https://songsong.org/post/c-lazy</id>
-        <link href="https://songsong.org/post/c-lazy">
-        </link>
-        <updated>2015-03-18T10:18:53.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="1-lazyt-概述">1. <code>Lazy&lt;T&gt;</code> 概述</h2>
-<p>往往有这样的情景，我们需要创建一个大对象，这样的对象往往需要较长的时间和较多的空间，为了避免在每次运行时创建这种家伙，在.NET Framework 4 后提供一种便捷的方式：<code>Lazy&lt;T&gt;</code>（称之为懒对象）。</p>
-<h2 id="2-lazyt-的使用">2. <code>Lazy&lt;T&gt;</code> 的使用</h2>
-<p>我们就来看下Lazy<T>如何使用。</p>
-<pre><code>
-[Serializable]
-class Large
+<p>我们将实现一个简单的聊天客户端，因此将在 <strong>Configure</strong> 方法中注册一个 ChatHub：</p>
+<pre><code>app.UseSignalR(routes =&gt;
 {
-    public Large() { }
-    public void Test()
+    routes.MapHub&lt;ChatHub&gt;(&quot;chat&quot;);
+});
+</code></pre>
+<p>注意：<strong>UseSignalR</strong> 必须在 <strong>UseMvc</strong> 之前调用！</p>
+<p>如果你有不同的端点，可以为任意数量的 hub 执行此操作。</p>
+<p>在您的视图或布局文件中，添加对 <strong>signalr-client-1.0.0-alpha1-final.js</strong> 文件的引用：</p>
+<pre><code>&lt;script src=&quot;libs/signalr-client/signalr-client-1.0.0-alpha1-final.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<h2 id="实现-hub">实现 Hub</h2>
+<p>该 hub 是一个继承了 <strong>Hub</strong> 的类。您可在其中添加 JavaScript 可能调用到的方法。我们将实现一个 chat hub：：</p>
+<pre><code>public class ChatHub : Hub
+{
+    public async Task Send(string message)
     {
-        Console.WriteLine(&quot;Test&quot;);
+        await this.Clients.All.InvokeAsync(&quot;Send&quot;, message);
     }
 }
+</code></pre>
+<p>如你所见，我们有一个方法（<strong>Send</strong>），在这个例子中，它采用单个参数（<strong>message</strong>）。您不需要在广播调用（<strong>InvokeAsync</strong>）上传递相同的参数，可以发送任何您想要的。</p>
+<p>回到客户端部分，在引用 SignalR JavaScript 文件后添加此代码：</p>
+<pre><code>   &lt;script&gt;
 
+        var transportType = signalR.TransportType.WebSockets;
+        //can also be ServerSentEvents or LongPolling
+        var logger = new signalR.ConsoleLogger(signalR.LogLevel.Information);
+        var chatHub = new signalR.HttpConnection(`http://${document.location.host}/chat`, { transport: transportType, logger: logger });
+        var chatConnection = new signalR.HubConnection(chatHub, logger);
+
+        chatConnection.onClosed = e =&gt; {
+            console.log('connection closed');
+       };
+
+       chatConnection.on('Send', (message) =&gt; {
+           console.log('received message');
+       });
+
+       chatConnection.start().catch(err =&gt; {
+           console.log('connection error');
+       });
+
+       function send(message) {
+           chatConnection.invoke('Send', message);
+       }
+
+&lt;/script&gt;
 </code></pre>
-<p>上面代码定义了一个<code>Large</code>对象</p>
-<pre><code>class Program
+<p>请注意：</p>
+<ol>
+<li>创建指向当前 URL 的连接添加了 <strong>chat</strong> 后缀，这与在 <strong>MapHub</strong> 中注册的一致</li>
+<li>它使用特定的传输进行初始化（本例中是 <strong>WebSockets</strong>），但这不是必需的，也就是说，您可以让 SignalR 自己采用合适的方式。对于某些操作系统（如 Windows 7），您可能无法使用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API">WebSockets</a>，因此您必须选择 <a href="https://www.pubnub.com/blog/2014-12-01-http-long-polling/">LongPolling</a> 或 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">ServerSentEvents</a></li>
+<li>需要通过调用 <strong>start</strong> 来初始化连接</li>
+<li>有一个 <strong>Send</strong> 方法的 handler，它与 <strong>ChatHub</strong> 的 <strong>Send</strong> 方法有相同的单个参数（message）</li>
+</ol>
+<p>所以，每当有人访问此页面并调用 JavaScript <strong>send</strong>函数时，它将调用 <strong>ChatHub</strong> 类上的 <strong>Send</strong> 方法。 该类基本上会向所有连接的客户端（<strong>Clients.All</strong>）广播此消息。 也可以将消息发送到特定的组：</p>
+<pre><code>await this.Clients.Group(&quot;groupName&quot;).InvokeAsync(&quot;Send&quot;, message);
+</code></pre>
+<p>或特定客户端：</p>
+<pre><code>await this.Clients.Client(&quot;id&quot;).InvokeAsync(&quot;Send&quot;, message);
+</code></pre>
+<p>如果使用身份验证，您可以添加一个由连接 ID 和 <strong>ClaimPrincipal</strong> 标识的用户，如下所示：</p>
+<pre><code>public override Task OnConnectedAsync()
 {
-    static void Main(string[] args)
-    {
-        Lazy&lt;Large&gt; lazyObject = new Lazy&lt;Large&gt;();
-        Console.WriteLine(lazyObject.IsValueCreated);
-        lazyObject.Value.Test();
-        Console.WriteLine(lazyObject.IsValueCreated);
-    }
+    this.Groups.AddAsync(this.Context.ConnectionId, &quot;groupName&quot;);
+
+    return base.OnConnectedAsync();
 }
 </code></pre>
-<p>在<code>Main</code>函数中进行执行，运行结果如下：</p>
-<pre><code>False
-Test
-True
-</code></pre>
-<p>这个例子很简单，也是Lazy<T>最基本，也是最常用的应用方式，<code>Lazy&lt;T&gt;</code>实现了按需延迟加载</p>
-<h2 id="3-实现自己的lazyt">3. 实现自己的<code>Lazy&lt;T&gt;</code></h2>
-<p>在.NET Framework 4.0之前，来看看我们是怎么样定义Lazy<T>的吧。</p>
-<pre><code>class MyLazy&lt;T&gt; where T : new()
+<p>是的，<strong>OnConnectedAsync</strong> 在新用户连接时将被调用。当有人断开连接时，<strong>OnDisconnectedAsync</strong> 将被调用：</p>
+<pre><code>public override Task OnDisconnectedAsync(Exception exception)
 {
-    private T value;
-    private bool isLoaded;
-    public MyLazy()
+    return base.OnDisconnectedAsync(exception);
+}
+</code></pre>
+<p>如果在断开连接时发生一些异常，则 <strong>exception</strong> 参数将为非空值。
+只有当前用户进行身份验证时 <strong>Context</strong> 属性才会提供 <strong>ConnectionId</strong> 和 <strong>User</strong> 两个属性。<strong>ConnectionId</strong> 始终被设置为同一个用户，不会改变。
+另一个例子，假设你想通过定时器 hub 将定时器 tick 发送到所有连接的客户端。 您可以在 <strong>Configure</strong> 方法中执行此操作：</p>
+<pre><code>TimerCallback callback = (x) =&gt; {
+    var hub = serviceProvider.GetService&lt;IHubContext&lt;TimerHub&gt;&gt;();
+    hub.Clients.All.InvokeAsync(&quot;Notify&quot;, DateTime.Now);
+};
+
+var timer = new Timer(callback);
+timer.Change(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(10));
+</code></pre>
+<p>我们启动了一个 <strong>Timer</strong>，从那里我们得到了一个定时器 hub 的引用，并使用当前时间戳调用其 <strong>Notify</strong> 方法。<strong>TimerHub</strong> 类只是这样：</p>
+<pre><code>public class TimerHub : Hub
+{
+}
+</code></pre>
+<p>请注意，此类没有公共方法，因为它不是由 JavaScript 调用，它仅用于从外部广播消息（<strong>Timer</strong> 回调）。</p>
+<h2 id="将消息发送到-hub">将消息发送到 Hub</h2>
+<p>最后，还可以将消息从外部发送到 hub。当使用控制器时，您需要注入一个 <strong>IHubContext</strong> 实例，您可以从中发送消息到 hub，然后将其适当地广播：</p>
+<pre><code>private readonly IHubContext&lt;ChatHub&gt; _context;
+
+[HttpGet(&quot;Send/{message}&quot;)]
+public IActionResult Send(string message)
+{
+    //for everyone
+    this._context.Clients.All.InvokeAsync(&quot;Send&quot;, message);
+    //for a single group
+    this._context.Clients.Group(&quot;groupName&quot;).InvokeAsync(&quot;Send&quot;, message);
+    //for a single client
+    this._context.Clients.Client(&quot;id&quot;).InvokeAsync(&quot;Send&quot;, message);
+
+    return this.Ok();
+}
+</code></pre>
+<p>请注意，这与访问 <strong>ChatHub</strong> 类不同，您无法简单实现，需要通过 chat hub 的连接才行。</p>
+<h2 id="结论">结论</h2>
+<p>SignalR 尚未发布，仍可能会发生一些变化。在以后的文章中，我将更详细地介绍 SignalR，包括其可扩展性机制和一些更高级的使用场景。敬请期待！</p>
+<p><strong>查看英文原文</strong>：<a href="https://weblogs.asp.net/ricardoperes/signalr-in-asp-net-core">SignalR in ASP.NET Core</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[【译】.NET Core和.NET Standard有什么不同]]></title>
+        <id>https://songsong.org/post/dotnet-core-standard-difference</id>
+        <link href="https://songsong.org/post/dotnet-core-standard-difference">
+        </link>
+        <updated>2017-10-01T15:53:06.000Z</updated>
+        <content type="html"><![CDATA[<p>近日，微软发布了<a href="https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-core-2-0/">.NET Core 2.0</a>，但是开发人员中间仍然存在一些疑惑，就是<a href="https://msdn.microsoft.com/en-us/magazine/mt842506">.NET Core、.NET Standard、Xamarin和.NET Framework有什么不同</a>。</p>
+<p>.NET Framework用于构建桌面应用程序和运行在互联网信息服务器（IIS）上的ASP.NET应用程序。它是第一个托管框架。</p>
+<p>Xamarin是一个用于构建iOS、Android、macOS和桌面应用程序的框架。</p>
+<p><strong>.NET Core</strong></p>
+<p><a href="https://docs.microsoft.com/en-us/dotnet/core/index">.NET Core</a>是免费、跨平台的，是托管框架的开源实现。它支持4种类型的应用程序：控制台、<a href="https://en.wikipedia.org/wiki/ASP.NET_Core">ASP.NET Core</a>、云和<a href="https://en.wikipedia.org/wiki/Universal_Windows_Platform_apps">通用Windows平台</a>（UWP）。<a href="https://en.wikipedia.org/wiki/Windows_Forms">Windows Forms</a>和<a href="https://en.wikipedia.org/wiki/Windows_Presentation_Foundation">Windows Presentation Foundation</a>（WPF）并不包含在.NET Core中。</p>
+<p>从技术上讲，.NET Core<a href="https://docs.microsoft.com/en-us/dotnet/core/index">仅支持控制台应用程序</a>。ASP.NET Core和UWP是以.NET Core为基础构建的应用程序模型。</p>
+<p><a href="https://msdn.microsoft.com/magazine/mt694084">与.NET Framework不同，.NET Core没有作为Windows组件考虑</a>。因此，更新是以NutGet包的形式，而不是通过Windows Update。由于.NET Core运行时安装成了App-Local，而应用程序升级是通过包管理器完成的，所以应用程序可以关联特定的.NET Core版本以及单独升级。</p>
+<p><strong>.NET Standard</strong></p>
+<p>托管框架的每一种实现都有一套自己的基类库。基类库（BCL）包含诸如异常处理、字符串、XML、I/O、网络和集合这样的类。</p>
+<p><a href="https://blogs.msdn.microsoft.com/dotnet/2016/09/26/introducing-net-standard/">.NET Standard</a>是一项实现BCL的规范。由于.NET实现需要遵循这项规范，所以应用程序开发人员就不用担心每一种托管框架实现的BCL不同。</p>
+<p>框架类库（FCL），如WPF、WCF、ASP.NET，不包含在BCL中，因此，也就不包含在.NET Standard中。</p>
+<p>.NET Standard与.NET实现之间的关系就和HTML规范与浏览器之间的关系一样。后者是前者的实现。</p>
+<p>因此，.NET Framework、Xamarin和.NET Core，每一种托管框架都实现了.NET Standard中的BCL。随着计算机工业不断推出新的硬件和操作系统，将来还会出现新的.NET托管框架。该标准让应用程序开发人员知道，他们可以依赖于一套始终如一的API。</p>
+<p>每个.NET版本都对应一个.NET Standard版本。</p>
+<p>API一致，将应用程序移植到不同的托管实现以及提供工具都会更简单。</p>
+<p>.NET Standard被定义为一个单独的NuGet包，因为所有的.NET实现都必须支持它。工具变得简单了，因为对于特定的版本，它们有一套相同的API。你还可以针对多个.NET实现构建一个库项目。</p>
+<p>你还可以构建特定平台API的.NET Standard封装器。</p>
+<p><strong>.NET Standard vs 可移植类库</strong></p>
+<p>可移植类库做的不是同一件事吗？</p>
+<p><a href="https://andrewlock.net/understanding-net-core-netstandard-and-asp-net-core/">可移植类使用多个平台均都支持的通用API</a>。因此，支持的平台越多，可用的API就越少，而且，对于特定的平台组合，很难知道到底支持哪些API。对于一个新平台，已有的PCL必须重新编译。PCL还需要微软针对每个平台创建一个新的框架实现分支。</p>
+<p>由于.NET Standard确定了API，而不是一个实现，所以不需要重新编译应用程序。任何新发布的.NET实现都实现了必须的库。应用程序不需要重新编译就可以运行在新的硬件平台或操作系统上。从理论上讲，在调用API时可能会捕获到NotSupportedException异常，但那种情况应该很少见。</p>
+<p><strong>小结</strong></p>
+<p>.NET Standard是一项API规范，每一个特定的版本，都定义了必须实现的基类库。</p>
+<p>.NET Core是一个托管框架，针对构建控制台、云、ASP.NET Core和UWP应用程序进行了优化。每一种托管实现（如Xamarin、.NET Core或.NET Framework）都必须遵循.NET Standard实现BCL。</p>
+<p><strong>查看英文原文</strong>：<a href="https://www.infoq.com/news/2017/10/dotnet-core-standard-difference">.NET Core and .NET Standard: What Is the Difference?</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[UWP基础教程 - App多语言支持]]></title>
+        <id>https://songsong.org/post/uwp-app-language</id>
+        <link href="https://songsong.org/post/uwp-app-language">
+        </link>
+        <updated>2017-09-18T15:52:31.000Z</updated>
+        <content type="html"><![CDATA[<p>UWP实现本地化非常简单，所谓本地化表现最为直观的就是UI上文字和布局方式了，针对文字，提供不同的语言资源文件即可，而针对布局方式，比如在 阿拉伯地区 阅读顺序是从右到左，需要稍稍适配一下。</p>
+<p>本文主要讲解的是UWP APP如何进行多语言支持</p>
+<ol>
+<li>
+<p>多语言的文件 Resources.resw 必须放在以语言代码为文件夹名称的目录下，默认情况下系统才能识别;</p>
+</li>
+<li>
+<p>多语言文件夹放在任何目录都可以，只需要注意的就是文件夹的名称必须是语言代码，具体的语言代码可以<a href="https://docs.microsoft.com/en-us/windows/uwp/publish/supported-languages">点此查看</a></p>
+</li>
+<li>
+<p>编译打包时，系统会根据找到的多语言文件夹，在AppManifest文件的 Resources 节点下面，生成对应的 Resource 子元素 ,但前提是该节点下面必须有如下元素<code>&lt;Resource Language=&quot;x-generate&quot;/&gt;</code></p>
+</li>
+<li>
+<p>针对需要布局RTL的语言，如希伯来语，只需要添加例如语言代码为 “he” 的资源文件即可，系统会自动对标题栏等地方进行RTL布局，但也仅限于标题栏，页面内部的RTL,还需要手动设置 FlowDirection 为 RightToLeft;</p>
+</li>
+<li>
+<p>如果在运行时，你的 app 不支持当前电脑系统选择的语言，则默认会使用 Default Language 中设置的语言，该设置选项在你 app 项目的 .csproj 文件中；</p>
+</li>
+</ol>
+<p>如果你想在App中动态切换语言，你可以设置</p>
+<pre><code>ApplicationLanguages.PrimaryLanguageOverride
+</code></pre>
+<p>为指定的语言，关于语言列表我列了常用的出来，具体如下所示</p>
+<pre><code>zh-cn、zh、zh-Hans、zh-hans-cn、zh-sg、zh-hans-sg
+zh-hk、zh-Hant、zh-mo、zh-tw、zh-hant-hk、zh-hant-mo、zh-hant-tw
+de、de-at、de-ch、de-de、de-lu、de-li
+en-us、en、en-au、en-ca、en-gb、en-ie、en-in、en-nz、en-sg、en-za、en-bz、en-hk、en-id、en-jm、en-kz、en-mt、en-my、en-ph、en-pk、en-tt、en-vn、en-zw、en-053、en-021、en-029、en-011、en-018、en-014
+es、es-cl、es-co、es-es、es-mx、es-ar、es-bo、es-cr、es-do、es-ec、es-gt、es-hn、es-ni、es-pa、es-pe、es-pr、es-py、es-sv、es-us、es-uy、es-ve、es-019、es-419
+fr、fr-be、fr-ca、fr-ch、fr-fr、fr-lu、fr-015、fr-cd、fr-ci、fr-cm、fr-ht、fr-ma、fr-mc、fr-ml、fr-re、frc-latn、frp-latn、fr-155、fr-029、fr-021、fr-011
+hi、hi-in
+it、it-it、it-ch
+ja、ja-jp
+pt、pt-pt、pt-br
+ru、ru-ru
+</code></pre>
+<p>使用这种方法实现的切换App语言，<em><strong>必须重启</strong></em> 才能生效，可参考 <a href="https://chenrensong.com/post/uwp-restart-app">UWP基础教程 - 重启应用</a> 自动完成此动作。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[UWP基础教程 - 重启应用]]></title>
+        <id>https://songsong.org/post/uwp-restart-app</id>
+        <link href="https://songsong.org/post/uwp-restart-app">
+        </link>
+        <updated>2017-08-11T15:51:59.000Z</updated>
+        <content type="html"><![CDATA[<p>开发过Winform应用的同学应该都知道，会有一些场景需要将应用重启，如：重新应用配置，崩溃，内存泄漏等情况。这个时候我们只要使用一行代码就可以实现重启。</p>
+<pre><code>Application.Restart()
+</code></pre>
+<p>但在之前的Windows10 UWP应用开发中，我们只能提示用户手动重启，这个问题一直很困恼开发者。</p>
+<p>在16226版本之后，微软终于实现了这个API。</p>
+<pre><code>AppRestartFailureReason result = await CoreApplication.RequestRestartAsync(String.Empty);
+if (result == AppRestartFailureReason.NotInForeground || 
+    result == AppRestartFailureReason.RestartPending ||
+    result == AppRestartFailureReason.Other)
+{
+    Debug.WriteLine(&quot;RequestRestartAsync failed: {0}&quot;, result);
+}
+</code></pre>
+<p>使用上面的代码就能实现UWP APP重启的功能，这个API还可以自定义启动参数，只要将上述代码<code>String.Empty</code>部分传入对应的参数，在<code>OnActivated</code>事件处进行处理即可。</p>
+<pre><code>protected override void OnActivated(IActivatedEventArgs args)
+{
+    switch (args.Kind)
     {
-        isLoaded = false;
-    }
-    public T Value
-    {
-        get
-        {
-            if (!isLoaded)
+        case ActivationKind.Launch:
+            LaunchActivatedEventArgs launchArgs = args as LaunchActivatedEventArgs;
+            string argString = launchArgs.Arguments;
+ 
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame == null)
             {
-                value = new T();
-                isLoaded = true;
+                rootFrame = new Frame();
+                Window.Current.Content = rootFrame;
             }
-            return value;
+            rootFrame.Navigate(typeof(MainPage), argString);
+            Window.Current.Activate();
+            break;
+    }
+}
+</code></pre>
+<p>更详细的内容，大家可以参考微软官方博客写的<a href="https://blogs.windows.com/buildingapps/2017/07/28/restart-app-programmatically/#Md7YJbIRFItRZgAJ.97">How to Restart your App Programmatically</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[UWP基础教程 - {x:DeferLoadStrategy}]]></title>
+        <id>https://songsong.org/post/uwp-xdeferloadstrategy</id>
+        <link href="https://songsong.org/post/uwp-xdeferloadstrategy">
+        </link>
+        <updated>2017-07-11T15:51:33.000Z</updated>
+        <content type="html"><![CDATA[<p>x:DeferLoadStrategy扩展标记是Windows10 UWP开发的新特性，这个特性可以用于优化启动性能，使用 x:DeferLoadStrategy=&quot;Lazy&quot; 会延迟元素及其子元素的创建，通过不需要创建元素减少启动时间和内存使用量。</p>
+<p>但是使用该扩展标记每个元素会向添加600个字节的内存，你延迟的元素树越大，将节省的时间也就越多，不过内存占用也会有所增加。 所以如果你的应用性能太低，可以使用内存来换取性能。</p>
+<p>讲了这么多，有的同学估计还是一头雾水，那么我们来看下实际的应用吧，在之前要让一个应用隐藏，之前也说过通常设置<code>Visibility</code>或者<code>Opacity</code>,但是不管用哪种方式，这些元素依然加载了，并且消耗了资源。</p>
+<pre><code>&lt;Image x:Name='img1' Source=&quot;/Assets/imgs/001.jpg&quot; Visibility=&quot;Collapsed&quot;/&gt;
+&lt;Image x:Name='img2' Source=&quot;/Assets/imgs/002.jpg&quot; Opacity=&quot;0&quot;/&gt;
+</code></pre>
+<p>给元素添加上<code>x:DeferLoadStrategy=&quot;Lazy&quot;</code>其实同样能达到不可见的效果</p>
+<pre><code>&lt;Image x:Name='img3' Source=&quot;/Assets/imgs/003.jpg&quot; x:DeferLoadStrategy=&quot;Lazy&quot;/&gt;  
+</code></pre>
+<p>使用该扩展标记，并不会将代码加入Xaml元素树,你必须在代码中使用<code>this.FindName</code></p>
+<pre><code>private void RealizeElements_Click(object sender, RoutedEventArgs e)
+{
+    this.FindName(&quot;img3&quot;); 
+}
+</code></pre>
+<p>在使用<code>FindName</code>后该控件才能被正确的使用。</p>
+<p>我们可以将<code>x:DeferLoadStrategy</code>用在哪些数据没ready的情况下不显示控件的场景，这样可以大大优化应用程序的性能。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[UWP基础教程 - 使用协议来启动应用]]></title>
+        <id>https://songsong.org/post/uwp-protocol</id>
+        <link href="https://songsong.org/post/uwp-protocol">
+        </link>
+        <updated>2017-07-05T15:51:06.000Z</updated>
+        <content type="html"><![CDATA[<p>如果你的应用程序希望能够通过外部协议来访问的话，那么就需要为你的应用添加<code>protocol协议</code>。</p>
+<p>1、打开Package.appxmanifest文件
+在<Applications>节点下添加<Extensions>节点，在<Extensions>节点下添加</p>
+<pre><code>&lt;uap:Extension Category=&quot;windows.protocol&quot; &gt;
+    &lt;uap:Protocol Name=&quot;protocolexsample&quot;&gt;
+        &lt;uap:Logo&gt;Assets\StoreLogo.png&lt;/uap:Logo&gt;
+        &lt;uap:DisplayName&gt;Application&lt;/uap:DisplayName&gt;
+    &lt;/uap:Protocol&gt;
+&lt;/uap:Extension&gt;
+</code></pre>
+<p>节点即可实现Protocol启动应用,这里需要注意的是<strong>Protocol的Name必需为小写</strong></p>
+<p>当然你也可以使用Visual Studio IDE进行添加，添加完成后外部就可以通过</p>
+<pre><code>protocolexsample://appdata
+</code></pre>
+<p>来访问应用了,系统会自动启动注册了protocolexsample协议的应用,如果你要在协议里添加参数，只要在App.xaml.cs文件中，重写OnActivate方法，通过Protocol协议启动的应用，ActivationKind问Protocol，可将args转换为<code>ProtocolActivatedEventArgs</code>来获取启动参数。</p>
+<pre><code> protected async override void OnActivated(IActivatedEventArgs args)
+        {
+            base.OnActivated(args);
+ 
+            switch (args.Kind)
+            {
+                case ActivationKind.VoiceCommand:
+                    {
+                        break;
+                    }
+                case ActivationKind.Protocol:
+                    {
+                        var command = args as ProtocolActivatedEventArgs;
+                      
+                        if (command.Uri.ToString().StartsWith(&quot;protocolexsample://&quot;))
+                        {
+                            //TODO
+                        }
+    
+                        break;
+                    }
+            }
         }
-    }
-}
 </code></pre>
-<p>这应该是最简单版本的Lazy<T>了，没有线程安全检测，只有着访问时创建对象，可是对于我们一般的应用来说也许就已经足够了，大家也可以读下老赵写的 <a href="http://www.cnblogs.com/JeffreyZhao/archive/2009/09/07/standard-lazy-proxy.html">较为理想的延迟代理的编写方式</a></p>
-<h2 id="4-lazyt的net-framework实现">4. <code>Lazy&lt;T&gt;</code>的.NET Framework实现</h2>
-<p>其实.NET Framework和上面的实现大同小异，有两点主要的不同：</p>
-<h3 id="a-引入了boxed内部类">A. 引入了Boxed内部类：</h3>
-<pre><code>[Serializable]
-private class Boxed
-{
-    // Fields
-    internal T m_value;
-
-    // Methods
-    [TargetedPatchingOptOut(&quot;Performance critical to inline this type of method across NGen image boundaries&quot;)]
-    internal Boxed(T value)
-    {
-        this.m_value = value;
-    }
-}
+<p>欢迎大家留言讨论。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[UWP基础教程 - RelativePanel]]></title>
+        <id>https://songsong.org/post/uwp-relativepanel</id>
+        <link href="https://songsong.org/post/uwp-relativepanel">
+        </link>
+        <updated>2017-06-22T15:50:34.000Z</updated>
+        <content type="html"><![CDATA[<p>在Windows10 UWP开发中，新增和改变了很多特性，这次给大家介绍下<code>RelativePanel</code>,这个控件其实和<code>RelativeLayout</code>基本一种使用方式,大大方便Android开发人员转行做UWP开发哈。</p>
+<p>来看下官方的例子
+::: hljs-center</p>
+<p><img src="/data/2017/2/relativepanel.png" alt=""></p>
+<p>:::</p>
+<pre><code>&lt;RelativePanel BorderBrush=&quot;Gray&quot; BorderThickness=&quot;10&quot;&gt; 
+&lt;Rectangle x:Name=&quot;RedRect&quot; Fill=&quot;Red&quot; MinHeight=&quot;100&quot; MinWidth=&quot;100&quot;/&gt; 
+&lt;Rectangle x:Name=&quot;BlueRect&quot; Fill=&quot;Blue&quot; MinHeight=&quot;100&quot; MinWidth=&quot;100&quot; RelativePanel.RightOf=&quot;RedRect&quot; /&gt; 
+&lt;!-- Width is not set on the green and yellow rectangles. It's determined by the RelativePanel properties. --&gt; 
+&lt;Rectangle x:Name=&quot;GreenRect&quot; Fill=&quot;Green&quot; MinHeight=&quot;100&quot; Margin=&quot;0,5,0,0&quot; RelativePanel.Below=&quot;RedRect&quot; RelativePanel.AlignLeftWith=&quot;RedRect&quot; RelativePanel.AlignRightWith=&quot;BlueRect&quot;/&gt; 
+&lt;Rectangle Fill=&quot;Yellow&quot; MinHeight=&quot;100&quot; RelativePanel.Below=&quot;GreenRect&quot; RelativePanel.AlignLeftWith=&quot;BlueRect&quot; RelativePanel.AlignRightWithPanel=&quot;True&quot;/&lt;/RelativePanel&gt;
 </code></pre>
-<p>该内部类取代了我在上面实现中的泛型约束，使之更通用。</p>
-<p>但是也应该要注意，如果T为结构体，那么由于T很大，所以装箱拆箱反而也许是个更耗费效率的事情，因此，对值类型慎用<code>Lazy&lt;T&gt;</code>。</p>
-<h3 id="b-线程安全的控制">B. 线程安全的控制</h3>
-<p>在线程安全的控制选项中，.NET Framework为我们提供了这样的枚举选项：</p>
-<pre><code>public enum LazyThreadSafetyMode
-{
-    None,
-    PublicationOnly,
-    ExecutionAndPublication
-}
+<p>具体的用法大家可以参考下各个属性的介绍。</p>
+<table>
+<thead>
+<tr>
+<th>用法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RelativePanel.Above</td>
+<td>设置当前element为目标element的上方</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignBottomWith</td>
+<td>设置当前element与目标element底部对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignBottomWithPanel</td>
+<td>设置当前element与RelativePanel底部对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignHorizontalCenterWith</td>
+<td>设置当前element与目标element水平中心对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignHorizontalCenterWithPanel</td>
+<td>设置当前element与RelativePanel水平中心对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignLeftWith</td>
+<td>设置当前element与目标element左边框对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignLeftWithPanel</td>
+<td>设置当前element与RelativePanel左边框对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignRightWith</td>
+<td>设置当前element与目标element右边框对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignRightWithPanel</td>
+<td>设置当前element与RelativePanel右边框对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignTopWith</td>
+<td>设置当前element与目标element顶部对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignTopWithPanel</td>
+<td>设置当前element与RelativePanel顶部对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignVerticalCenterWith</td>
+<td>设置当前element与目标element垂直中心对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.AlignVerticalCenterWithPanel</td>
+<td>设置当前element与RelativePanel垂直中心对齐</td>
+</tr>
+<tr>
+<td>RelativePanel.Below</td>
+<td>设置当前element为目标element的下方</td>
+</tr>
+<tr>
+<td>RelativePanel.LeftOf</td>
+<td>设置当前element为目标element的左边</td>
+</tr>
+<tr>
+<td>RelativePanel.RightOf</td>
+<td>设置当前element为目标element的右边</td>
+</tr>
+</tbody>
+</table>
+<p>这个控件相比Grid更加灵活，比较麻烦的地方是使用该控件布局需要对里面的子元素都加上{x:Name}扩展标记，对于我这种不爱命名的程序员，还是更喜欢用Grid。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[UWP基础教程 - AuotmationProperties.Name]]></title>
+        <id>https://songsong.org/post/uwp-auotmationpropertiesname</id>
+        <link href="https://songsong.org/post/uwp-auotmationpropertiesname">
+        </link>
+        <updated>2017-06-12T15:50:05.000Z</updated>
+        <content type="html"><![CDATA[<p>作为Windows10 UWP开发，大家应该会在很多示例DEMO里面看到<code>AuotmationProperties.Name</code>这个属性吧</p>
+<pre><code>&lt;Button AutomationProperties.Name=&quot;Hello&quot;&gt;Hello&lt;/Button&gt;
 </code></pre>
-<p><em><strong>None</strong></em>
-<code>Lazy&lt;T&gt;</code> 实例不是线程安全的；如果从多个线程访问该实例，则其行为不确定。 仅应在高性能至关重要并且保证决不会从多个线程初始化 <code>Lazy&lt;T&gt;</code> 实例时才使用该模式。 如果您使用指定初始化方法（valueFactory 参数的 <code>Lazy&lt;T&gt;</code> 构造函数，并且如果首次调用 <code>Lazy&lt;T&gt;.Value</code> 属性时，该初始化方法引发异常（或者无法处理异常），则该异常将在 <code>Lazy&lt;T&gt;.Value</code> 属性的后续调用上再次缓存和引发该异常。 如果您使用不指定初始化方法的 <code>Lazy&lt;T&gt;</code> 构造函数，则不会缓存 T 默认构造函数引发的异常。 在这种情况下，随后调用 <code>Lazy&lt;T&gt;.Value</code> 属性可能会成功地初始化 <code>Lazy&lt;T&gt;</code> 实例。 如果初始化方法递归访问 <code>Lazy&lt;T&gt;</code> 实例的 Value 属性，则引发 InvalidOperationException。</p>
-<p><em><strong>PublicationOnly</strong></em>
-当多个线程尝试同时初始化一个 <code>Lazy&lt;T&gt;</code> 实例时，允许所有线程都运行初始化方法（如果没有初始化方法，则为默认构造函数）。 完成初始化的第一个线程设置 <code>Lazy&lt;T&gt;</code> 实例的值。 该值将返回给同时运行初始化方法的所有其他线程，除非该初始化方法对这些线程引发异常。 争用线程创建的任何 T 实例都将被丢弃。 如果初始化方法对任何线程引发异常，则该异常会从在该线程上的<code>Lazy&lt;T&gt;.Value</code> 属性传播出去。 不缓存该异常。 IsValueCreated 属性的值仍然为 false，并且随后通过其中引发异常的线程或通过其他线程对 Value 属性的调用会导致初始化方法再次运行。 如果初始化方法递归访问 <code>Lazy&lt;T&gt;</code> 实例的 Value 属性，则不会引发异常。</p>
-<p><em><strong>ExecutionAndPublication</strong></em>
-使用锁来确保只有一个线程可以在线程安全的方式下初始化 <code>Lazy&lt;T&gt;</code> 实例。 如果初始化方法（如果没有初始化方法，则为默认构造函数）在内部使用锁，则可能会发生死锁。 如果您使用指定初始化方法（valueFactory 参数的 <code>Lazy&lt;T&gt;</code> 构造函数，并且如果首次调用 <code>Lazy&lt;T&gt;.Value</code> 属性时，该初始化方法引发异常（或者无法处理异常），则该异常将在 <code>Lazy&lt;T&gt;.Value</code> 属性的后续调用上再次缓存和引发该异常。 如果您使用不指定初始化方法的 <code>Lazy&lt;T&gt;</code> 构造函数，则不会缓存 T 默认构造函数引发的异常。 在这种情况下，随后调用 <code>Lazy&lt;T&gt;.Value</code> 属性可能会成功地初始化 <code>Lazy&lt;T&gt;</code> 实例。 如果初始化方法递归访问 <code>Lazy&lt;T&gt;</code> 实例的 Value 属性，则引发 InvalidOperationException。</p>
-<p>具体可参考下面链接
-<a href="http://msdn.microsoft.com/en-us/library/system.threading.lazythreadsafetymode%28VS.100%29.aspx">http://msdn.microsoft.com/en-us/library/system.threading.lazythreadsafetymode%28VS.100%29.aspx</a></p>
+<p><code>AuotmationProperties.Name</code>属性的作用是为控件指定可访问性名称，这个名称可以被类似于“讲述人”软件识别，从而提供了软件的可访问性（如视力有障碍的人等），同样也可以在自动化测试中被使用。原则上，一个控件的<code>AutomationProperties.Name</code>最好与此控件显示的标签文本一致(如上代码所示）</p>
+<p>微软也非常人性化，如果某个控件（或元素）有可视化文本内容（如 Button 的 Content 属性设置了文本），那么该控件上显示的文本将作为它的 Accessible Name，因此对于这种类型的控件不需要专门为其设置 AutomationProperites.Name 属性。</p>
+<p>如果该控件没有可示文本，那么你可以进行设置 <code>AutomationProperties.Name</code> ，如果你需要设置多语言，可以用以下方式来实现</p>
+<pre><code>&lt;Button x:Uid=&quot;TestButton&quot; /&gt;
+</code></pre>
+<p>在 Strings/zh-cn/Resources.resx 中，我们添加一条项目为其设置 Accessible Name，如下：</p>
+<pre><code>Name:    TestButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name                    
+Value:   Test Button
+</code></pre>
+<p><code>AutomationProperties.Name</code>同样也支持Binding和TemplateBinding方式,你可以通过下面的方式来设置</p>
+<pre><code> &lt;TextBox …
+         Header=&quot;Hello&quot;
+         AutomationProperties.Name= &quot;{Binding Header, RelativeSource={RelativeSource Self}}&quot; /&gt;
+</code></pre>
+<p>当然同样可以采用C#代码来设置</p>
+<pre><code>using Windows.UI.Xaml.Automation;
+myControl.SetValue(AutomationProperties.NameProperty, 'Hello');
+</code></pre>
+<p>虽然微软并不强制要求使用<code>AutomationProperties.Name</code>属性，但是对于提升一个APP的质量还是有必要学习的。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Java 反编译工具]]></title>
+        <id>https://songsong.org/post/java-decompiler</id>
+        <link href="https://songsong.org/post/java-decompiler">
+        </link>
+        <updated>2017-05-25T15:49:36.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="jadx">Jadx</h2>
+<p>下载：<a href="https://github.com/skylot/jadx">https://github.com/skylot/jadx</a></p>
+<h2 id="jd-gui">JD-GUI</h2>
+<p>最新的版本是是1.4.0，还停留在2015年。</p>
+<p>下载：<a href="https://github.com/java-decompiler/jd-gui/releases">https://github.com/java-decompiler/jd-gui/releases</a></p>
+<h2 id="fernflower">Fernflower</h2>
+<p>比较好用，能够解决JD-GUI的一些错误。</p>
+<p>下载：<a href="https://github.com/fesh0r/fernflower">https://github.com/fesh0r/fernflower</a></p>
+<h2 id="procyon">Procyon</h2>
+<p>下载：<a href="https://bitbucket.org/mstrobel/procyon/overview">https://bitbucket.org/mstrobel/procyon/overview</a></p>
+<h2 id="cfr">CFR</h2>
+<p>下载：<a href="http://www.benf.org/other/cfr/">http://www.benf.org/other/cfr/</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[UWP基础教程 - GB2312编码]]></title>
+        <id>https://songsong.org/post/uwp-gb2312</id>
+        <link href="https://songsong.org/post/uwp-gb2312">
+        </link>
+        <updated>2017-05-20T15:48:51.000Z</updated>
+        <content type="html"><![CDATA[<p>在开发UWP应用的时候，如果要读取一些文本或者网站，大部分都是UTF-8编码的，但是难免会遇到使用GB2312编码的，这时候UWP应用就会出现乱码，在UWP以前会有人将特定编码提取出来做成扩展包，很早之前我写了一个<a href="https://github.com/chenrensong/Encoding.UWP">Encoding.UWP</a>基于之前的Encoding4Silverlight里面实现了GB2312、BIG5编码，如果想自己做一些特定编码，可以参考下我的源码，如果你只想在UWP中使用GB2312那么没必要这么麻烦了。</p>
+<pre><code>EncodingProvider provider = CodePagesEncodingProvider.Instance;
+Encoding.RegisterProvider(provider);
+</code></pre>
+<p>首先注册一个EncodingProvider，然后就可以使用</p>
+<pre><code>Encoding gb2312 = Encoding.GetEncoding(&quot;gb2312&quot;);
+</code></pre>
+<p>目前.Net Core也引入了这个概念，需要注意的是.Net Core需要引入Nuget包 <code>System.Text.Encoding.CodePages</code> 其他的使用方法和UWP相同。</p>
 ]]></content>
     </entry>
 </feed>

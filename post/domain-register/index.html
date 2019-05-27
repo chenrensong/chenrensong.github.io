@@ -1,0 +1,232 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>暴力遍历还没注册的双拼域名 | 陈仁松博客</title>
+<link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972430242">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://songsong.org/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://songsong.org">
+  <img class="avatar" src="https://songsong.org/images/avatar.png?v=1558972430242" alt="">
+  </a>
+  <h1 class="site-title">
+    陈仁松博客
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/chenrensong" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              暴力遍历还没注册的双拼域名
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2017-05-18 ·
+              </time>
+              
+            </div>
+            
+            <div class="post-content">
+              <p>最近突然发现双拼域名越来越少，价格也在不断上涨。想注册一个有趣的双拼域名玩玩，于是动手写了一个暴力查询双拼域名的工具。</p>
+<p>思路比较简单，首先找到域名查询的接口，这些接口一般都会做策略防止暴力查询，这边我使用了2个接口作为容错。</p>
+<p>aaw8：<a href="http://www.aaw8.com/Api/DomainApi.aspx?domain=chenrensong.com">http://www.aaw8.com/Api/DomainApi.aspx?domain=chenrensong.com</a></p>
+<pre><code>{
+    StateID: 0,
+    DomainName: null,
+    Result: null
+}
+</code></pre>
+<p>返回第一个参数为域名查询状态：
+0 表示查询接口出错
+1 表示网络异常
+200 表示接口返回成功
+210 表示域名可以注册
+211 表示域名已经注册
+212 表示域名参数传输错误
+213 查询超时</p>
+<p>万网：<a href="http://panda.www.net.cn/cgi-bin/check.cgi?area_domain=chenrensong.com">http://panda.www.net.cn/cgi-bin/check.cgi?area_domain=chenrensong.com</a></p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;gb2312&quot;?&gt;
+&lt;property&gt;
+&lt;returncode&gt;200&lt;/returncode&gt;
+&lt;key&gt;datiancun.com&lt;/key&gt;
+&lt;original&gt;211 : Domain name is not available&lt;/original&gt;
+&lt;/property&gt;
+</code></pre>
+<p>返回 XML 结果说明：
+<code>returncode=200</code> 表示接口返回成功
+<code>key=***.com</code>表示当前check的域名
+original=210 : Domain name is available     表示域名可以注册
+original=211 : Domain name is not available 表示域名已经注册
+original=212 : Domain name is invalid   表示域名参数传输错误
+original=213 : Time out 查询超时</p>
+<p>有了接口之后一切都比较好办了，这时候需要一个拼音的单词表</p>
+<pre><code> private static string CONST = @&quot;a,ai,an,ang,ao,ba,bai,ban,bang,bao,bei,ben,beng,bi,bian,biao,bie,bin,bing,bo,bu,ca,cai,can,cang,cao,ce,cen,ceng,cha,chai,chan,chang,chao,che,chen,cheng,chi,chong,chou,chu,chuan,chuang,chui,chun,chuo,ci,cong,cou,cu,cuan,cui,cun,cuo,da,dai,dan,dang,dao,de,deng,di,dia,dian,diao,die,ding,diu,dong,dou,du,duan,dui,dun,duo,e,en,er,fa,fan,fang,fei,fen,feng,fo,fou,fu,ga,gai,gan,gang,gao,ge,gei,gen,geng,gong,gou,gu,gua,guai,guan,guang,gui,gun,guo,ha,hai,han,hang,hao,he,hei,hen,heng,hong,hou,hu,hua,huai,huan,huang,hui,hun,huo,ji,jia,jian,jiang,jiao,jie,jin,jing,jiong,jiu,ju,juan,jue,ka,kai,kan,kang,kao,ke,ken,keng,kong,kou,ku,kua,kuai,kuan,kuang,kui,kun,kuo,la,lai,lan,lang,lao,le,lei,leng,li,lia,lian,liang,liao,lie,lin,ling,liu,lo,long,lou,lu,luan,lun,luo,lv,ma,mai,man,mang,mao,me,mei,men,meng,mi,mian,miao,mie,min,ming,miu,mo,mou,mu,na,nai,nan,nang,nao,ne,nei,nen,neng,ni,nian,niang,niao,nie,nin,ning,niu,nong,nou,nu,nuan,nuo,nv,o,ou,pa,pai,pan,pang,pao,pei,pen,peng,pi,pian,piao,pie,pin,ping,po,pou,pu,qi,qia,qian,qiang,qiao,qie,qin,qing,qiong,qiu,qu,quan,que,qun,ran,rang,rao,re,ren,reng,ri,rong,rou,ru,ruan,rui,run,ruo,sa,sai,san,sang,sao,se,sen,seng,sha,shai,shan,shang,shao,she,shen,sheng,shi,shou,shu,shua,shuai,shuan,shuang,shui,shun,shuo,si,song,sou,su,suan,sui,sun,suo,ta,tai,tan,tang,tao,te,teng,ti,tian,tiao,tie,ting,tong,tou,tu,tuan,tui,tun,tuo,wa,wai,wan,wang,wei,wen,weng,wo,wu,xi,xia,xian,xiang,xiao,xie,xin,xing,xiong,xiu,xu,xuan,xue,xun,ya,yan,yang,yao,ye,yi,yin,ying,yo,yong,you,yu,yuan,yue,yun,za,zai,zan,zang,zao,ze,zei,zen,zeng,zha,zhai,zhan,zhang,zhao,zhe,zhen,zheng,zhi,zhong,zhou,zhu,zhua,zhuai,zhuan,zhuang,zhui,zhun,zhuo,zi,zong,zou,zu,zuan,zui,zun,zuo&quot;;
+</code></pre>
+<p>通过遍历单词表来查询双拼域名，再请求相应的服务即可</p>
+<pre><code>HttpClient client = new HttpClient();
+var response = await client.GetAsync(url);
+var result = await response.Content.ReadAsStringAsync();
+result = resolve(result);
+</code></pre>
+<p>需要说明的是aaw8的接口比较挫，返回的是html 包装的json....</p>
+<p>需要正则把body里面的部分给截取出来</p>
+<pre><code>        private static string ReadHtmlToEditHtml(string htmlContent1)
+        {
+ 
+            Regex reg = new Regex(&quot;(?is)&lt;body[^&gt;]*&gt;(?&lt;body&gt;.*?)&lt;/body&gt;&quot;);
+            string bodyHtml = &quot;&quot;;
+            bodyHtml = reg.Match(htmlContent1).Groups[&quot;body&quot;].Value;
+            return bodyHtml;
+        }
+</code></pre>
+<p>剩下来的就是写个返回数据解析了，为了防止查询过的域名再查询一遍浪费时间，我简单做了下本地cache，完整的代码如下</p>
+<pre><code>        private async Task&lt;ResultModel&gt; FindDomain(string entity)
+        {
+            String filePath = &quot;D:\\cache\\&quot; + md5(url) + &quot;_com.txt&quot;;
+            string fileContents = &quot;&quot;;
+ 
+            if (File.Exists(filePath))
+            {
+                fileContents = File.ReadAllText(filePath);
+            }
+            else
+            {
+                HttpClient client = new HttpClient()
+                var response = await client.GetAsync(url);
+                var result = await response.Content.ReadAsStringAsync();
+                result = resolve(result);
+                fileContents = result;
+                bool flag = true;
+                try
+                {
+                    JsonConvert.DeserializeObject(fileContents);
+                    flag = true;
+                    File.WriteAllText(filePath, fileContents);
+                }
+                catch (Exception ex)
+                {
+                    flag = false;
+                }
+            }
+            var obj = (ResultModel)Newtonsoft.Json.JsonConvert.DeserializeObject(fileContents, typeof(ResultModel));
+            return obj;
+        }
+</code></pre>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://songsong.org/post/uwp-xbind">
+              <h3 class="post-title">
+                UWP基础教程 - {x:Bind}
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '382981c785b131b4a314',
+    clientSecret: '048bc4e7cb57301643ef37a9b2a2ab6a08299deb',
+    repo: 'chenrensong.github.io',
+    owner: 'chenrensong',
+    admin: ['chenrensong'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  京ICP备14060483号 | 
+  <a class="rss" href="https://songsong.org/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

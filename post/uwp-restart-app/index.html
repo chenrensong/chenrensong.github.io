@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>抓取RTMP视频&amp;音频数据 | 陈仁松博客</title>
+<title>UWP基础教程 - 重启应用 | 陈仁松博客</title>
 <link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972430242">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
@@ -78,42 +78,55 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              抓取RTMP视频&amp;音频数据
+              UWP基础教程 - 重启应用
             </h2>
             <div class="post-info">
               <time class="post-time">
-                · 2015-10-24 ·
+                · 2017-08-11 ·
               </time>
               
-                <a href="https://songsong.org/tag/RTMP" class="post-tag">
-                  # RTMP
+                <a href="https://songsong.org/tag/UWP" class="post-tag">
+                  # UWP
                 </a>
               
             </div>
             
-              <div class="post-feature-image" style="background-image: url('https://songsong.org/post-images/rtmp-capture.png')">
-              </div>
-            
             <div class="post-content">
-              <p>需要的工具：抓包工具（这里我使用的是<code>WireShark</code>）、<code>Rtmpdump</code></p>
-<p>一开始我思路是想分析下html查看下是否有直接的下载地址：
-<img src="https://songsong.org/post-images/1558970800340.png" alt="">
-查询到了meta.xml,在里面发现了stream的path，这时候发现是rtmp的无法直接下载， 于是想到使用WireShark工具抓包,利用meta.xml里面的 cp11276.edgefcs.net/ondemand ，首先ping 获取ip
-<img src="https://songsong.org/post-images/1558970807504.png" alt="">
-得到96.17.102.28，通过过滤ip得到下面rtmp的信息
-<img src="https://songsong.org/post-images/1558970820436.png" alt=""></p>
-<p>url:</p>
-<pre><code>rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net
+              <p>开发过Winform应用的同学应该都知道，会有一些场景需要将应用重启，如：重新应用配置，崩溃，内存泄漏等情况。这个时候我们只要使用一行代码就可以实现重启。</p>
+<pre><code>Application.Restart()
 </code></pre>
-<p>path:</p>
-<pre><code>mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod
+<p>但在之前的Windows10 UWP应用开发中，我们只能提示用户手动重启，这个问题一直很困恼开发者。</p>
+<p>在16226版本之后，微软终于实现了这个API。</p>
+<pre><code>AppRestartFailureReason result = await CoreApplication.RequestRestartAsync(String.Empty);
+if (result == AppRestartFailureReason.NotInForeground || 
+    result == AppRestartFailureReason.RestartPending ||
+    result == AppRestartFailureReason.Other)
+{
+    Debug.WriteLine(&quot;RequestRestartAsync failed: {0}&quot;, result);
+}
 </code></pre>
-<p>在RtmpDump下面执行</p>
-<pre><code>rtmpdump -r &quot;rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net&quot; -y &quot;mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod&quot; -o webcast.mp3
+<p>使用上面的代码就能实现UWP APP重启的功能，这个API还可以自定义启动参数，只要将上述代码<code>String.Empty</code>部分传入对应的参数，在<code>OnActivated</code>事件处进行处理即可。</p>
+<pre><code>protected override void OnActivated(IActivatedEventArgs args)
+{
+    switch (args.Kind)
+    {
+        case ActivationKind.Launch:
+            LaunchActivatedEventArgs launchArgs = args as LaunchActivatedEventArgs;
+            string argString = launchArgs.Arguments;
+ 
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame == null)
+            {
+                rootFrame = new Frame();
+                Window.Current.Content = rootFrame;
+            }
+            rootFrame.Navigate(typeof(MainPage), argString);
+            Window.Current.Activate();
+            break;
+    }
+}
 </code></pre>
-<p><img src="https://songsong.org/post-images/1558970970320.png" alt="">
-下载成功得到webcast.mp3</p>
-<p><img src="https://songsong.org/post-images/1558970974335.png" alt=""></p>
+<p>更详细的内容，大家可以参考微软官方博客写的<a href="https://blogs.windows.com/buildingapps/2017/07/28/restart-app-programmatically/#Md7YJbIRFItRZgAJ.97">How to Restart your App Programmatically</a></p>
 
             </div>
           </article>
@@ -122,9 +135,9 @@
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://songsong.org/post/c-lazy">
+            <a href="https://songsong.org/post/uwp-xdeferloadstrategy">
               <h3 class="post-title">
-                C#基础 - Lazy&lt;T&gt;
+                UWP基础教程 - {x:DeferLoadStrategy}
               </h3>
             </a>
           </div>

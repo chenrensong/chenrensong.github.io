@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>抓取RTMP视频&amp;音频数据 | 陈仁松博客</title>
+<title>UWP基础教程 - XAML事件 | 陈仁松博客</title>
 <link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972430242">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
@@ -78,42 +78,36 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              抓取RTMP视频&amp;音频数据
+              UWP基础教程 - XAML事件
             </h2>
             <div class="post-info">
               <time class="post-time">
-                · 2015-10-24 ·
+                · 2017-04-28 ·
               </time>
               
-                <a href="https://songsong.org/tag/RTMP" class="post-tag">
-                  # RTMP
+                <a href="https://songsong.org/tag/UWP" class="post-tag">
+                  # UWP
                 </a>
               
             </div>
             
-              <div class="post-feature-image" style="background-image: url('https://songsong.org/post-images/rtmp-capture.png')">
-              </div>
-            
             <div class="post-content">
-              <p>需要的工具：抓包工具（这里我使用的是<code>WireShark</code>）、<code>Rtmpdump</code></p>
-<p>一开始我思路是想分析下html查看下是否有直接的下载地址：
-<img src="https://songsong.org/post-images/1558970800340.png" alt="">
-查询到了meta.xml,在里面发现了stream的path，这时候发现是rtmp的无法直接下载， 于是想到使用WireShark工具抓包,利用meta.xml里面的 cp11276.edgefcs.net/ondemand ，首先ping 获取ip
-<img src="https://songsong.org/post-images/1558970807504.png" alt="">
-得到96.17.102.28，通过过滤ip得到下面rtmp的信息
-<img src="https://songsong.org/post-images/1558970820436.png" alt=""></p>
-<p>url:</p>
-<pre><code>rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net
+              <p>Windows 10 XAML应用是由.xaml + .xaml.cs文件组成，使用XAML进行.xaml文件的编写,使用C#来编写.xaml.cs代码文件。当XAML编译时，通过XAML页面的根元素<code>x:Class</code>属性制定命名空间和类来标识每个XAML页对应的C#代码的位置。事件就是基于该机制，使用事件可以帮助应用管理用户输入，执行不同的行为。 根据用户不同的操作，执行不同的业务逻辑代码。</p>
+<p>在传统的WinForm应用开发中，一个对象激活一个事件被称为Event Sender（事件发送者），而事件所影响的对象则称为Event Receiver（事件接收者）。对象事件的sender和receiver永远是同一个对象。简单的理解，如果你点击一个按钮对象，这个按钮对象激活Click事件，同时该对象后台代码将接收事件，并执行相关逻辑代码。
+而XAML中不仅继承传统事件处理方式，并且引入依赖属性系统，同时还引入一个增强型事件处理系统 - Routed Event（路由事件）。路由事件和传统事件的不同是， 路由事件允许一个对象激活事件后，既是一个Event Sender（事件发送者），同时拥有一个或者多个Event Receiver（事件接收者）。</p>
+<p>下面我们来看一下事件的语法实现:</p>
+<pre><code>&lt;元素对象 事件名称=”事件处理”/&gt;
 </code></pre>
-<p>path:</p>
-<pre><code>mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod
+<p>使用按钮控件的Click事件，响应按钮点击效果，代码如下：</p>
+<pre><code>&lt;Button Click=”Button_Click_1”/&gt;
 </code></pre>
-<p>在RtmpDump下面执行</p>
-<pre><code>rtmpdump -r &quot;rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net&quot; -y &quot;mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod&quot; -o webcast.mp3
+<p>其中<code>Button_Click_1</code>连接后台代码中的同名事件处理程序:</p>
+<pre><code>private void Button_Click_1(object sender, RoutedEventArgs e)
+{
+    //TODO:事件处理 
+}
 </code></pre>
-<p><img src="https://songsong.org/post-images/1558970970320.png" alt="">
-下载成功得到webcast.mp3</p>
-<p><img src="https://songsong.org/post-images/1558970974335.png" alt=""></p>
+<p>在实际项目开发中，Visual Studio 的Xaml语法解析器为开发人员提供了智能感知功能，通过该功能可以在Xaml中方便的调用指定事件，而Visual Studio将为对应事件自动生成事件处理函数后台代码。</p>
 
             </div>
           </article>
@@ -122,9 +116,9 @@
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://songsong.org/post/c-lazy">
+            <a href="https://songsong.org/post/uwp-xaml-extension">
               <h3 class="post-title">
-                C#基础 - Lazy&lt;T&gt;
+                UWP基础教程 - XAML标记扩展
               </h3>
             </a>
           </div>

@@ -1,0 +1,225 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UWP基础教程 - XAML开篇 | 陈仁松博客</title>
+<link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972430242">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://songsong.org/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://songsong.org">
+  <img class="avatar" src="https://songsong.org/images/avatar.png?v=1558972430242" alt="">
+  </a>
+  <h1 class="site-title">
+    陈仁松博客
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/chenrensong" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              UWP基础教程 - XAML开篇
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2017-04-10 ·
+              </time>
+              
+                <a href="https://songsong.org/tag/UWP" class="post-tag">
+                  # UWP
+                </a>
+              
+            </div>
+            
+            <div class="post-content">
+              <p>XAML是英文<code>Extensible Application Markup Language</code>的缩写，中文可以称为“可扩展应用程序标记语言”，是基于<code>Extensive Markup Language（XML）</code>可扩展标记语言，在Windows 10 UWP、Windows 8、Windows Phone、Silverlight以及WPF技术框架下都可以使用XAML的语法作为应用UI界面的开发。</p>
+<p>XAML简化了创建UI的过程，使UI编程更加简单明了，在使用XMAL的项目中，以&quot;.xaml&quot;作为文件扩展名。每个XAML页面都具有一个后台代码文件xaml.cs文件来控制页面逻辑处理，这就是微软典型的Code-Behind模式的编程方式，这一机制将用户界面设计和后台代码设计分割，这意味着项目组的UI同学可以使用Blend for Visual Studio进行XAML用户界面设计，同时后台代码开发人员可在Visual Studio中共享该XAML文件，并同时设计其后台代码。</p>
+<p>根据微软<a href="https://msdn.microsoft.com/zh-cn/library/dd361847.aspx">Microsoft Domain-Specific Languages</a>描述</p>
+<blockquote>
+<p>Xaml, the eXtensible Application Markup Language, is a system for representing structured information. This specification defines three aspects of Xaml:
+·The Xaml Schema Information Set - a model for defining a particular Xaml vocabulary.
+·The Xaml Information Set - a model for describing the information in a Xaml instance.
+·The process for converting an XML [XML] document into the corresponding Xaml Information Set, as directed by one or more Xaml Schema Information Sets.
+This specification does not define any particular Xaml vocabulary.</p>
+</blockquote>
+<blockquote>
+<p>Xaml, the eXtensible Application Markup Language, is a system for representing structured information. This specification defines two abstract information models: the Xaml Schema Information Set model, and the Xaml Information Set model. The Xaml Information Set ('Xaml Infoset' for short) defines the structure of information that a Xaml instance can represent. The Xaml Schema Information Set allows specific Xaml vocabularies to be defined. This specification also defines a set of rules for transforming an XML document into a Xaml Information Set.
+XML is a common format for Xaml. (The term &quot;Xaml Document&quot; refers to an XML document that represents a Xaml Information Set.) But while this specification does not define any other representations, any physical representation may be used as long as it can represent the information in the Xaml Information Set.
+This first section of the specification describes the roles of the information sets, how they relate to applications that use Xaml, and how the transformation rules come into play.</p>
+</blockquote>
+<p>XAML基于XML格式，同时也继承了大量XML的概念，其中最基础的就是Element(元素)的定义和Property(属性)的使用。下图演示了一个XAML基础元素的使用以及结构，是不是和XML很相似。所以，如果你熟悉XML，其实已经具备XAML语法基础，那么接下来学习XAML的过程将会事半功倍。
+<img src="/data/2017/2/xamlstruct.png" alt=""></p>
+<p>首先我们来看一段UWP项目空白页面的代码</p>
+<pre><code>&lt;Page
+    x:Class=&quot;UWPXaml.MainPage&quot;
+    xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
+    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+    xmlns:local=&quot;using:UWPXaml&quot;
+    xmlns:d=&quot;http://schemas.microsoft.com/expression/blend/2008&quot;
+    xmlns:mc=&quot;http://schemas.openxmlformats.org/markup-compatibility/2006&quot;
+    mc:Ignorable=&quot;d&quot;&gt;
+    &lt;Grid Background=&quot;{ThemeResource ApplicationPageBackgroundThemeBrush}&quot;&gt;
+    &lt;/Grid&gt;
+&lt;/Page&gt;
+
+</code></pre>
+<p>上面代码声明了若干个命令空间，xmlns特性是XML中的特殊属性，专门用来声明命名空间。一旦声明了命名空间，在该文档任何地方都可以使用。</p>
+<pre><code>    xmlns:local=&quot;using:UWPXaml&quot;
+</code></pre>
+<p>表示在该XAML里可以通过local标识符来使用UWPXaml控件下的控件或者其他类</p>
+<p>大家可能会问那么Grid的命名空间是什么呢？为什么没有标识符前缀？这里我们来看下两个特别的命名空间</p>
+<pre><code>    xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
+    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+</code></pre>
+<p>这两个命名控件在创建所有Win10的UWP应用都会使用到，
+<code>http://schemas.microsoft.com/winfx/2006/xaml/presentation</code>是UWP的核心命名空间。它包含了大部分用来构建UI的控件，主要包含Windows.UI.Xaml的控件，该命名空间的声明没有前缀，所以它也成为该文档的默认命名空间，所以没有前缀的元素都是自动位于该命名空间下，Grid元素就处于该命名空间下。
+<code>http://schemas.microsoft.com/winfx/2006/xaml</code>是XAML的命名空间，包含各种XAML的实用特性，声明以x作为前缀，常用的<code>x.Name</code>就是使用该命名空间来实现的。</p>
+<table>
+<thead>
+<tr>
+<th>定义</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x:Key</td>
+<td>为 XAML <a href="https://msdn.microsoft.com/zh-cn/library/windows/apps/windows.ui.xaml.resourcedictionary.aspx"><strong>ResourceDictionary</strong></a> 中的每个资源设置一个唯一的用户定义密钥。该密钥的令牌字符串是 <strong>StaticResource</strong> 标记扩展的参数，你可以在以后使用此密钥在应用 XAML 的其他位置检索其他 XAML 用法中的 XAML 资源。</td>
+</tr>
+<tr>
+<td>x:Class</td>
+<td>为 XAML 页面提供代码隐藏的类指定代码命名空间和代码类名称。这可为构建你的应用时通过构建操作创建或加入的类命名。这些构建操作支持 XAML 标记编译器，并在编译应用时，将你的标记和代码隐藏文件组合到一起。你必须具有此类，才能支持对 XAML 页面实现代码隐藏。还需要 <a href="https://msdn.microsoft.com/zh-cn/library/windows/apps/hh758293.aspx">x:Class</a>，才能使你的 XAML 内容在默认 Windows 运行时激活模型中初始化为 <a href="https://msdn.microsoft.com/zh-cn/library/windows/apps/windows.ui.xaml.window.content.aspx"><strong>Window.Content</strong></a>。</td>
+</tr>
+<tr>
+<td>x:Name</td>
+<td>在处理 XAML 中定义的对象元素后，为运行时代码中存在的实例指定一个运行时对象名。你可以将在 XAML 中设置 <strong>x:Name</strong> 看作是在代码中声明命名变量。稍后你会了解，这是将 XAML 加载为 Windows 运行时应用的一个组件时发生的实际情况。<strong>注意</strong>  <a href="https://msdn.microsoft.com/zh-cn/library/windows/apps/windows.ui.xaml.frameworkelement.name.aspx"><strong>FrameworkElement.Name</strong></a> 是框架中的一个类似属性，并非所有元素都支持它。因此，当 <strong>FrameworkElement.Name</strong> 在该元素类型上不受支持时，你可以将 <strong>x:Name</strong> 用于元素标识。</td>
+</tr>
+<tr>
+<td>x:Uid</td>
+<td>标识某些元素，应将本地化后的资源用于该元素的一些属性值。有关如何使用 <strong>x:Uid</strong> 的详细信息，请参阅<a href="https://msdn.microsoft.com/zh-cn/library/windows/apps/hh965329.aspx">快速入门：翻译 UI 资源</a>。</td>
+</tr>
+<tr>
+<td>XAML 固有类型</td>
+<td>当属性或资源需要时，这些类型可以为简单的值类型指定值。这些固有类型与通常定义为每个编程语言固有定义的一部分的简单值类型相对应。例如，你可能需要一个表示 <strong>true</strong> 布尔值的对象，以便在 <a href="https://msdn.microsoft.com/zh-cn/library/windows/apps/windows.ui.xaml.media.animation.objectanimationusingkeyframes.aspx"><strong>ObjectAnimationUsingKeyFrames</strong></a> 情节提要视觉状态中使用。对于 XAML 中的该值，可将 <strong>x:Boolean</strong> 固有类型用作对象元素，例如 <code>&lt;x:Boolean&gt;True&lt;/x:Boolean&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>XAML命名空间的概念其实和C#代码中的Using类似，XAML的命名空间使得XAML解析器能够准确找到指定的类进行渲染。</p>
+<p>关于XAML命名空间就介绍到这里，下一篇将会介绍XAML对象元素和属性。</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://songsong.org/post/uwp-pri">
+              <h3 class="post-title">
+                UWP应用中的PRI文件反编译
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '382981c785b131b4a314',
+    clientSecret: '048bc4e7cb57301643ef37a9b2a2ab6a08299deb',
+    repo: 'chenrensong.github.io',
+    owner: 'chenrensong',
+    admin: ['chenrensong'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  京ICP备14060483号 | 
+  <a class="rss" href="https://songsong.org/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

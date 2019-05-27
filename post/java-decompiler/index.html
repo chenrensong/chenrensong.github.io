@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>抓取RTMP视频&amp;音频数据 | 陈仁松博客</title>
+<title>Java 反编译工具 | 陈仁松博客</title>
 <link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972430242">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
@@ -78,42 +78,28 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              抓取RTMP视频&amp;音频数据
+              Java 反编译工具
             </h2>
             <div class="post-info">
               <time class="post-time">
-                · 2015-10-24 ·
+                · 2017-05-25 ·
               </time>
-              
-                <a href="https://songsong.org/tag/RTMP" class="post-tag">
-                  # RTMP
-                </a>
               
             </div>
             
-              <div class="post-feature-image" style="background-image: url('https://songsong.org/post-images/rtmp-capture.png')">
-              </div>
-            
             <div class="post-content">
-              <p>需要的工具：抓包工具（这里我使用的是<code>WireShark</code>）、<code>Rtmpdump</code></p>
-<p>一开始我思路是想分析下html查看下是否有直接的下载地址：
-<img src="https://songsong.org/post-images/1558970800340.png" alt="">
-查询到了meta.xml,在里面发现了stream的path，这时候发现是rtmp的无法直接下载， 于是想到使用WireShark工具抓包,利用meta.xml里面的 cp11276.edgefcs.net/ondemand ，首先ping 获取ip
-<img src="https://songsong.org/post-images/1558970807504.png" alt="">
-得到96.17.102.28，通过过滤ip得到下面rtmp的信息
-<img src="https://songsong.org/post-images/1558970820436.png" alt=""></p>
-<p>url:</p>
-<pre><code>rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net
-</code></pre>
-<p>path:</p>
-<pre><code>mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod
-</code></pre>
-<p>在RtmpDump下面执行</p>
-<pre><code>rtmpdump -r &quot;rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net&quot; -y &quot;mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod&quot; -o webcast.mp3
-</code></pre>
-<p><img src="https://songsong.org/post-images/1558970970320.png" alt="">
-下载成功得到webcast.mp3</p>
-<p><img src="https://songsong.org/post-images/1558970974335.png" alt=""></p>
+              <h2 id="jadx">Jadx</h2>
+<p>下载：<a href="https://github.com/skylot/jadx">https://github.com/skylot/jadx</a></p>
+<h2 id="jd-gui">JD-GUI</h2>
+<p>最新的版本是是1.4.0，还停留在2015年。</p>
+<p>下载：<a href="https://github.com/java-decompiler/jd-gui/releases">https://github.com/java-decompiler/jd-gui/releases</a></p>
+<h2 id="fernflower">Fernflower</h2>
+<p>比较好用，能够解决JD-GUI的一些错误。</p>
+<p>下载：<a href="https://github.com/fesh0r/fernflower">https://github.com/fesh0r/fernflower</a></p>
+<h2 id="procyon">Procyon</h2>
+<p>下载：<a href="https://bitbucket.org/mstrobel/procyon/overview">https://bitbucket.org/mstrobel/procyon/overview</a></p>
+<h2 id="cfr">CFR</h2>
+<p>下载：<a href="http://www.benf.org/other/cfr/">http://www.benf.org/other/cfr/</a></p>
 
             </div>
           </article>
@@ -122,9 +108,9 @@
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://songsong.org/post/c-lazy">
+            <a href="https://songsong.org/post/uwp-gb2312">
               <h3 class="post-title">
-                C#基础 - Lazy&lt;T&gt;
+                UWP基础教程 - GB2312编码
               </h3>
             </a>
           </div>

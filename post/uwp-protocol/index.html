@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>抓取RTMP视频&amp;音频数据 | 陈仁松博客</title>
+<title>UWP基础教程 - 使用协议来启动应用 | 陈仁松博客</title>
 <link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972430242">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
@@ -78,42 +78,60 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              抓取RTMP视频&amp;音频数据
+              UWP基础教程 - 使用协议来启动应用
             </h2>
             <div class="post-info">
               <time class="post-time">
-                · 2015-10-24 ·
+                · 2017-07-05 ·
               </time>
               
-                <a href="https://songsong.org/tag/RTMP" class="post-tag">
-                  # RTMP
+                <a href="https://songsong.org/tag/UWP" class="post-tag">
+                  # UWP
                 </a>
               
             </div>
             
-              <div class="post-feature-image" style="background-image: url('https://songsong.org/post-images/rtmp-capture.png')">
-              </div>
-            
             <div class="post-content">
-              <p>需要的工具：抓包工具（这里我使用的是<code>WireShark</code>）、<code>Rtmpdump</code></p>
-<p>一开始我思路是想分析下html查看下是否有直接的下载地址：
-<img src="https://songsong.org/post-images/1558970800340.png" alt="">
-查询到了meta.xml,在里面发现了stream的path，这时候发现是rtmp的无法直接下载， 于是想到使用WireShark工具抓包,利用meta.xml里面的 cp11276.edgefcs.net/ondemand ，首先ping 获取ip
-<img src="https://songsong.org/post-images/1558970807504.png" alt="">
-得到96.17.102.28，通过过滤ip得到下面rtmp的信息
-<img src="https://songsong.org/post-images/1558970820436.png" alt=""></p>
-<p>url:</p>
-<pre><code>rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net
+              <p>如果你的应用程序希望能够通过外部协议来访问的话，那么就需要为你的应用添加<code>protocol协议</code>。</p>
+<p>1、打开Package.appxmanifest文件
+在<Applications>节点下添加<Extensions>节点，在<Extensions>节点下添加</p>
+<pre><code>&lt;uap:Extension Category=&quot;windows.protocol&quot; &gt;
+    &lt;uap:Protocol Name=&quot;protocolexsample&quot;&gt;
+        &lt;uap:Logo&gt;Assets\StoreLogo.png&lt;/uap:Logo&gt;
+        &lt;uap:DisplayName&gt;Application&lt;/uap:DisplayName&gt;
+    &lt;/uap:Protocol&gt;
+&lt;/uap:Extension&gt;
 </code></pre>
-<p>path:</p>
-<pre><code>mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod
+<p>节点即可实现Protocol启动应用,这里需要注意的是<strong>Protocol的Name必需为小写</strong></p>
+<p>当然你也可以使用Visual Studio IDE进行添加，添加完成后外部就可以通过</p>
+<pre><code>protocolexsample://appdata
 </code></pre>
-<p>在RtmpDump下面执行</p>
-<pre><code>rtmpdump -r &quot;rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net&quot; -y &quot;mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod&quot; -o webcast.mp3
+<p>来访问应用了,系统会自动启动注册了protocolexsample协议的应用,如果你要在协议里添加参数，只要在App.xaml.cs文件中，重写OnActivate方法，通过Protocol协议启动的应用，ActivationKind问Protocol，可将args转换为<code>ProtocolActivatedEventArgs</code>来获取启动参数。</p>
+<pre><code> protected async override void OnActivated(IActivatedEventArgs args)
+        {
+            base.OnActivated(args);
+ 
+            switch (args.Kind)
+            {
+                case ActivationKind.VoiceCommand:
+                    {
+                        break;
+                    }
+                case ActivationKind.Protocol:
+                    {
+                        var command = args as ProtocolActivatedEventArgs;
+                      
+                        if (command.Uri.ToString().StartsWith(&quot;protocolexsample://&quot;))
+                        {
+                            //TODO
+                        }
+    
+                        break;
+                    }
+            }
+        }
 </code></pre>
-<p><img src="https://songsong.org/post-images/1558970970320.png" alt="">
-下载成功得到webcast.mp3</p>
-<p><img src="https://songsong.org/post-images/1558970974335.png" alt=""></p>
+<p>欢迎大家留言讨论。</p>
 
             </div>
           </article>
@@ -122,9 +140,9 @@
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://songsong.org/post/c-lazy">
+            <a href="https://songsong.org/post/uwp-relativepanel">
               <h3 class="post-title">
-                C#基础 - Lazy&lt;T&gt;
+                UWP基础教程 - RelativePanel
               </h3>
             </a>
           </div>

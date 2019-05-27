@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>抓取RTMP视频&amp;音频数据 | 陈仁松博客</title>
+<title>在群晖NAS上搭建Git Server | 陈仁松博客</title>
 <link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972430242">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
@@ -78,42 +78,71 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              抓取RTMP视频&amp;音频数据
+              在群晖NAS上搭建Git Server
             </h2>
             <div class="post-info">
               <time class="post-time">
-                · 2015-10-24 ·
+                · 2017-02-03 ·
               </time>
               
-                <a href="https://songsong.org/tag/RTMP" class="post-tag">
-                  # RTMP
+                <a href="https://songsong.org/tag/NAS" class="post-tag">
+                  # NAS
+                </a>
+              
+                <a href="https://songsong.org/tag/Git" class="post-tag">
+                  # Git
                 </a>
               
             </div>
             
-              <div class="post-feature-image" style="background-image: url('https://songsong.org/post-images/rtmp-capture.png')">
-              </div>
-            
             <div class="post-content">
-              <p>需要的工具：抓包工具（这里我使用的是<code>WireShark</code>）、<code>Rtmpdump</code></p>
-<p>一开始我思路是想分析下html查看下是否有直接的下载地址：
-<img src="https://songsong.org/post-images/1558970800340.png" alt="">
-查询到了meta.xml,在里面发现了stream的path，这时候发现是rtmp的无法直接下载， 于是想到使用WireShark工具抓包,利用meta.xml里面的 cp11276.edgefcs.net/ondemand ，首先ping 获取ip
-<img src="https://songsong.org/post-images/1558970807504.png" alt="">
-得到96.17.102.28，通过过滤ip得到下面rtmp的信息
-<img src="https://songsong.org/post-images/1558970820436.png" alt=""></p>
-<p>url:</p>
-<pre><code>rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net
-</code></pre>
-<p>path:</p>
-<pre><code>mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod
-</code></pre>
-<p>在RtmpDump下面执行</p>
-<pre><code>rtmpdump -r &quot;rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net&quot; -y &quot;mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod&quot; -o webcast.mp3
-</code></pre>
-<p><img src="https://songsong.org/post-images/1558970970320.png" alt="">
-下载成功得到webcast.mp3</p>
-<p><img src="https://songsong.org/post-images/1558970974335.png" alt=""></p>
+              <p>最近买了一台群晖NAS，在DSM上搭建了Git Server，用于自己的工作。由于DSM的Git配置没有很直观的教程，特此分享出来。</p>
+<p>1.首先，进入DSM，然后在套件中心中找到GIT SERVER，下载安装。<img src="/data/2017/2/gitserver.png" alt=""></p>
+<p>2、安装成功之后，在Git Server上配置使用账户。</p>
+<p>3、然后进入控制面板 &gt; 终端机并启用 SSH 服务。</p>
+<p>4、在Windows 10的CMD中输入Bash进入linux子系统，ssh chenrensong@192.168.1.16 链接成功后，通过sudo -i 获取管理员权限</p>
+<p>5、先进入你的磁盘卷，一般名字是volumeX,X表示你创建的磁盘空间数量，一般这个机器就两个硬盘，一般就是volume1了</p>
+<blockquote>
+<p>cd /volume1</p>
+</blockquote>
+<p>接着创建一个git库目录</p>
+<blockquote>
+<p>mkdir git_work</p>
+</blockquote>
+<p>然后再里面创建一个测试项目</p>
+<blockquote>
+<p>cd git_work
+mkdir test</p>
+</blockquote>
+<p>然后进入这个测试项目目录</p>
+<blockquote>
+<p>cd test</p>
+</blockquote>
+<p>进行GIT初始化</p>
+<blockquote>
+<p>git init --bare</p>
+</blockquote>
+<p>由于是root用户执行的操作，所以有一个最最重要的步骤，就是将这个宝库的整个目录的主人要修改为你的git用户</p>
+<blockquote>
+<p>chown -R chenrensong:users  git_work</p>
+</blockquote>
+<p>如果你还想让其他用户也一起共享的话，还需要将其他用户的权限设置为可写</p>
+<blockquote>
+<p>chmod -R 775 git_work</p>
+</blockquote>
+<p>当然，这里的git_work是整个库目录，我是为了省事情，如果不同项目需要区别对待，那就对里面的项目目录进行设置就可以了。</p>
+<p>总的原则就是某个用户要想能推送文件到服务器，必须打开这个用户对整个项目目录，包括子目录的写权限，否则就会失败。</p>
+<p>这样Git服务就设置完毕了。</p>
+<p>在本地进入git 命令行，测试一下是否可以下载和上传。</p>
+<blockquote>
+<p>git clone ssh://chenrensong@192.168.1.16/volume1/git_work/test</p>
+</blockquote>
+<p>然后再本地添加一个文件并提交到本地版本库中</p>
+<blockquote>
+<p>git add test.txt
+git commit -m &quot;add test.txt&quot;git push origin master</p>
+</blockquote>
+<p>这样就能添加并推送test.txt到Git Server上！</p>
 
             </div>
           </article>
@@ -122,9 +151,9 @@
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://songsong.org/post/c-lazy">
+            <a href="https://songsong.org/post/android-memory-leak">
               <h3 class="post-title">
-                C#基础 - Lazy&lt;T&gt;
+                Android开发中应该避免的内存泄露
               </h3>
             </a>
           </div>

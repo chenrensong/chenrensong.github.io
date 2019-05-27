@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>抓取RTMP视频&amp;音频数据 | 陈仁松博客</title>
+<title>UWP基础教程 - AuotmationProperties.Name | 陈仁松博客</title>
 <link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972430242">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
@@ -78,42 +78,42 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              抓取RTMP视频&amp;音频数据
+              UWP基础教程 - AuotmationProperties.Name
             </h2>
             <div class="post-info">
               <time class="post-time">
-                · 2015-10-24 ·
+                · 2017-06-12 ·
               </time>
               
-                <a href="https://songsong.org/tag/RTMP" class="post-tag">
-                  # RTMP
+                <a href="https://songsong.org/tag/UWP" class="post-tag">
+                  # UWP
                 </a>
               
             </div>
             
-              <div class="post-feature-image" style="background-image: url('https://songsong.org/post-images/rtmp-capture.png')">
-              </div>
-            
             <div class="post-content">
-              <p>需要的工具：抓包工具（这里我使用的是<code>WireShark</code>）、<code>Rtmpdump</code></p>
-<p>一开始我思路是想分析下html查看下是否有直接的下载地址：
-<img src="https://songsong.org/post-images/1558970800340.png" alt="">
-查询到了meta.xml,在里面发现了stream的path，这时候发现是rtmp的无法直接下载， 于是想到使用WireShark工具抓包,利用meta.xml里面的 cp11276.edgefcs.net/ondemand ，首先ping 获取ip
-<img src="https://songsong.org/post-images/1558970807504.png" alt="">
-得到96.17.102.28，通过过滤ip得到下面rtmp的信息
-<img src="https://songsong.org/post-images/1558970820436.png" alt=""></p>
-<p>url:</p>
-<pre><code>rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net
+              <p>作为Windows10 UWP开发，大家应该会在很多示例DEMO里面看到<code>AuotmationProperties.Name</code>这个属性吧</p>
+<pre><code>&lt;Button AutomationProperties.Name=&quot;Hello&quot;&gt;Hello&lt;/Button&gt;
 </code></pre>
-<p>path:</p>
-<pre><code>mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod
+<p><code>AuotmationProperties.Name</code>属性的作用是为控件指定可访问性名称，这个名称可以被类似于“讲述人”软件识别，从而提供了软件的可访问性（如视力有障碍的人等），同样也可以在自动化测试中被使用。原则上，一个控件的<code>AutomationProperties.Name</code>最好与此控件显示的标签文本一致(如上代码所示）</p>
+<p>微软也非常人性化，如果某个控件（或元素）有可视化文本内容（如 Button 的 Content 属性设置了文本），那么该控件上显示的文本将作为它的 Accessible Name，因此对于这种类型的控件不需要专门为其设置 AutomationProperites.Name 属性。</p>
+<p>如果该控件没有可示文本，那么你可以进行设置 <code>AutomationProperties.Name</code> ，如果你需要设置多语言，可以用以下方式来实现</p>
+<pre><code>&lt;Button x:Uid=&quot;TestButton&quot; /&gt;
 </code></pre>
-<p>在RtmpDump下面执行</p>
-<pre><code>rtmpdump -r &quot;rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net&quot; -y &quot;mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod&quot; -o webcast.mp3
+<p>在 Strings/zh-cn/Resources.resx 中，我们添加一条项目为其设置 Accessible Name，如下：</p>
+<pre><code>Name:    TestButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name                    
+Value:   Test Button
 </code></pre>
-<p><img src="https://songsong.org/post-images/1558970970320.png" alt="">
-下载成功得到webcast.mp3</p>
-<p><img src="https://songsong.org/post-images/1558970974335.png" alt=""></p>
+<p><code>AutomationProperties.Name</code>同样也支持Binding和TemplateBinding方式,你可以通过下面的方式来设置</p>
+<pre><code> &lt;TextBox …
+         Header=&quot;Hello&quot;
+         AutomationProperties.Name= &quot;{Binding Header, RelativeSource={RelativeSource Self}}&quot; /&gt;
+</code></pre>
+<p>当然同样可以采用C#代码来设置</p>
+<pre><code>using Windows.UI.Xaml.Automation;
+myControl.SetValue(AutomationProperties.NameProperty, 'Hello');
+</code></pre>
+<p>虽然微软并不强制要求使用<code>AutomationProperties.Name</code>属性，但是对于提升一个APP的质量还是有必要学习的。</p>
 
             </div>
           </article>
@@ -122,9 +122,9 @@
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://songsong.org/post/c-lazy">
+            <a href="https://songsong.org/post/java-decompiler">
               <h3 class="post-title">
-                C#基础 - Lazy&lt;T&gt;
+                Java 反编译工具
               </h3>
             </a>
           </div>

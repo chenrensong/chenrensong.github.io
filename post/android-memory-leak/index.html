@@ -1,0 +1,316 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Android开发中应该避免的内存泄露 | 陈仁松博客</title>
+<link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972430242">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://songsong.org/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://songsong.org">
+  <img class="avatar" src="https://songsong.org/images/avatar.png?v=1558972430242" alt="">
+  </a>
+  <h1 class="site-title">
+    陈仁松博客
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/chenrensong" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Android开发中应该避免的内存泄露
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2016-09-14 ·
+              </time>
+              
+                <a href="https://songsong.org/tag/Android" class="post-tag">
+                  # Android
+                </a>
+              
+            </div>
+            
+            <div class="post-content">
+              <h2 id="一-背景和目的">一、背景和目的：</h2>
+<p>目前许多开发人员在Android开发过程中，较少关注实现细节和内存使用，容易会造成内存泄露，导致程序OOM。</p>
+<p>本文会通过代码向大家介绍在Android开发过程中常见的内存泄露。</p>
+<h2 id="二-常见的内存泄露代码">二、常见的内存泄露代码</h2>
+<h3 id="1-使用handler造成的内存问题">1、使用Handler****造成的内存问题</h3>
+<p>在Android开发过程中，Handler是比较常用的，通过Handler发送Message与主线程进行通信，Message发送之后是存储在MessageQueue中的，有些Message并不是马上被处理的，在Message中存在一个Target，是Handler的一个引用，如果Message在Handler中的存在时间过长，会导致Handler无法被回收。如果Handler非静态，则会导致相关引用的Activity或者Service不会回收，所以在处理Hanlder之类的内部类的时候，应该要将Handler定义为静态内部类，同样在使用HandlerThread的时候也需要注意，我们来看看代码：</p>
+<pre><code>public class MainActivity extends AppCompatActivity{
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        HandlerThread mThread = new HandlerThread(&quot;threadTask&quot;,Process.THREAD_PROIORITY_BACKGROUND);
+        mThread.start();
+        Handler mHander = new Handler(mThread.getLooper());
+        //TODO...
+    }
+}
+</code></pre>
+<p>这个代码存在泄漏问题，因为HandlerThread内部会不断的循环执行，它不会自己结束，线程的生命周期超过了activity生命周期，当横竖屏切换，HandlerThread线程的数量会随着activity重建次数的增加而增加。</p>
+<p>我们应该在onDestroy时将线程停止掉：mThread.getLooper().quit();</p>
+<p>另外，对于不是HandlerThread的线程，也应该确保activity消耗后，线程已经终止，可以这样做：在onDestroy时调用mThread.join();</p>
+<h3 id="2-使用非静态内部类的静态实例">2、使用非静态内部类的静态实例</h3>
+<pre><code>public class MainActivity extends AppCompatActivity{
+
+    public class OtherClass{
+    }
+
+    private static OtherClass sInstance = null;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        if(sInstance == null){
+           sInstance = new OtherClass();
+        }
+    }
+}
+</code></pre>
+<p>上面的代码中的sInstance实例类型为静态实例，在第一个MainActivityact实例创建时，sInstance会获得并一直持有activity的引用。当MainAcitivity销毁后重建，因为sInstance持有activity的引用，所以activity是无法被GC回收的，进程中会存在2个MainActivity实例（activity和重建后的MainActivity实例），这个activity对象就是一个无用的但一直占用内存的对象，即无法回收的垃圾对象。所以，对于lauchMode不是singleInstance的Activity，应该避免在activity里面实例化其非静态内部类的静态实例。</p>
+<h3 id="3-在activity中使用静态成员">3、在Activity****中使用静态成员</h3>
+<pre><code>public class MainActivity extends AppCompatActivity{
+
+    private static Drawable sBackground = null;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        TextView label = new TextView(this);
+        if(sBackground == null){
+           sBackground = getDrawable(R.mipmap.ic_launcher);
+        }
+        label.setBackgroundDrawable(sBackground);
+    }
+}
+</code></pre>
+<p>由于用静态成员sBackground 缓存了drawable对象，所以activity加载速度会加快，但是这样做是错误的。因为它会导致activity销毁后无法被系统回收。label.setBackgroundDrawable函数调用会将label赋值给sBackground的成员变量。上面代码意味着：sBackground（GC Root）会持有TextView对象，而TextView持有Activiy对象。所以导致Activity对象无法被系统回收。</p>
+<p>以上2个例子的内存泄漏都是因为Activity的引用的生命周期超越了activity对象的生命周期。也就是常说的Context泄漏，想要避免context相关的内存泄漏，需要注意以下几点：</p>
+<p>l 不要对activity的context长期引用(activity的引用的生存周期应该和activity的生命周期相同)</p>
+<p>l 在可以使用application的context的情况下，尽可能使用application的context来替代和activity相关的context</p>
+<p>l 如果一个acitivity的非静态内部类的生命周期不受控制，那么我们就应该避免这样使用。</p>
+<h3 id="4-注册某个对象后未注销">4、注册某个对象后未注销</h3>
+<p>注册广播接收器、注册观察者等等，比如： 在调用registerReceiver后，若未调用unregisterReceiver，它会导致BroadcastReceiver不会被unregister而导致内存泄露，我们经常会看到类似下面的代码：</p>
+<pre><code>registerReceiver(new BroadcastReceiver(){
+
+    @Override
+    public void onReceive(Context context,Intent intent){
+    //TODO...
+    }
+
+},filter);
+</code></pre>
+<h3 id="5-集合中对象没清理造成的内存泄露">5、集合中对象没清理造成的内存泄露</h3>
+<p>我们通常把一些对象的引用加入到了集合中，当我们不需要该对象时，如果没有把它的引用从集合中清理掉，这样这个集合就会越来越大。如果这个集合是static的话，如果对象不断增大，达到一定的值的时候程序就会OOM</p>
+<h3 id="6-资源对象没关闭造成的内存泄露">6、资源对象没关闭造成的内存泄露</h3>
+<p>资源性对象比如(Cursor，File文件等)往往都用了一些缓冲，我们在不使用的时候，应该及时关闭它们，以便它们的缓冲及时回收内存。它们的缓冲不仅存在于Java虚拟机内，还存在于Java虚拟机外。如果我们仅仅是把它的引用设置为null,而不关闭它们，往往会造成内存泄露。因为有些资源性对象，比如SQLiteCursor(在析构函数finalize(),如果我们没有关闭它，它自己会调close()关闭)，如果我们没有关闭它，系统在回收它时也会关闭它，但是这样的效率太低了。因此对于资源性对象在不使用的时候，应该立即调用它的close()函数，将其关闭掉，然后再置为null.在我们的程序退出时一定要确保我们的资源性对象已经关闭。</p>
+<p>程序中经常会进行查询数据库的操作，但是经常会有使用完毕Cursor后没有关闭的情况。如果我们的查询结果集比较小，对内存的消耗不容易被发现，只有在长时间大量操作的情况下才会复现内存问题，这样就会给以后的测试和问题排查带来困难和风险。</p>
+<p>写代码时，经常会有人忘记调用close, 或者因为代码逻辑问题状况导致close未被调用。</p>
+<p>错误的代码：</p>
+<pre><code>try{
+    Cursor c = queryCursor();
+    int a = c.getInt(2);
+    c.close();
+}catch(Exception ex){
+
+}
+</code></pre>
+<p>修正后的代码：</p>
+<pre><code>Cursor c = null;
+try{
+    c = queryCursor();
+    int a = c.getInt(2);
+    c.close();
+}catch(Exception ex){
+
+}finally{
+    if(c!=null){
+       c.close();
+    }
+}
+</code></pre>
+<h3 id="7-一些不良代码成内存压力">7、一些不良代码成内存压力</h3>
+<p>有些代码并不造成内存泄露，但是它们或是对没使用的内存没进行有效及时的释放，或是没有有效的利用已有的对象而是频繁的申请新内存，对内存的回收和分配造成很大影响的，容易迫使虚拟机不得不给该应用进程分配更多的内存，增加vm的负担，造成不必要的内存开支。</p>
+<h4 id="71-bitmap-使用不当">7.1 Bitmap 使用不当</h4>
+<p>一、需要及时的销毁。</p>
+<p>虽然，系统能够确认Bitmap分配的内存最终会被销毁，但是由于它占用的内存过多，所以很可能会超过Java堆的限制。因此，在用完Bitmap时，要及时的recycle掉。recycle并不能确定立即就会将Bitmap释放掉，但是会给虚拟机一个暗示：“该图片可以释放了”。</p>
+<p>二、需要设置一定的采样率。</p>
+<p>有时候，我们要显示的区域很小，没有必要将整个图片都加载出来，而只需要记载一个缩小过的图片，这时候可以设置一定的采样率，那么就可以大大减小占用的内存。如下面的代码：</p>
+<pre><code>BitmapFactory.Options options = new BitmapFactory.Options();
+options.inSampleSize = 2; //图片宽高都为原来的二分之一，图片为原来的额四分之一
+Bitmap bitmap = BitmapFactory.decodeStream(is,null,options);
+</code></pre>
+<p>三、巧妙的运用软引用（SoftRefrence）</p>
+<p>有些时候，我们使用Bitmap后没有保留对它的引用，因此就无法调用Recycle函数。这时候巧妙的运用软引用，可以使Bitmap在内存不足时得到有效的释放。如下：</p>
+<pre><code>SoftReference&lt;Bitmap&gt; bitmap_ref = new SoftReference&lt;Bitmap&gt;(BitmapFactory.decodeStream(is));
+if(bitmap_ref.get()!=null){
+   bitmap_ref.get().recycle(); 
+}
+</code></pre>
+<h4 id="72-使用adapter时没有使用缓存的-convertview">7.2 使用Adapter时，没有使用缓存的 ConvertView</h4>
+<p>以构造ListView的BaseAdapter为例，在BaseAdapter中提共了方法：</p>
+<pre><code>public View getView(int position,View convertView,ViewGroup parent){}
+</code></pre>
+<p>来向ListView提供每一个item所需要的view对象。初始时ListView会从BaseAdapter中根据当前的屏幕布局实例化一定数量的view对象，同时ListView会将这些view对象缓存起来。当向上滚动ListView时，原先位于最上面的list item的view对象会被回收，然后被用来构造新出现的最下面的list item。这个构造过程就是由getView()方法完成的，getView()的第二个形参 View convertView就是被缓存起来的list item的view对象(初始化时缓存中没有view对象则convertView是null)。</p>
+<p>由此可以看出，如果我们不去使用convertView，而是每次都在getView()中重新实例化一个View对象的话，即浪费时间，也造成内存垃圾，给垃圾回收增加压力，如果垃圾回收来不及的话，虚拟机将不得不给该应用进程分配更多的内存，造成不必要的内存开支。ListView回收list item的view对象的过程可以查看:</p>
+<p><code>android.widget.AbsListView.Java</code></p>
+<pre><code>public addScrapView (View scrap ,int position)
+</code></pre>
+<p>错误的代码：</p>
+<pre><code>public View getView (int position , View convertView,ViewGroup parent){
+    View  view = new TextView(this);
+    return view;
+}
+</code></pre>
+<p>修正示例代码：</p>
+<pre><code>public View getView (int position , View convertView,ViewGroup parent){
+    View view = null;
+    if(convertView !=null){
+        view =(View)convertView.getTag();
+    } else {
+        view = new TextView(this);
+        convertView.setTag(view);
+    }
+    return view;
+}
+</code></pre>
+<h4 id="73适当的使用对象池">7.3适当的使用对象池</h4>
+<p>不要在经常调用的方法中创建对象，每次new之后都丢弃，尤其是忌讳在循环中创建对象。在android support v4包中包含Pools类，其实就是对象池，使用方法也比较简单，具体可以参考下面的MyPools这个类。</p>
+<pre><code>public class MyPools{
+    private static final Pools.SynchronizedPool&lt;MyPools&gt; sPool = new Pools.SynchronizedPool&lt;MyPools&gt;(10);
+
+    public static MyPools obtain(){ 
+      MyPools instance = sPool.acquire();
+      return (instance != null)?instance :new MyPools();
+    }
+
+    public void recycle(){
+      sPool.release(this);
+    }
+
+}
+</code></pre>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://songsong.org/post/regex-common">
+              <h3 class="post-title">
+                常用正则表达式汇总
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '382981c785b131b4a314',
+    clientSecret: '048bc4e7cb57301643ef37a9b2a2ab6a08299deb',
+    repo: 'chenrensong.github.io',
+    owner: 'chenrensong',
+    admin: ['chenrensong'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  京ICP备14060483号 | 
+  <a class="rss" href="https://songsong.org/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>
