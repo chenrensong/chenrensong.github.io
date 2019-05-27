@@ -1,0 +1,237 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>【译】使用 dotnet watch 开发 ASP.NET Core 应用 | 陈仁松博客</title>
+<link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972821336">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://songsong.org/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://songsong.org">
+  <img class="avatar" src="https://songsong.org/images/avatar.png?v=1558972821336" alt="">
+  </a>
+  <h1 class="site-title">
+    陈仁松博客
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/chenrensong" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              【译】使用 dotnet watch 开发 ASP.NET Core 应用
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2017-11-28 ·
+              </time>
+              
+                <a href="https://songsong.org/tag/dotnet" class="post-tag">
+                  # dotnet
+                </a>
+              
+            </div>
+            
+            <div class="post-content">
+              <h2 id="介绍">介绍</h2>
+<p><code>dotnet watch</code> 是一个开发阶段在源文件发生变动的情况下使用 <code>dotnet</code> 命令的工具。 当代码发生变动的时候可以用来执行编译，运行测试，或者发布操作。</p>
+<p>在本教程中，我们将使用一个现有的计算两个数字之和以及乘积的 WebApi 应用程序来演示如何使用 <code>dotnet watch</code> 。示例应用程序故意包含一个错误，作为本教程的一部分我们会修复它。</p>
+<h2 id="开始入门">开始入门</h2>
+<p>开始下载 <a href="https://github.com/aspnet/Docs/tree/master/aspnetcore/tutorials/dotnet-watch/sample">示例程序</a>。示例程序包含两个项目， <code>WebApp</code> （Web 应用程序）以及 <code>WebAppTests</code> （Web 应用程序配套的单元测试项目）</p>
+<p>在命令行控制台中，进入下载示例程序的目录并且运行下述命令：</p>
+<p>1、<code>dotnet restore</code>
+2、<code>cd WebApp</code>
+3、<code>dotnet run</code></p>
+<p>控制台输出将显示如下信息，表明该应用程序正在运行并等待请求：</p>
+<pre><code>$ dotnet run
+Hosting environment: Development
+Content root path: C:/Docs/aspnetcore/tutorials/dotnet-watch/sample/WebApp
+Now listening on: http://localhost:5000
+Application started. Press Ctrl+C to shut down.
+</code></pre>
+<p>在 Web 浏览器中，导航到 <code>http://localhost:5000/api/math/sum?a=4&amp;b=5</code> 页面你会看到结果 <code>9</code> 。</p>
+<p>如果你导航到 <code>http://localhost:5000/api/math/product?a=4&amp;b=5</code> 页面，你期望得到结果 <code>20</code>。但是实际上还是返回了 <code>9</code> 。</p>
+<p>我们会修复这个问题的。</p>
+<h2 id="项目中添加-dotnet-watch">项目中添加 <code>dotnet watch</code></h2>
+<p>1、按照下面例子的方式在 WebApp/project.json 文件的 <code>tools</code> 配置节中添加 <code>Microsoft.DotNet.Watcher.Tools</code> 引用：</p>
+<pre><code>&lt;ItemGroup&gt;
+    &lt;DotNetCliToolReference Include=&quot;Microsoft.DotNet.Watcher.Tools&quot; Version=&quot;2.0.0&quot; /&gt;
+&lt;/ItemGroup&gt; 
+</code></pre>
+<p>2、运行 <code>dotnet restore</code>。</p>
+<p>控制台输出将显示如下信息：</p>
+<div id="code_2" class="codeCloneBtn">复制代码</div>
+<pre><code>log  : Restoring packages for /Users/user/dev/aspnet/Docs/aspnet/tutorials/dotnet-watch/sample/WebApp/project.json...
+log  : Restoring packages for tool 'Microsoft.DotNet.Watcher.Tools' in /Users/user/dev/aspnet/Docs/aspnet/tutorials/dotnet-watch/sample/WebApp/project.json...
+log  : Installing Microsoft.DotNet.Watcher.Core 1.0.0-preview2-final.
+log  : Installing Microsoft.DotNet.Watcher.Tools 1.0.0-preview2-final.
+</code></pre>
+<h2 id="使用-dotnet-watch-运行-dotnet-命令">使用 <code>dotnet watch</code> 运行 <code>dotnet</code> 命令</h2>
+<p>任何与 <code>dotnet</code> 有关的命令都可以以 <code>dotnet watch</code> 这样的方式运行：例如：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>带上 watch 的命令Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dotnet run</code></td>
+<td><code>dotnet watch run</code></td>
+</tr>
+<tr>
+<td><code>dotnet run -f netcoreapp2.0</code></td>
+<td><code>dotnet watch run -f netcoreapp2.0</code></td>
+</tr>
+<tr>
+<td><code>dotnet run -f netcoreapp2.0-- --arg1</code></td>
+<td><code>dotnet watch run -f netcoreapp2.0-- --arg1</code></td>
+</tr>
+<tr>
+<td><code>dotnet test</code></td>
+<td><code>dotnet watch test</code></td>
+</tr>
+</tbody>
+</table>
+<p>为了让 <code>WebApp</code> 在 watcher 模式下运行，在 <code>WebApp</code> 目录里面运行 <code>dotnet watch run</code> 命令。 控制台便会监控代码文件变化。</p>
+<h2 id="在-dotnet-watch-模式进行修改">在 <code>dotnet watch</code> 模式进行修改</h2>
+<p>确保 <code>dotnet watch</code> 在运行中。</p>
+<p>让我们来修复上面发现的那个两个数相乘结果错误。</p>
+<p>打开文件 WebApp/Controllers/MathController.cs。我们故意在代码中引入了错误。</p>
+<pre><code>public static int Product(int a, int b)
+{
+    // We have an intentional bug here
+    // + should be *
+    return a + b;//手工高亮
+}
+</code></pre>
+<p>通过把代码 <code>a + b</code> 替换为 <code>a * b</code> 修复错误。</p>
+<p>保存文件，验证 <code>http://localhost:5000/api/math/product?a=4&amp;b=5</code> 链接返回正确的结果。</p>
+<h2 id="使用-dotnet-watch-运行测试">使用 <code>dotnet watch</code> 运行测试</h2>
+<p>1、打开文件 WebApp/Controllers/MathController.cs。撤销原先的修改并保存文件。</p>
+<p>2、导航到WebAppTests目录</p>
+<p>3、运行<code>dotnet restore</code>命令</p>
+<p>4、运行<code>dotnet watch test</code>, 控制台输出将显示如下信息：</p>
+<pre><code>Total tests: 2. Passed: 1. Failed: 1. Skipped: 0.
+Test Run Failed.
+</code></pre>
+<p>修改代码，并保存文件。</p>
+<p><code>dotnet watch</code> 将会检测到文件变更并且重新运行测试。</p>
+<p><strong>查看英文原文</strong>：<a href="https://docs.microsoft.com/en-us/aspnet/core/tutorials/dotnet-watch">Developing ASP.NET Core apps using dotnet watch</a></p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://songsong.org/post/csharp-7-explore">
+              <h3 class="post-title">
+                C# 7.0 探索之旅
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '382981c785b131b4a314',
+    clientSecret: '048bc4e7cb57301643ef37a9b2a2ab6a08299deb',
+    repo: 'chenrensong.github.io',
+    owner: 'chenrensong',
+    admin: ['chenrensong'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  京ICP备14060483号 | 
+  <a class="rss" href="https://songsong.org/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

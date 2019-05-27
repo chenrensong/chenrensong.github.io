@@ -1,0 +1,186 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>使用Yeoman创建ASP.NET Core项目 | 陈仁松博客</title>
+<link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972821336">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://songsong.org/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://songsong.org">
+  <img class="avatar" src="https://songsong.org/images/avatar.png?v=1558972821336" alt="">
+  </a>
+  <h1 class="site-title">
+    陈仁松博客
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/chenrensong" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              使用Yeoman创建ASP.NET Core项目
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2017-11-08 ·
+              </time>
+              
+                <a href="https://songsong.org/tag/dotnet" class="post-tag">
+                  # dotnet
+                </a>
+              
+            </div>
+            
+            <div class="post-content">
+              <h2 id="1yeoman-是什么">1.Yeoman 是什么？</h2>
+<p>Yeoman是一个自动化脚手架工具。它提供很多generator，generator相当于模板，用来初始化项目。具体的大家可以看 <a href="http://yeoman.io/">http://yeoman.io/</a></p>
+<h2 id="2安装-yeoman">2.安装 Yeoman</h2>
+<p>安装yeoman之前你需要先安装npm。npm是一个JavaScript的包管理工具，一般跟nodejs配合使用。https://docs.npmjs.com/getting-started/what-is-npm</p>
+<p>使用npm来安装 Yeoman：</p>
+<pre><code>npm install -g yo
+</code></pre>
+<h2 id="3安装-generator-aspnet">3.安装 generator-aspnet</h2>
+<p>generator-aspnet就是asp.net core的构建器了，我们需要安装它,由于它还依赖bower工具，所以我们要一起安装。</p>
+<pre><code>npm install -g bower
+npm install -g generator-aspnet
+</code></pre>
+<h2 id="4使用-yeoman">4.使用 Yeoman</h2>
+<p>使用之前我们先假设一下我们的项目叫YeomanDemo,我们先新建一个项目的根目录YeomanDemo</p>
+<h3 id="使用yeoman创建yeomandemo">使用Yeoman创建YeomanDemo</h3>
+<p>Yeoman会显示一个界面让你去选择创建的项目的类型
+<img src="https://songsong.org/post-images/1558972505301.png" alt="">
+选中<code>Empty Web Application</code>项目之后回车
+<img src="https://songsong.org/post-images/1558972509588.png" alt="">
+接着输入项目名称 <code>YeomanDemo</code> 之后项目就创建成功了。</p>
+<p>你可以执行以下命令，来运行项目。</p>
+<pre><code>dotnet restore
+dotnet build
+dotnet run
+</code></pre>
+<h3 id="使用yeoman创建middleware">使用Yeoman创建middleware</h3>
+<p>Yeoman功能很强大，还可以安装其他的generator，比如</p>
+<pre><code>npm install -g generator-aspnetcore-middleware
+</code></pre>
+<p>安装完成后，你可以输入</p>
+<pre><code>yo aspnetcore-middleware
+</code></pre>
+<p>输入中间件名称后，就成功创建了Middleware模板。</p>
+<h2 id="5总结">5.总结</h2>
+<p>使用Yeoman只要几个简单的命令，就帮助我们建立一个项目，感兴趣的可以自己编写一个generator玩玩</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://songsong.org/post/aspnet-core-signalr">
+              <h3 class="post-title">
+                【译】在 ASP.NET Core 中使用 SignalR
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '382981c785b131b4a314',
+    clientSecret: '048bc4e7cb57301643ef37a9b2a2ab6a08299deb',
+    repo: 'chenrensong.github.io',
+    owner: 'chenrensong',
+    admin: ['chenrensong'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  京ICP备14060483号 | 
+  <a class="rss" href="https://songsong.org/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

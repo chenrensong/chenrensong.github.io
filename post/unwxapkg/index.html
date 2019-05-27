@@ -1,0 +1,257 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>微信小程序.wxapkg文件分析 | 陈仁松博客</title>
+<link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972821336">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://songsong.org/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://songsong.org">
+  <img class="avatar" src="https://songsong.org/images/avatar.png?v=1558972821336" alt="">
+  </a>
+  <h1 class="site-title">
+    陈仁松博客
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/chenrensong" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              微信小程序.wxapkg文件分析
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2018-01-23 ·
+              </time>
+              
+                <a href="https://songsong.org/tag/miniapp" class="post-tag">
+                  # 小程序
+                </a>
+              
+            </div>
+            
+            <div class="post-content">
+              <p>前一段时间“跳一跳”很火，朋友圈老刷不上名次，于是了解小程序大致的实现原理，写了wxapkg的反编译工具，目前可以基本还原小程序源码。</p>
+<p>那么哪里可以找到小程序的安装包？</p>
+<p>1、 <a href="https://servicewechat.com/weapp/release/$%7Bappid%7D/$%7Bversion_num%7D.wxapkg"><s>https://servicewechat.com/weapp/release/<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mrow><mi>a</mi><mi>p</mi><mi>p</mi><mi>i</mi><mi>d</mi></mrow><mi mathvariant="normal">/</mi></mrow><annotation encoding="application/x-tex">{appid}/</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault">a</span><span class="mord mathdefault">p</span><span class="mord mathdefault">p</span><span class="mord mathdefault">i</span><span class="mord mathdefault">d</span></span><span class="mord">/</span></span></span></span>{version_num}.wxapkg</s></a></p>
+<p>2、在android手机中/data/data/com.tencent.mm/MicroMsg/${userid}/appband/pkg</p>
+<p>找到安装包后，源码就在里面，那么要怎么来解析？</p>
+<p><img src="/data/2018/1/wxapkgstruct.png" alt=""></p>
+<p>我整理了wxapkg文件格式，写了一款解压工具<a href="https://github.com/chenrensong/SS.UnWxapkg">SS.UnWxapkg</a>，核心代码如下</p>
+<pre><code class="language-public">    {
+        public static void UnWxapkg(string filePath)
+        {
+
+            var bytes = File.ReadAllBytes(filePath);
+
+            ByteBuffer byteBuffer = ByteBuffer.Allocate(bytes);
+
+            var firstMark = byteBuffer.ReadByte();
+            Console.WriteLine($&quot;first header mark = {firstMark}&quot;);
+
+            var info1 = byteBuffer.ReadInt();
+            Console.WriteLine($&quot;info1 = {info1}&quot;);
+
+            var indexInfoLength = byteBuffer.ReadInt();
+            Console.WriteLine($&quot;indexInfoLength = {indexInfoLength}&quot;);
+
+            var bodyInfoLength = byteBuffer.ReadInt();
+            Console.WriteLine($&quot;bodyInfoLength = {bodyInfoLength}&quot;);
+
+            var lastMark = byteBuffer.ReadByte();
+            Console.WriteLine($&quot;last header mark = {lastMark}&quot;);
+
+            if (firstMark != 0xBE || lastMark != 0xED)
+            {
+                Console.WriteLine(&quot;its not a wxapkg file!&quot;);
+            }
+
+            var fileCount = byteBuffer.ReadInt();
+            Console.WriteLine($&quot;fileCount = {fileCount}&quot;);
+
+            var fileList = new List&lt;WxapkgFile&gt;();
+
+            for (int i = 0; i &lt; fileCount; i++)
+            {
+                var nameLen = byteBuffer.ReadInt();
+                byte[] nameByte = new byte[nameLen];
+                byteBuffer.ReadBytes(nameByte, 0, nameLen);
+                var name = Encoding.UTF8.GetString(nameByte);
+                var offset = byteBuffer.ReadInt();
+                var size = byteBuffer.ReadInt();
+                var wxapkgFile = new WxapkgFile() { Name = name, NameLen = nameLen, Offset = offset, Size = size };
+                fileList.Add(wxapkgFile);
+                Console.WriteLine($&quot;readFile = {name} at Offset = {offset}&quot;);
+            }
+            var rootPath = System.Environment.CurrentDirectory;
+            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
+            Console.WriteLine($&quot;rootPath = {rootPath}&quot;);
+            Console.WriteLine($&quot;fileNameWithoutExtension = {fileNameWithoutExtension}&quot;);
+
+            var unzipPath = Path.Combine(rootPath, fileNameWithoutExtension);
+            Console.WriteLine($&quot;unzipPath = {unzipPath}&quot;);
+            if (!Directory.Exists(unzipPath))
+            {
+                Directory.CreateDirectory(unzipPath);
+            }
+
+            foreach (var wxapkgFile in fileList)
+            {
+                var wxapkgFileName = unzipPath + wxapkgFile.Name.Replace('/', Path.DirectorySeparatorChar);
+                Console.WriteLine($&quot;wxapkgFileName = {wxapkgFileName}&quot;);
+                var directoryName = Path.GetDirectoryName(wxapkgFileName);
+                Console.WriteLine($&quot;directoryName = {directoryName}&quot;);
+                if (!Directory.Exists(directoryName))
+                {
+                    Directory.CreateDirectory(directoryName);
+                }
+                byteBuffer.SetReaderIndex(wxapkgFile.Offset);
+                var fileBytes = new byte[wxapkgFile.Size];
+                byteBuffer.ReadBytes(fileBytes, 0, fileBytes.Length);
+                File.WriteAllBytes(wxapkgFileName, fileBytes);
+            }
+
+        }
+    }
+
+</code></pre>
+<p>代码大意是</p>
+<p>1、根据firstMark和lastMark来判断是否是小程序的wxapkg文件格式</p>
+<p>2、获取索引段长度、数据段长度、以及文件数量</p>
+<p>3、根据文件数量，顺序读取文件数据区，读取每个文件</p>
+<p>解压出来的格式基本上如下</p>
+<p>│  app-config.json</p>
+<p>│  app-service.js</p>
+<p>│  page-frame.html</p>
+<p>│</p>
+<p>├─images</p>
+<p>│      hello.png</p>
+<p>│      world.png</p>
+<p>│</p>
+<p>├─pages</p>
+<p>│       gameover.html</p>
+<p>│       index.html</p>
+<p>│       play.html</p>
+<p>│       web.html</p>
+<p>根据解压出来的文件进行分析可以得出下列信息
+<img src="/data/2018/1/wxapkgInfo.png" alt=""></p>
+<p>按照上面信息对应解析基本上就能得到源码了。</p>
+<p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://songsong.org/post/uwp-schema-console">
+              <h3 class="post-title">
+                UWP基础教程 - 调起应用的几种方法
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '382981c785b131b4a314',
+    clientSecret: '048bc4e7cb57301643ef37a9b2a2ab6a08299deb',
+    repo: 'chenrensong.github.io',
+    owner: 'chenrensong',
+    admin: ['chenrensong'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  京ICP备14060483号 | 
+  <a class="rss" href="https://songsong.org/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

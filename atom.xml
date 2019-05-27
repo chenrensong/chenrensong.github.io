@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://songsong.org</id>
     <title>陈仁松博客</title>
-    <updated>2019-05-27T15:53:51.627Z</updated>
+    <updated>2019-05-27T16:00:24.058Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://songsong.org"/>
     <link rel="self" href="https://songsong.org/atom.xml"/>
@@ -11,488 +11,708 @@
     <icon>https://songsong.org/favicon.ico</icon>
     <rights>All rights reserved 2019, 陈仁松博客</rights>
     <entry>
-        <title type="html"><![CDATA[【译】在 ASP.NET Core 中使用 SignalR]]></title>
-        <id>https://songsong.org/post/aspnet-core-signalr</id>
-        <link href="https://songsong.org/post/aspnet-core-signalr">
+        <title type="html"><![CDATA[.net core 丢失 api-ms-win-crt-runtime-l1-1-0.dll]]></title>
+        <id>https://songsong.org/post/net-core-api-ms-win-crt-runtime-l1-1-0-dll</id>
+        <link href="https://songsong.org/post/net-core-api-ms-win-crt-runtime-l1-1-0-dll">
         </link>
-        <updated>2017-10-02T15:53:32.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="介绍">介绍</h2>
-<p><strong>SignalR</strong>是一个用于网站实现实时通信.NET库。可用多种技术来实现服务器与客户端间的双向通信，服务器可以随时将消息推送到连接的客户端。</p>
-<p>现在可在 ASP.NET Core 预发行版本中使用。我已经介绍过几次 SignalR 了。</p>
-<h2 id="安装">安装</h2>
-<p>您将需要安装 Microsoft.AspNetCore.SignalR.Client 和 Microsoft.AspNetCore.SignalR Nuget 预发行包。此外，您将需要 <a href="https://www.npmjs.com/">NPM</a>（Node 包管理器）。安装 NPM 后，您需要获取 <a href="https://www.npmjs.com/package/@aspnet/signalr-client">@aspnet/signalr-client</a> 包，之后您需要从 <strong>node_modules@aspnet\signalr-client\dist\browser</strong> 文件夹中 获取 <strong>signalr-client-1.0.0-alpha1-final.js</strong> 文件（版本可能不同） ，并将其放置在 <strong>wwwroot</strong> 文件夹下，以便您可以从页面引用到它。</p>
-<p>接下来，我们需要在使用之前在 <strong>ConfigureServices</strong> 中注册所需的服务：</p>
-<pre><code>services.AddSignalR();
+        <updated>2018-04-03T15:59:38.000Z</updated>
+        <content type="html"><![CDATA[<p>今天在服务器上安装完.net core，执行的时候发现提示丢失<code>api-ms-win-crt-runtime-l1-1-0.dll</code>写下解决过程给大家来参考</p>
+<p>api-ms-win-crt-runtime是MFC的运行时环境的库，.net core底层会用到微软提供的C++库和runtime库，这时候安装<code>Visual C++ Redistributable for Visual Studio 2015</code>组件即可解决此问题。</p>
+<p>下载地址：<a href="https://www.microsoft.com/zh-cn/download/details.aspx?id=48145">https://www.microsoft.com/zh-cn/download/details.aspx?id=48145</a></p>
+<p>如果无法解决，可以在<code>C:\Windows\System32</code>和<code>C:\Windows\SysWOW64</code>目录检查下是否有<code>api-ms-win-crt-runtime-l1-1-0.dll</code>删除后重试即可。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ASP.NET Core  'Microsoft.Win32.Registry' 错误修复]]></title>
+        <id>https://songsong.org/post/aspnet-core-microsoftwin32registry</id>
+        <link href="https://songsong.org/post/aspnet-core-microsoftwin32registry">
+        </link>
+        <updated>2018-04-01T15:59:11.000Z</updated>
+        <content type="html"><![CDATA[<p>今天在发布Asp.net Core应用到Azure的时候出现错误<code>InvalidOperationException: Cannot find compilation library location for package ‘Microsoft.Win32.Registry’</code>
+具体信息如下</p>
+<pre><code>2018-04-01 12:44:37.141 +00:00 [Fatal] Hosting startup assembly exception
+System.InvalidOperationException: Startup assembly Microsoft.AspNetCore.AzureKeyVault.HostingStartup failed to execute. See the inner exception for more details. ---&gt; System.IO.FileNotFoundException: Could not load file or assembly 'Microsoft.AspNetCore.AzureKeyVault.HostingStartup, Culture=neutral, PublicKeyToken=null'. The system cannot find the file specified.
+   at System.Reflection.RuntimeAssembly._nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark&amp; stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks, IntPtr ptrLoadContextBinder)
+   at System.Reflection.RuntimeAssembly.InternalLoadAssemblyName(AssemblyName assemblyRef, Evidence assemblySecurity, RuntimeAssembly reqAssembly, StackCrawlMark&amp; stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, IntPtr ptrLoadContextBinder)
+   at System.Reflection.Assembly.Load(AssemblyName assemblyRef)
+   at Microsoft.AspNetCore.Hosting.WebHostBuilder.BuildCommonServices(AggregateException&amp; hostingStartupErrors)
+   --- End of inner exception stack trace ---
+2018-04-01 12:44:39.531 +00:00 [Error] Connection id &quot;&quot;0HLCNPPA0GHOF&quot;&quot;, Request id &quot;&quot;0HLCNPPA0GHOF:00000002&quot;&quot;: An unhandled exception was thrown by the application.
+System.InvalidOperationException: Cannot find compilation library location for package 'Microsoft.Win32.Registry'
+   at Microsoft.Extensions.DependencyModel.CompilationLibrary.ResolveReferencePaths(ICompilationAssemblyResolver resolver, List`1 assemblies)
+   at Microsoft.Extensions.DependencyModel.CompilationLibrary.ResolveReferencePaths()
+   at Microsoft.AspNetCore.Mvc.ApplicationParts.AssemblyPart.&lt;&gt;c.&lt;GetReferencePaths&gt;b__8_0(CompilationLibrary library)
+   at System.Linq.Enumerable.SelectManySingleSelectorIterator`2.MoveNext()
+   at Microsoft.AspNetCore.Mvc.Razor.Compilation.MetadataReferenceFeatureProvider.PopulateFeature(IEnumerable`1 parts, MetadataReferenceFeature feature)
+   at Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager.PopulateFeature[TFeature](TFeature feature)
+   at Microsoft.AspNetCore.Mvc.Razor.Internal.DefaultRazorReferenceManager.GetCompilationReferences()
+   at System.Threading.LazyInitializer.EnsureInitializedCore[T](T&amp; target, Boolean&amp; initialized, Object&amp; syncLock, Func`1 valueFactory)
+   at System.Threading.LazyInitializer.EnsureInitialized[T](T&amp; target, Boolean&amp; initialized, Object&amp; syncLock, Func`1 valueFactory)
+   at Microsoft.AspNetCore.Mvc.Razor.Internal.DefaultRazorReferenceManager.get_CompilationReferences()
+   at Microsoft.AspNetCore.Mvc.Razor.Internal.LazyMetadataReferenceFeature.get_References()
+   at Microsoft.CodeAnalysis.Razor.CompilationTagHelperFeature.GetDescriptors()
+   at Microsoft.AspNetCore.Razor.Language.DefaultRazorTagHelperBinderPhase.ExecuteCore(RazorCodeDocument codeDocument)
+   at Microsoft.AspNetCore.Razor.Language.RazorEnginePhaseBase.Execute(RazorCodeDocument codeDocument)
+   at Microsoft.AspNetCore.Razor.Language.DefaultRazorEngine.Process(RazorCodeDocument document)
+   at Microsoft.AspNetCore.Razor.Language.RazorTemplateEngine.GenerateCode(RazorCodeDocument codeDocument)
+   at Microsoft.AspNetCore.Mvc.Razor.Internal.RazorViewCompiler.CompileAndEmit(String relativePath)
+   at Microsoft.AspNetCore.Mvc.Razor.Internal.RazorViewCompiler.CreateCacheEntry(String normalizedPath)
 </code></pre>
-<p>我们将实现一个简单的聊天客户端，因此将在 <strong>Configure</strong> 方法中注册一个 ChatHub：</p>
-<pre><code>app.UseSignalR(routes =&gt;
-{
-    routes.MapHub&lt;ChatHub&gt;(&quot;chat&quot;);
-});
+<p>经过一番测试后，发现如果<code>.csproj</code>文件包含嵌入的资源，需要将Razor的预编译关闭</p>
+<pre><code>&lt;PropertyGroup&gt;        
+    &lt;MvcRazorExcludeRefAssembliesFromPublish&gt;false&lt;/MvcRazorExcludeRefAssembliesFromPublish&gt;
+&lt;/PropertyGroup&gt;
 </code></pre>
-<p>注意：<strong>UseSignalR</strong> 必须在 <strong>UseMvc</strong> 之前调用！</p>
-<p>如果你有不同的端点，可以为任意数量的 hub 执行此操作。</p>
-<p>在您的视图或布局文件中，添加对 <strong>signalr-client-1.0.0-alpha1-final.js</strong> 文件的引用：</p>
-<pre><code>&lt;script src=&quot;libs/signalr-client/signalr-client-1.0.0-alpha1-final.js&quot;&gt;&lt;/script&gt;
-</code></pre>
-<h2 id="实现-hub">实现 Hub</h2>
-<p>该 hub 是一个继承了 <strong>Hub</strong> 的类。您可在其中添加 JavaScript 可能调用到的方法。我们将实现一个 chat hub：：</p>
-<pre><code>public class ChatHub : Hub
-{
-    public async Task Send(string message)
-    {
-        await this.Clients.All.InvokeAsync(&quot;Send&quot;, message);
+<p>修改后再次发布解决此问题</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[TypeScript 动态创建类]]></title>
+        <id>https://songsong.org/post/typescript-dynamically-class</id>
+        <link href="https://songsong.org/post/typescript-dynamically-class">
+        </link>
+        <updated>2018-03-28T15:58:47.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="首先定义一个greeter的类">首先定义一个Greeter的类</h3>
+<pre><code>class Greeter {
+    greeting: string;
+    constructor(message: string) {
+        this.greeting = message;
+    }
+    greet() {
+        return &quot;Hello, &quot; + this.greeting;
     }
 }
+
 </code></pre>
-<p>如你所见，我们有一个方法（<strong>Send</strong>），在这个例子中，它采用单个参数（<strong>message</strong>）。您不需要在广播调用（<strong>InvokeAsync</strong>）上传递相同的参数，可以发送任何您想要的。</p>
-<p>回到客户端部分，在引用 SignalR JavaScript 文件后添加此代码：</p>
-<pre><code>   &lt;script&gt;
+<h3 id="根据字符串动态创建greeter类">根据字符串动态创建Greeter类</h3>
+<pre><code>
+//instance creation here
+var greeter = Object.create(window[&quot;Greeter&quot;].prototype);
+greeter.constructor.apply(greeter, new Array(&quot;World&quot;));
 
-        var transportType = signalR.TransportType.WebSockets;
-        //can also be ServerSentEvents or LongPolling
-        var logger = new signalR.ConsoleLogger(signalR.LogLevel.Information);
-        var chatHub = new signalR.HttpConnection(`http://${document.location.host}/chat`, { transport: transportType, logger: logger });
-        var chatConnection = new signalR.HubConnection(chatHub, logger);
-
-        chatConnection.onClosed = e =&gt; {
-            console.log('connection closed');
-       };
-
-       chatConnection.on('Send', (message) =&gt; {
-           console.log('received message');
-       });
-
-       chatConnection.start().catch(err =&gt; {
-           console.log('connection error');
-       });
-
-       function send(message) {
-           chatConnection.invoke('Send', message);
-       }
-
-&lt;/script&gt;
-</code></pre>
-<p>请注意：</p>
-<ol>
-<li>创建指向当前 URL 的连接添加了 <strong>chat</strong> 后缀，这与在 <strong>MapHub</strong> 中注册的一致</li>
-<li>它使用特定的传输进行初始化（本例中是 <strong>WebSockets</strong>），但这不是必需的，也就是说，您可以让 SignalR 自己采用合适的方式。对于某些操作系统（如 Windows 7），您可能无法使用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API">WebSockets</a>，因此您必须选择 <a href="https://www.pubnub.com/blog/2014-12-01-http-long-polling/">LongPolling</a> 或 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">ServerSentEvents</a></li>
-<li>需要通过调用 <strong>start</strong> 来初始化连接</li>
-<li>有一个 <strong>Send</strong> 方法的 handler，它与 <strong>ChatHub</strong> 的 <strong>Send</strong> 方法有相同的单个参数（message）</li>
-</ol>
-<p>所以，每当有人访问此页面并调用 JavaScript <strong>send</strong>函数时，它将调用 <strong>ChatHub</strong> 类上的 <strong>Send</strong> 方法。 该类基本上会向所有连接的客户端（<strong>Clients.All</strong>）广播此消息。 也可以将消息发送到特定的组：</p>
-<pre><code>await this.Clients.Group(&quot;groupName&quot;).InvokeAsync(&quot;Send&quot;, message);
-</code></pre>
-<p>或特定客户端：</p>
-<pre><code>await this.Clients.Client(&quot;id&quot;).InvokeAsync(&quot;Send&quot;, message);
-</code></pre>
-<p>如果使用身份验证，您可以添加一个由连接 ID 和 <strong>ClaimPrincipal</strong> 标识的用户，如下所示：</p>
-<pre><code>public override Task OnConnectedAsync()
-{
-    this.Groups.AddAsync(this.Context.ConnectionId, &quot;groupName&quot;);
-
-    return base.OnConnectedAsync();
+var button = document.createElement('button');
+button.innerText = &quot;Say Hello&quot;;
+button.onclick = function() {
+    alert(greeter.greet());
 }
-</code></pre>
-<p>是的，<strong>OnConnectedAsync</strong> 在新用户连接时将被调用。当有人断开连接时，<strong>OnDisconnectedAsync</strong> 将被调用：</p>
-<pre><code>public override Task OnDisconnectedAsync(Exception exception)
-{
-    return base.OnDisconnectedAsync(exception);
-}
-</code></pre>
-<p>如果在断开连接时发生一些异常，则 <strong>exception</strong> 参数将为非空值。
-只有当前用户进行身份验证时 <strong>Context</strong> 属性才会提供 <strong>ConnectionId</strong> 和 <strong>User</strong> 两个属性。<strong>ConnectionId</strong> 始终被设置为同一个用户，不会改变。
-另一个例子，假设你想通过定时器 hub 将定时器 tick 发送到所有连接的客户端。 您可以在 <strong>Configure</strong> 方法中执行此操作：</p>
-<pre><code>TimerCallback callback = (x) =&gt; {
-    var hub = serviceProvider.GetService&lt;IHubContext&lt;TimerHub&gt;&gt;();
-    hub.Clients.All.InvokeAsync(&quot;Notify&quot;, DateTime.Now);
-};
 
-var timer = new Timer(callback);
-timer.Change(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(10));
+document.body.appendChild(button);
 </code></pre>
-<p>我们启动了一个 <strong>Timer</strong>，从那里我们得到了一个定时器 hub 的引用，并使用当前时间戳调用其 <strong>Notify</strong> 方法。<strong>TimerHub</strong> 类只是这样：</p>
-<pre><code>public class TimerHub : Hub
-{
-}
-</code></pre>
-<p>请注意，此类没有公共方法，因为它不是由 JavaScript 调用，它仅用于从外部广播消息（<strong>Timer</strong> 回调）。</p>
-<h2 id="将消息发送到-hub">将消息发送到 Hub</h2>
-<p>最后，还可以将消息从外部发送到 hub。当使用控制器时，您需要注入一个 <strong>IHubContext</strong> 实例，您可以从中发送消息到 hub，然后将其适当地广播：</p>
-<pre><code>private readonly IHubContext&lt;ChatHub&gt; _context;
-
-[HttpGet(&quot;Send/{message}&quot;)]
-public IActionResult Send(string message)
-{
-    //for everyone
-    this._context.Clients.All.InvokeAsync(&quot;Send&quot;, message);
-    //for a single group
-    this._context.Clients.Group(&quot;groupName&quot;).InvokeAsync(&quot;Send&quot;, message);
-    //for a single client
-    this._context.Clients.Client(&quot;id&quot;).InvokeAsync(&quot;Send&quot;, message);
-
-    return this.Ok();
-}
-</code></pre>
-<p>请注意，这与访问 <strong>ChatHub</strong> 类不同，您无法简单实现，需要通过 chat hub 的连接才行。</p>
-<h2 id="结论">结论</h2>
-<p>SignalR 尚未发布，仍可能会发生一些变化。在以后的文章中，我将更详细地介绍 SignalR，包括其可扩展性机制和一些更高级的使用场景。敬请期待！</p>
-<p><strong>查看英文原文</strong>：<a href="https://weblogs.asp.net/ricardoperes/signalr-in-asp-net-core">SignalR in ASP.NET Core</a></p>
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[【译】.NET Core和.NET Standard有什么不同]]></title>
-        <id>https://songsong.org/post/dotnet-core-standard-difference</id>
-        <link href="https://songsong.org/post/dotnet-core-standard-difference">
+        <title type="html"><![CDATA[ASP.NET Core 在 Azure 开启 HTTPS]]></title>
+        <id>https://songsong.org/post/aspnet-core-azure-https</id>
+        <link href="https://songsong.org/post/aspnet-core-azure-https">
         </link>
-        <updated>2017-10-01T15:53:06.000Z</updated>
-        <content type="html"><![CDATA[<p>近日，微软发布了<a href="https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-core-2-0/">.NET Core 2.0</a>，但是开发人员中间仍然存在一些疑惑，就是<a href="https://msdn.microsoft.com/en-us/magazine/mt842506">.NET Core、.NET Standard、Xamarin和.NET Framework有什么不同</a>。</p>
-<p>.NET Framework用于构建桌面应用程序和运行在互联网信息服务器（IIS）上的ASP.NET应用程序。它是第一个托管框架。</p>
-<p>Xamarin是一个用于构建iOS、Android、macOS和桌面应用程序的框架。</p>
-<p><strong>.NET Core</strong></p>
-<p><a href="https://docs.microsoft.com/en-us/dotnet/core/index">.NET Core</a>是免费、跨平台的，是托管框架的开源实现。它支持4种类型的应用程序：控制台、<a href="https://en.wikipedia.org/wiki/ASP.NET_Core">ASP.NET Core</a>、云和<a href="https://en.wikipedia.org/wiki/Universal_Windows_Platform_apps">通用Windows平台</a>（UWP）。<a href="https://en.wikipedia.org/wiki/Windows_Forms">Windows Forms</a>和<a href="https://en.wikipedia.org/wiki/Windows_Presentation_Foundation">Windows Presentation Foundation</a>（WPF）并不包含在.NET Core中。</p>
-<p>从技术上讲，.NET Core<a href="https://docs.microsoft.com/en-us/dotnet/core/index">仅支持控制台应用程序</a>。ASP.NET Core和UWP是以.NET Core为基础构建的应用程序模型。</p>
-<p><a href="https://msdn.microsoft.com/magazine/mt694084">与.NET Framework不同，.NET Core没有作为Windows组件考虑</a>。因此，更新是以NutGet包的形式，而不是通过Windows Update。由于.NET Core运行时安装成了App-Local，而应用程序升级是通过包管理器完成的，所以应用程序可以关联特定的.NET Core版本以及单独升级。</p>
-<p><strong>.NET Standard</strong></p>
-<p>托管框架的每一种实现都有一套自己的基类库。基类库（BCL）包含诸如异常处理、字符串、XML、I/O、网络和集合这样的类。</p>
-<p><a href="https://blogs.msdn.microsoft.com/dotnet/2016/09/26/introducing-net-standard/">.NET Standard</a>是一项实现BCL的规范。由于.NET实现需要遵循这项规范，所以应用程序开发人员就不用担心每一种托管框架实现的BCL不同。</p>
-<p>框架类库（FCL），如WPF、WCF、ASP.NET，不包含在BCL中，因此，也就不包含在.NET Standard中。</p>
-<p>.NET Standard与.NET实现之间的关系就和HTML规范与浏览器之间的关系一样。后者是前者的实现。</p>
-<p>因此，.NET Framework、Xamarin和.NET Core，每一种托管框架都实现了.NET Standard中的BCL。随着计算机工业不断推出新的硬件和操作系统，将来还会出现新的.NET托管框架。该标准让应用程序开发人员知道，他们可以依赖于一套始终如一的API。</p>
-<p>每个.NET版本都对应一个.NET Standard版本。</p>
-<p>API一致，将应用程序移植到不同的托管实现以及提供工具都会更简单。</p>
-<p>.NET Standard被定义为一个单独的NuGet包，因为所有的.NET实现都必须支持它。工具变得简单了，因为对于特定的版本，它们有一套相同的API。你还可以针对多个.NET实现构建一个库项目。</p>
-<p>你还可以构建特定平台API的.NET Standard封装器。</p>
-<p><strong>.NET Standard vs 可移植类库</strong></p>
-<p>可移植类库做的不是同一件事吗？</p>
-<p><a href="https://andrewlock.net/understanding-net-core-netstandard-and-asp-net-core/">可移植类使用多个平台均都支持的通用API</a>。因此，支持的平台越多，可用的API就越少，而且，对于特定的平台组合，很难知道到底支持哪些API。对于一个新平台，已有的PCL必须重新编译。PCL还需要微软针对每个平台创建一个新的框架实现分支。</p>
-<p>由于.NET Standard确定了API，而不是一个实现，所以不需要重新编译应用程序。任何新发布的.NET实现都实现了必须的库。应用程序不需要重新编译就可以运行在新的硬件平台或操作系统上。从理论上讲，在调用API时可能会捕获到NotSupportedException异常，但那种情况应该很少见。</p>
-<p><strong>小结</strong></p>
-<p>.NET Standard是一项API规范，每一个特定的版本，都定义了必须实现的基类库。</p>
-<p>.NET Core是一个托管框架，针对构建控制台、云、ASP.NET Core和UWP应用程序进行了优化。每一种托管实现（如Xamarin、.NET Core或.NET Framework）都必须遵循.NET Standard实现BCL。</p>
-<p><strong>查看英文原文</strong>：<a href="https://www.infoq.com/news/2017/10/dotnet-core-standard-difference">.NET Core and .NET Standard: What Is the Difference?</a></p>
+        <updated>2018-03-18T15:58:15.000Z</updated>
+        <content type="html"><![CDATA[<p>前一段博客在百度云上明明已经备案过了，但是<strong>百度云</strong>却检测出没有备案，不知道是什么原因，导致网站一直不能访问，无奈我又将博客迁移到了Azure，这篇教程主要和大家介绍下在Azure上如何开启HTTPS。</p>
+<p>首先打开 应用程序服务 - 选中你的应用 （我这里是chenrensong） - SSL证书，导入一个私有证书，导入成功后就会如下图所示显示出来。
+<img src="/data/2017/2/ssl_1.png" alt=""></p>
+<p>再添加SSL绑定域名，我这里绑定了chenrensong.com 以及 www.chenrensong.com
+<img src="/data/2017/2/ssl_2.png" alt=""></p>
+<p>到这里在Azure的配置基本算完成了，如果你使用ASP.NET Core作为网站框架，还需要在Startup.cs文件的<code>ConfigureServices</code>方法中配置强制HTTPS服务。</p>
+<pre><code>mvcBuilder.AddMvcOptions(options =&gt; options.Filters.Add(new RequireHttpsAttribute()));
+</code></pre>
+<p>到这里，HTTPS服务就配置完成了，但是我发现<code>https://</code>服务还是无法使用，仔细检查发现原来是百度云加速搞的鬼....免费版不支持HTTPS加速，于是关闭加速服务才解决此问题。</p>
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[UWP基础教程 - App多语言支持]]></title>
-        <id>https://songsong.org/post/uwp-app-language</id>
-        <link href="https://songsong.org/post/uwp-app-language">
+        <title type="html"><![CDATA[微信小程序.wxapkg文件分析]]></title>
+        <id>https://songsong.org/post/unwxapkg</id>
+        <link href="https://songsong.org/post/unwxapkg">
         </link>
-        <updated>2017-09-18T15:52:31.000Z</updated>
-        <content type="html"><![CDATA[<p>UWP实现本地化非常简单，所谓本地化表现最为直观的就是UI上文字和布局方式了，针对文字，提供不同的语言资源文件即可，而针对布局方式，比如在 阿拉伯地区 阅读顺序是从右到左，需要稍稍适配一下。</p>
-<p>本文主要讲解的是UWP APP如何进行多语言支持</p>
-<ol>
-<li>
-<p>多语言的文件 Resources.resw 必须放在以语言代码为文件夹名称的目录下，默认情况下系统才能识别;</p>
-</li>
-<li>
-<p>多语言文件夹放在任何目录都可以，只需要注意的就是文件夹的名称必须是语言代码，具体的语言代码可以<a href="https://docs.microsoft.com/en-us/windows/uwp/publish/supported-languages">点此查看</a></p>
-</li>
-<li>
-<p>编译打包时，系统会根据找到的多语言文件夹，在AppManifest文件的 Resources 节点下面，生成对应的 Resource 子元素 ,但前提是该节点下面必须有如下元素<code>&lt;Resource Language=&quot;x-generate&quot;/&gt;</code></p>
-</li>
-<li>
-<p>针对需要布局RTL的语言，如希伯来语，只需要添加例如语言代码为 “he” 的资源文件即可，系统会自动对标题栏等地方进行RTL布局，但也仅限于标题栏，页面内部的RTL,还需要手动设置 FlowDirection 为 RightToLeft;</p>
-</li>
-<li>
-<p>如果在运行时，你的 app 不支持当前电脑系统选择的语言，则默认会使用 Default Language 中设置的语言，该设置选项在你 app 项目的 .csproj 文件中；</p>
-</li>
-</ol>
-<p>如果你想在App中动态切换语言，你可以设置</p>
-<pre><code>ApplicationLanguages.PrimaryLanguageOverride
-</code></pre>
-<p>为指定的语言，关于语言列表我列了常用的出来，具体如下所示</p>
-<pre><code>zh-cn、zh、zh-Hans、zh-hans-cn、zh-sg、zh-hans-sg
-zh-hk、zh-Hant、zh-mo、zh-tw、zh-hant-hk、zh-hant-mo、zh-hant-tw
-de、de-at、de-ch、de-de、de-lu、de-li
-en-us、en、en-au、en-ca、en-gb、en-ie、en-in、en-nz、en-sg、en-za、en-bz、en-hk、en-id、en-jm、en-kz、en-mt、en-my、en-ph、en-pk、en-tt、en-vn、en-zw、en-053、en-021、en-029、en-011、en-018、en-014
-es、es-cl、es-co、es-es、es-mx、es-ar、es-bo、es-cr、es-do、es-ec、es-gt、es-hn、es-ni、es-pa、es-pe、es-pr、es-py、es-sv、es-us、es-uy、es-ve、es-019、es-419
-fr、fr-be、fr-ca、fr-ch、fr-fr、fr-lu、fr-015、fr-cd、fr-ci、fr-cm、fr-ht、fr-ma、fr-mc、fr-ml、fr-re、frc-latn、frp-latn、fr-155、fr-029、fr-021、fr-011
-hi、hi-in
-it、it-it、it-ch
-ja、ja-jp
-pt、pt-pt、pt-br
-ru、ru-ru
-</code></pre>
-<p>使用这种方法实现的切换App语言，<em><strong>必须重启</strong></em> 才能生效，可参考 <a href="https://chenrensong.com/post/uwp-restart-app">UWP基础教程 - 重启应用</a> 自动完成此动作。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[UWP基础教程 - 重启应用]]></title>
-        <id>https://songsong.org/post/uwp-restart-app</id>
-        <link href="https://songsong.org/post/uwp-restart-app">
-        </link>
-        <updated>2017-08-11T15:51:59.000Z</updated>
-        <content type="html"><![CDATA[<p>开发过Winform应用的同学应该都知道，会有一些场景需要将应用重启，如：重新应用配置，崩溃，内存泄漏等情况。这个时候我们只要使用一行代码就可以实现重启。</p>
-<pre><code>Application.Restart()
-</code></pre>
-<p>但在之前的Windows10 UWP应用开发中，我们只能提示用户手动重启，这个问题一直很困恼开发者。</p>
-<p>在16226版本之后，微软终于实现了这个API。</p>
-<pre><code>AppRestartFailureReason result = await CoreApplication.RequestRestartAsync(String.Empty);
-if (result == AppRestartFailureReason.NotInForeground || 
-    result == AppRestartFailureReason.RestartPending ||
-    result == AppRestartFailureReason.Other)
-{
-    Debug.WriteLine(&quot;RequestRestartAsync failed: {0}&quot;, result);
-}
-</code></pre>
-<p>使用上面的代码就能实现UWP APP重启的功能，这个API还可以自定义启动参数，只要将上述代码<code>String.Empty</code>部分传入对应的参数，在<code>OnActivated</code>事件处进行处理即可。</p>
-<pre><code>protected override void OnActivated(IActivatedEventArgs args)
-{
-    switch (args.Kind)
-    {
-        case ActivationKind.Launch:
-            LaunchActivatedEventArgs launchArgs = args as LaunchActivatedEventArgs;
-            string argString = launchArgs.Arguments;
- 
-            Frame rootFrame = Window.Current.Content as Frame;
-            if (rootFrame == null)
-            {
-                rootFrame = new Frame();
-                Window.Current.Content = rootFrame;
-            }
-            rootFrame.Navigate(typeof(MainPage), argString);
-            Window.Current.Activate();
-            break;
-    }
-}
-</code></pre>
-<p>更详细的内容，大家可以参考微软官方博客写的<a href="https://blogs.windows.com/buildingapps/2017/07/28/restart-app-programmatically/#Md7YJbIRFItRZgAJ.97">How to Restart your App Programmatically</a></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[UWP基础教程 - {x:DeferLoadStrategy}]]></title>
-        <id>https://songsong.org/post/uwp-xdeferloadstrategy</id>
-        <link href="https://songsong.org/post/uwp-xdeferloadstrategy">
-        </link>
-        <updated>2017-07-11T15:51:33.000Z</updated>
-        <content type="html"><![CDATA[<p>x:DeferLoadStrategy扩展标记是Windows10 UWP开发的新特性，这个特性可以用于优化启动性能，使用 x:DeferLoadStrategy=&quot;Lazy&quot; 会延迟元素及其子元素的创建，通过不需要创建元素减少启动时间和内存使用量。</p>
-<p>但是使用该扩展标记每个元素会向添加600个字节的内存，你延迟的元素树越大，将节省的时间也就越多，不过内存占用也会有所增加。 所以如果你的应用性能太低，可以使用内存来换取性能。</p>
-<p>讲了这么多，有的同学估计还是一头雾水，那么我们来看下实际的应用吧，在之前要让一个应用隐藏，之前也说过通常设置<code>Visibility</code>或者<code>Opacity</code>,但是不管用哪种方式，这些元素依然加载了，并且消耗了资源。</p>
-<pre><code>&lt;Image x:Name='img1' Source=&quot;/Assets/imgs/001.jpg&quot; Visibility=&quot;Collapsed&quot;/&gt;
-&lt;Image x:Name='img2' Source=&quot;/Assets/imgs/002.jpg&quot; Opacity=&quot;0&quot;/&gt;
-</code></pre>
-<p>给元素添加上<code>x:DeferLoadStrategy=&quot;Lazy&quot;</code>其实同样能达到不可见的效果</p>
-<pre><code>&lt;Image x:Name='img3' Source=&quot;/Assets/imgs/003.jpg&quot; x:DeferLoadStrategy=&quot;Lazy&quot;/&gt;  
-</code></pre>
-<p>使用该扩展标记，并不会将代码加入Xaml元素树,你必须在代码中使用<code>this.FindName</code></p>
-<pre><code>private void RealizeElements_Click(object sender, RoutedEventArgs e)
-{
-    this.FindName(&quot;img3&quot;); 
-}
-</code></pre>
-<p>在使用<code>FindName</code>后该控件才能被正确的使用。</p>
-<p>我们可以将<code>x:DeferLoadStrategy</code>用在哪些数据没ready的情况下不显示控件的场景，这样可以大大优化应用程序的性能。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[UWP基础教程 - 使用协议来启动应用]]></title>
-        <id>https://songsong.org/post/uwp-protocol</id>
-        <link href="https://songsong.org/post/uwp-protocol">
-        </link>
-        <updated>2017-07-05T15:51:06.000Z</updated>
-        <content type="html"><![CDATA[<p>如果你的应用程序希望能够通过外部协议来访问的话，那么就需要为你的应用添加<code>protocol协议</code>。</p>
-<p>1、打开Package.appxmanifest文件
-在<Applications>节点下添加<Extensions>节点，在<Extensions>节点下添加</p>
-<pre><code>&lt;uap:Extension Category=&quot;windows.protocol&quot; &gt;
-    &lt;uap:Protocol Name=&quot;protocolexsample&quot;&gt;
-        &lt;uap:Logo&gt;Assets\StoreLogo.png&lt;/uap:Logo&gt;
-        &lt;uap:DisplayName&gt;Application&lt;/uap:DisplayName&gt;
-    &lt;/uap:Protocol&gt;
-&lt;/uap:Extension&gt;
-</code></pre>
-<p>节点即可实现Protocol启动应用,这里需要注意的是<strong>Protocol的Name必需为小写</strong></p>
-<p>当然你也可以使用Visual Studio IDE进行添加，添加完成后外部就可以通过</p>
-<pre><code>protocolexsample://appdata
-</code></pre>
-<p>来访问应用了,系统会自动启动注册了protocolexsample协议的应用,如果你要在协议里添加参数，只要在App.xaml.cs文件中，重写OnActivate方法，通过Protocol协议启动的应用，ActivationKind问Protocol，可将args转换为<code>ProtocolActivatedEventArgs</code>来获取启动参数。</p>
-<pre><code> protected async override void OnActivated(IActivatedEventArgs args)
+        <updated>2018-01-23T15:57:35.000Z</updated>
+        <content type="html"><![CDATA[<p>前一段时间“跳一跳”很火，朋友圈老刷不上名次，于是了解小程序大致的实现原理，写了wxapkg的反编译工具，目前可以基本还原小程序源码。</p>
+<p>那么哪里可以找到小程序的安装包？</p>
+<p>1、 <a href="https://servicewechat.com/weapp/release/$%7Bappid%7D/$%7Bversion_num%7D.wxapkg"><s>https://servicewechat.com/weapp/release/<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mrow><mi>a</mi><mi>p</mi><mi>p</mi><mi>i</mi><mi>d</mi></mrow><mi mathvariant="normal">/</mi></mrow><annotation encoding="application/x-tex">{appid}/</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault">a</span><span class="mord mathdefault">p</span><span class="mord mathdefault">p</span><span class="mord mathdefault">i</span><span class="mord mathdefault">d</span></span><span class="mord">/</span></span></span></span>{version_num}.wxapkg</s></a></p>
+<p>2、在android手机中/data/data/com.tencent.mm/MicroMsg/${userid}/appband/pkg</p>
+<p>找到安装包后，源码就在里面，那么要怎么来解析？</p>
+<p><img src="/data/2018/1/wxapkgstruct.png" alt=""></p>
+<p>我整理了wxapkg文件格式，写了一款解压工具<a href="https://github.com/chenrensong/SS.UnWxapkg">SS.UnWxapkg</a>，核心代码如下</p>
+<pre><code class="language-public">    {
+        public static void UnWxapkg(string filePath)
         {
-            base.OnActivated(args);
- 
-            switch (args.Kind)
+
+            var bytes = File.ReadAllBytes(filePath);
+
+            ByteBuffer byteBuffer = ByteBuffer.Allocate(bytes);
+
+            var firstMark = byteBuffer.ReadByte();
+            Console.WriteLine($&quot;first header mark = {firstMark}&quot;);
+
+            var info1 = byteBuffer.ReadInt();
+            Console.WriteLine($&quot;info1 = {info1}&quot;);
+
+            var indexInfoLength = byteBuffer.ReadInt();
+            Console.WriteLine($&quot;indexInfoLength = {indexInfoLength}&quot;);
+
+            var bodyInfoLength = byteBuffer.ReadInt();
+            Console.WriteLine($&quot;bodyInfoLength = {bodyInfoLength}&quot;);
+
+            var lastMark = byteBuffer.ReadByte();
+            Console.WriteLine($&quot;last header mark = {lastMark}&quot;);
+
+            if (firstMark != 0xBE || lastMark != 0xED)
             {
-                case ActivationKind.VoiceCommand:
-                    {
-                        break;
-                    }
-                case ActivationKind.Protocol:
-                    {
-                        var command = args as ProtocolActivatedEventArgs;
-                      
-                        if (command.Uri.ToString().StartsWith(&quot;protocolexsample://&quot;))
-                        {
-                            //TODO
-                        }
-    
-                        break;
-                    }
+                Console.WriteLine(&quot;its not a wxapkg file!&quot;);
             }
+
+            var fileCount = byteBuffer.ReadInt();
+            Console.WriteLine($&quot;fileCount = {fileCount}&quot;);
+
+            var fileList = new List&lt;WxapkgFile&gt;();
+
+            for (int i = 0; i &lt; fileCount; i++)
+            {
+                var nameLen = byteBuffer.ReadInt();
+                byte[] nameByte = new byte[nameLen];
+                byteBuffer.ReadBytes(nameByte, 0, nameLen);
+                var name = Encoding.UTF8.GetString(nameByte);
+                var offset = byteBuffer.ReadInt();
+                var size = byteBuffer.ReadInt();
+                var wxapkgFile = new WxapkgFile() { Name = name, NameLen = nameLen, Offset = offset, Size = size };
+                fileList.Add(wxapkgFile);
+                Console.WriteLine($&quot;readFile = {name} at Offset = {offset}&quot;);
+            }
+            var rootPath = System.Environment.CurrentDirectory;
+            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
+            Console.WriteLine($&quot;rootPath = {rootPath}&quot;);
+            Console.WriteLine($&quot;fileNameWithoutExtension = {fileNameWithoutExtension}&quot;);
+
+            var unzipPath = Path.Combine(rootPath, fileNameWithoutExtension);
+            Console.WriteLine($&quot;unzipPath = {unzipPath}&quot;);
+            if (!Directory.Exists(unzipPath))
+            {
+                Directory.CreateDirectory(unzipPath);
+            }
+
+            foreach (var wxapkgFile in fileList)
+            {
+                var wxapkgFileName = unzipPath + wxapkgFile.Name.Replace('/', Path.DirectorySeparatorChar);
+                Console.WriteLine($&quot;wxapkgFileName = {wxapkgFileName}&quot;);
+                var directoryName = Path.GetDirectoryName(wxapkgFileName);
+                Console.WriteLine($&quot;directoryName = {directoryName}&quot;);
+                if (!Directory.Exists(directoryName))
+                {
+                    Directory.CreateDirectory(directoryName);
+                }
+                byteBuffer.SetReaderIndex(wxapkgFile.Offset);
+                var fileBytes = new byte[wxapkgFile.Size];
+                byteBuffer.ReadBytes(fileBytes, 0, fileBytes.Length);
+                File.WriteAllBytes(wxapkgFileName, fileBytes);
+            }
+
         }
+    }
+
 </code></pre>
-<p>欢迎大家留言讨论。</p>
+<p>代码大意是</p>
+<p>1、根据firstMark和lastMark来判断是否是小程序的wxapkg文件格式</p>
+<p>2、获取索引段长度、数据段长度、以及文件数量</p>
+<p>3、根据文件数量，顺序读取文件数据区，读取每个文件</p>
+<p>解压出来的格式基本上如下</p>
+<p>│  app-config.json</p>
+<p>│  app-service.js</p>
+<p>│  page-frame.html</p>
+<p>│</p>
+<p>├─images</p>
+<p>│      hello.png</p>
+<p>│      world.png</p>
+<p>│</p>
+<p>├─pages</p>
+<p>│       gameover.html</p>
+<p>│       index.html</p>
+<p>│       play.html</p>
+<p>│       web.html</p>
+<p>根据解压出来的文件进行分析可以得出下列信息
+<img src="/data/2018/1/wxapkgInfo.png" alt=""></p>
+<p>按照上面信息对应解析基本上就能得到源码了。</p>
+<p>我的博客即将搬运同步至腾讯云+社区，邀请大家一同入驻：https://cloud.tencent.com/developer/support-plan</p>
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[UWP基础教程 - RelativePanel]]></title>
-        <id>https://songsong.org/post/uwp-relativepanel</id>
-        <link href="https://songsong.org/post/uwp-relativepanel">
+        <title type="html"><![CDATA[UWP基础教程 - 调起应用的几种方法]]></title>
+        <id>https://songsong.org/post/uwp-schema-console</id>
+        <link href="https://songsong.org/post/uwp-schema-console">
         </link>
-        <updated>2017-06-22T15:50:34.000Z</updated>
-        <content type="html"><![CDATA[<p>在Windows10 UWP开发中，新增和改变了很多特性，这次给大家介绍下<code>RelativePanel</code>,这个控件其实和<code>RelativeLayout</code>基本一种使用方式,大大方便Android开发人员转行做UWP开发哈。</p>
-<p>来看下官方的例子
-::: hljs-center</p>
-<p><img src="/data/2017/2/relativepanel.png" alt=""></p>
-<p>:::</p>
-<pre><code>&lt;RelativePanel BorderBrush=&quot;Gray&quot; BorderThickness=&quot;10&quot;&gt; 
-&lt;Rectangle x:Name=&quot;RedRect&quot; Fill=&quot;Red&quot; MinHeight=&quot;100&quot; MinWidth=&quot;100&quot;/&gt; 
-&lt;Rectangle x:Name=&quot;BlueRect&quot; Fill=&quot;Blue&quot; MinHeight=&quot;100&quot; MinWidth=&quot;100&quot; RelativePanel.RightOf=&quot;RedRect&quot; /&gt; 
-&lt;!-- Width is not set on the green and yellow rectangles. It's determined by the RelativePanel properties. --&gt; 
-&lt;Rectangle x:Name=&quot;GreenRect&quot; Fill=&quot;Green&quot; MinHeight=&quot;100&quot; Margin=&quot;0,5,0,0&quot; RelativePanel.Below=&quot;RedRect&quot; RelativePanel.AlignLeftWith=&quot;RedRect&quot; RelativePanel.AlignRightWith=&quot;BlueRect&quot;/&gt; 
-&lt;Rectangle Fill=&quot;Yellow&quot; MinHeight=&quot;100&quot; RelativePanel.Below=&quot;GreenRect&quot; RelativePanel.AlignLeftWith=&quot;BlueRect&quot; RelativePanel.AlignRightWithPanel=&quot;True&quot;/&lt;/RelativePanel&gt;
+        <updated>2018-01-10T15:56:45.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="1-使用uwp的launcher-api">1. 使用UWP的Launcher API</h2>
+<pre><code>var uri = new Uri(&quot;protocolname:&quot;);
+bool success = await Windows.System.Launcher.LaunchUriAsync(uri);
 </code></pre>
-<p>具体的用法大家可以参考下各个属性的介绍。</p>
+<p>参考：<a href="https://blogs.windows.com/buildingapps/2017/01/25/calling-windows-10-apis-desktop-application/#FoKcZI8LRWhiomD2.97">Calling Windows 10 APIs From a Desktop Application</a></p>
+<h2 id="2使用packagemanager也是uwp的api">2.使用PackageManager，也是UWP的API</h2>
+<pre><code>var manager = new PackageManager();
+var p = manager.FindPackagesForUser(&quot;&quot;, PackageFamilyName);
+var ls = await p.ToList()[0].GetAppListEntriesAsync();
+foreach (var item in ls)
+{
+    await item.LaunchAsync();
+}
+</code></pre>
+<h2 id="3使用process调用protocolname">3.使用Process调用protocolname</h2>
+<pre><code>Process.Start(new ProcessStartInfo(&quot;protocolname:&quot;));
+</code></pre>
+<h2 id="4使用命令行">4.使用命令行</h2>
+<pre><code>&gt;start bingnews:
+&gt;start myapplication:protocol-parameter
+&gt;start myapplication://single-player/level3?godmode=1&amp;ammo=200
+</code></pre>
+<p>参考：<a href="https://docs.microsoft.com/zh-cn/windows/uwp/xbox-apps/automate-launching-uwp-apps#a-nameaccepting-argumentsa">自动启动 Windows 10 UWP 应用</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[在Windows下安装TensorFlow]]></title>
+        <id>https://songsong.org/post/windows-tensorflow</id>
+        <link href="https://songsong.org/post/windows-tensorflow">
+        </link>
+        <updated>2017-12-03T15:56:10.000Z</updated>
+        <content type="html"><![CDATA[<p>目前TensorFlow在Windows下只支持Python 3.x。</p>
+<h2 id="1下载python">1.下载Python</h2>
+<h3 id="首先安装pythone-364">首先安装Pythone 3.6.4</h3>
+<p><a href="https://www.python.org/downloads/release/python-364/">下载地址</a></p>
+<h3 id="升级pip">升级pip</h3>
+<pre><code>python.exe -m pip install --upgrade pip
+</code></pre>
+<h2 id="安装tensorflow">安装tensorflow</h2>
+<h3 id="cpu版本">CPU版本</h3>
+<pre><code>pip install --upgrade tensorflow
+</code></pre>
+<h3 id="gpu版本">GPU版本</h3>
+<pre><code>pip install --upgrade tensorflow-gpu
+</code></pre>
+<h3 id="安装tensorflow的gpu支持包">安装TensorFlow的GPU支持包</h3>
+<h4 id="安装cuda-toolkit-91">安装CUDA Toolkit 9.1</h4>
+<p><a href="https://developer.nvidia.com/cuda-downloads">https://developer.nvidia.com/cuda-downloads</a></p>
+<h4 id="安装cudnn-71">安装cuDNN 7.1</h4>
+<p><a href="https://developer.nvidia.com/cudnn">https://developer.nvidia.com/cudnn</a></p>
+<pre><code>$ python
+...
+&gt;&gt;&gt; import tensorflow as tf
+&gt;&gt;&gt; hello = tf.constant('Hello, TensorFlow!')
+&gt;&gt;&gt; sess = tf.Session()
+&gt;&gt;&gt; print(sess.run(hello))
+Hello, TensorFlow!
+&gt;&gt;&gt; a = tf.constant(1)
+&gt;&gt;&gt; b = tf.constant(2)
+&gt;&gt;&gt; print(sess.run(a + b))
+3
+&gt;&gt;&gt;
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[【译】使用 dotnet watch 开发 ASP.NET Core 应用]]></title>
+        <id>https://songsong.org/post/dotnet-watch-aspnet-core</id>
+        <link href="https://songsong.org/post/dotnet-watch-aspnet-core">
+        </link>
+        <updated>2017-11-28T15:55:47.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="介绍">介绍</h2>
+<p><code>dotnet watch</code> 是一个开发阶段在源文件发生变动的情况下使用 <code>dotnet</code> 命令的工具。 当代码发生变动的时候可以用来执行编译，运行测试，或者发布操作。</p>
+<p>在本教程中，我们将使用一个现有的计算两个数字之和以及乘积的 WebApi 应用程序来演示如何使用 <code>dotnet watch</code> 。示例应用程序故意包含一个错误，作为本教程的一部分我们会修复它。</p>
+<h2 id="开始入门">开始入门</h2>
+<p>开始下载 <a href="https://github.com/aspnet/Docs/tree/master/aspnetcore/tutorials/dotnet-watch/sample">示例程序</a>。示例程序包含两个项目， <code>WebApp</code> （Web 应用程序）以及 <code>WebAppTests</code> （Web 应用程序配套的单元测试项目）</p>
+<p>在命令行控制台中，进入下载示例程序的目录并且运行下述命令：</p>
+<p>1、<code>dotnet restore</code>
+2、<code>cd WebApp</code>
+3、<code>dotnet run</code></p>
+<p>控制台输出将显示如下信息，表明该应用程序正在运行并等待请求：</p>
+<pre><code>$ dotnet run
+Hosting environment: Development
+Content root path: C:/Docs/aspnetcore/tutorials/dotnet-watch/sample/WebApp
+Now listening on: http://localhost:5000
+Application started. Press Ctrl+C to shut down.
+</code></pre>
+<p>在 Web 浏览器中，导航到 <code>http://localhost:5000/api/math/sum?a=4&amp;b=5</code> 页面你会看到结果 <code>9</code> 。</p>
+<p>如果你导航到 <code>http://localhost:5000/api/math/product?a=4&amp;b=5</code> 页面，你期望得到结果 <code>20</code>。但是实际上还是返回了 <code>9</code> 。</p>
+<p>我们会修复这个问题的。</p>
+<h2 id="项目中添加-dotnet-watch">项目中添加 <code>dotnet watch</code></h2>
+<p>1、按照下面例子的方式在 WebApp/project.json 文件的 <code>tools</code> 配置节中添加 <code>Microsoft.DotNet.Watcher.Tools</code> 引用：</p>
+<pre><code>&lt;ItemGroup&gt;
+    &lt;DotNetCliToolReference Include=&quot;Microsoft.DotNet.Watcher.Tools&quot; Version=&quot;2.0.0&quot; /&gt;
+&lt;/ItemGroup&gt; 
+</code></pre>
+<p>2、运行 <code>dotnet restore</code>。</p>
+<p>控制台输出将显示如下信息：</p>
+<div id="code_2" class="codeCloneBtn">复制代码</div>
+<pre><code>log  : Restoring packages for /Users/user/dev/aspnet/Docs/aspnet/tutorials/dotnet-watch/sample/WebApp/project.json...
+log  : Restoring packages for tool 'Microsoft.DotNet.Watcher.Tools' in /Users/user/dev/aspnet/Docs/aspnet/tutorials/dotnet-watch/sample/WebApp/project.json...
+log  : Installing Microsoft.DotNet.Watcher.Core 1.0.0-preview2-final.
+log  : Installing Microsoft.DotNet.Watcher.Tools 1.0.0-preview2-final.
+</code></pre>
+<h2 id="使用-dotnet-watch-运行-dotnet-命令">使用 <code>dotnet watch</code> 运行 <code>dotnet</code> 命令</h2>
+<p>任何与 <code>dotnet</code> 有关的命令都可以以 <code>dotnet watch</code> 这样的方式运行：例如：</p>
 <table>
 <thead>
 <tr>
-<th>用法</th>
-<th>描述</th>
+<th>命令</th>
+<th>带上 watch 的命令Command</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>RelativePanel.Above</td>
-<td>设置当前element为目标element的上方</td>
+<td><code>dotnet run</code></td>
+<td><code>dotnet watch run</code></td>
 </tr>
 <tr>
-<td>RelativePanel.AlignBottomWith</td>
-<td>设置当前element与目标element底部对齐</td>
+<td><code>dotnet run -f netcoreapp2.0</code></td>
+<td><code>dotnet watch run -f netcoreapp2.0</code></td>
 </tr>
 <tr>
-<td>RelativePanel.AlignBottomWithPanel</td>
-<td>设置当前element与RelativePanel底部对齐</td>
+<td><code>dotnet run -f netcoreapp2.0-- --arg1</code></td>
+<td><code>dotnet watch run -f netcoreapp2.0-- --arg1</code></td>
 </tr>
 <tr>
-<td>RelativePanel.AlignHorizontalCenterWith</td>
-<td>设置当前element与目标element水平中心对齐</td>
-</tr>
-<tr>
-<td>RelativePanel.AlignHorizontalCenterWithPanel</td>
-<td>设置当前element与RelativePanel水平中心对齐</td>
-</tr>
-<tr>
-<td>RelativePanel.AlignLeftWith</td>
-<td>设置当前element与目标element左边框对齐</td>
-</tr>
-<tr>
-<td>RelativePanel.AlignLeftWithPanel</td>
-<td>设置当前element与RelativePanel左边框对齐</td>
-</tr>
-<tr>
-<td>RelativePanel.AlignRightWith</td>
-<td>设置当前element与目标element右边框对齐</td>
-</tr>
-<tr>
-<td>RelativePanel.AlignRightWithPanel</td>
-<td>设置当前element与RelativePanel右边框对齐</td>
-</tr>
-<tr>
-<td>RelativePanel.AlignTopWith</td>
-<td>设置当前element与目标element顶部对齐</td>
-</tr>
-<tr>
-<td>RelativePanel.AlignTopWithPanel</td>
-<td>设置当前element与RelativePanel顶部对齐</td>
-</tr>
-<tr>
-<td>RelativePanel.AlignVerticalCenterWith</td>
-<td>设置当前element与目标element垂直中心对齐</td>
-</tr>
-<tr>
-<td>RelativePanel.AlignVerticalCenterWithPanel</td>
-<td>设置当前element与RelativePanel垂直中心对齐</td>
-</tr>
-<tr>
-<td>RelativePanel.Below</td>
-<td>设置当前element为目标element的下方</td>
-</tr>
-<tr>
-<td>RelativePanel.LeftOf</td>
-<td>设置当前element为目标element的左边</td>
-</tr>
-<tr>
-<td>RelativePanel.RightOf</td>
-<td>设置当前element为目标element的右边</td>
+<td><code>dotnet test</code></td>
+<td><code>dotnet watch test</code></td>
 </tr>
 </tbody>
 </table>
-<p>这个控件相比Grid更加灵活，比较麻烦的地方是使用该控件布局需要对里面的子元素都加上{x:Name}扩展标记，对于我这种不爱命名的程序员，还是更喜欢用Grid。</p>
+<p>为了让 <code>WebApp</code> 在 watcher 模式下运行，在 <code>WebApp</code> 目录里面运行 <code>dotnet watch run</code> 命令。 控制台便会监控代码文件变化。</p>
+<h2 id="在-dotnet-watch-模式进行修改">在 <code>dotnet watch</code> 模式进行修改</h2>
+<p>确保 <code>dotnet watch</code> 在运行中。</p>
+<p>让我们来修复上面发现的那个两个数相乘结果错误。</p>
+<p>打开文件 WebApp/Controllers/MathController.cs。我们故意在代码中引入了错误。</p>
+<pre><code>public static int Product(int a, int b)
+{
+    // We have an intentional bug here
+    // + should be *
+    return a + b;//手工高亮
+}
+</code></pre>
+<p>通过把代码 <code>a + b</code> 替换为 <code>a * b</code> 修复错误。</p>
+<p>保存文件，验证 <code>http://localhost:5000/api/math/product?a=4&amp;b=5</code> 链接返回正确的结果。</p>
+<h2 id="使用-dotnet-watch-运行测试">使用 <code>dotnet watch</code> 运行测试</h2>
+<p>1、打开文件 WebApp/Controllers/MathController.cs。撤销原先的修改并保存文件。</p>
+<p>2、导航到WebAppTests目录</p>
+<p>3、运行<code>dotnet restore</code>命令</p>
+<p>4、运行<code>dotnet watch test</code>, 控制台输出将显示如下信息：</p>
+<pre><code>Total tests: 2. Passed: 1. Failed: 1. Skipped: 0.
+Test Run Failed.
+</code></pre>
+<p>修改代码，并保存文件。</p>
+<p><code>dotnet watch</code> 将会检测到文件变更并且重新运行测试。</p>
+<p><strong>查看英文原文</strong>：<a href="https://docs.microsoft.com/en-us/aspnet/core/tutorials/dotnet-watch">Developing ASP.NET Core apps using dotnet watch</a></p>
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[UWP基础教程 - AuotmationProperties.Name]]></title>
-        <id>https://songsong.org/post/uwp-auotmationpropertiesname</id>
-        <link href="https://songsong.org/post/uwp-auotmationpropertiesname">
+        <title type="html"><![CDATA[C# 7.0 探索之旅]]></title>
+        <id>https://songsong.org/post/csharp-7-explore</id>
+        <link href="https://songsong.org/post/csharp-7-explore">
         </link>
-        <updated>2017-06-12T15:50:05.000Z</updated>
-        <content type="html"><![CDATA[<p>作为Windows10 UWP开发，大家应该会在很多示例DEMO里面看到<code>AuotmationProperties.Name</code>这个属性吧</p>
-<pre><code>&lt;Button AutomationProperties.Name=&quot;Hello&quot;&gt;Hello&lt;/Button&gt;
+        <updated>2017-11-25T15:55:21.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="模式匹配pattern-matching">模式匹配（Pattern matching）</h2>
+<p>C# 7.0 引入了模式匹配的概念，一种从抽象的角度来说，指可以测试一个值是否有某种特定的“形状”、并在满足这一条件的时候从值中提取信息的句法元素。</p>
+<p>C# 7.0 中的模式的例子有：</p>
+<ul>
+<li>无序列表c（c 为 C# 中的一个常量表达式）形式的常量模式（Constant pattern），来测试输入是否等于 c</li>
+<li>T x（T 为一个类型，x 为一个标识符）形式的类型模式（Type pattern），来测试输入是否有类型 T，并在满足条件的时候将值提取成全新的 T 类型的变量 x</li>
+<li>var x（x 为一个标识符）形式的变量匹配（Var patterns），这种匹配总是能够成功，并会将输入的值简单的放入一个全新的与输入类型相同的变量 x 中。</li>
+</ul>
+<p>这只是个开始——模式现在是 C# 中的一种新的语言元素了，我们也希望在未来能向 C# 中加入更多的模式。</p>
+<p>在 C# 7.0 中我们用模式改进了两个已有的语言结构：</p>
+<ul>
+<li>is 表达式的右边现在可以是表达式，而不仅仅是类型了</li>
+<li>switch 语句中的 case 子句现在可以匹配模式，而不仅仅是常量了
+在未来的 C# 版本中我们会添加更多可以使用模式的地方。</li>
+</ul>
+<h2 id="具有模式的-is-表达式">具有模式的 Is 表达式</h2>
+<p>这里有一个用常量模式和类型模式来使用 is 表达式的例子：</p>
+<pre><code>public void PrintStars(object o)
+{
+    if (o is null)return;     // 常量模式 “null”
+    if (!(o is int i)) return; // 类型模式 “int i”    
+    WriteLine(new string('*', i));
+} 
 </code></pre>
-<p><code>AuotmationProperties.Name</code>属性的作用是为控件指定可访问性名称，这个名称可以被类似于“讲述人”软件识别，从而提供了软件的可访问性（如视力有障碍的人等），同样也可以在自动化测试中被使用。原则上，一个控件的<code>AutomationProperties.Name</code>最好与此控件显示的标签文本一致(如上代码所示）</p>
-<p>微软也非常人性化，如果某个控件（或元素）有可视化文本内容（如 Button 的 Content 属性设置了文本），那么该控件上显示的文本将作为它的 Accessible Name，因此对于这种类型的控件不需要专门为其设置 AutomationProperites.Name 属性。</p>
-<p>如果该控件没有可示文本，那么你可以进行设置 <code>AutomationProperties.Name</code> ，如果你需要设置多语言，可以用以下方式来实现</p>
-<pre><code>&lt;Button x:Uid=&quot;TestButton&quot; /&gt;
+<p>如你所见，模式变量（pattern variables）——通过模式引入的变量——和之前描述过的 out 变量很像，都可以在表达式中声明，也可以在最近的作用域中使用。和 out 变量一样，模式变量也是可以修改的。我们经常以“表达式变量”来统称 out 变量和模式变量。</p>
+<p>模式和 Try 模式通常可以被很好地组合使用：</p>
+<pre><code>if (o is int i || (o is string s &amp;&amp; int.TryParse(s, out i)) { /* 使用 i */ }
 </code></pre>
-<p>在 Strings/zh-cn/Resources.resx 中，我们添加一条项目为其设置 Accessible Name，如下：</p>
-<pre><code>Name:    TestButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name                    
-Value:   Test Button
+<h2 id="具有模式的-switch-语句">具有模式的 Switch 语句</h2>
+<p>我们正在使 switch 语句一般化，因此：</p>
+<p>你可以筛选任意类型（不仅仅是原生类型）</p>
+<ul>
+<li>模式可以被用在 case 子句中</li>
+<li>Case 子句可以有额外的限制条件</li>
+<li>这是个简单的例子：</li>
+</ul>
+<pre><code>switch(shape)
+{
+    case Circle c:
+        WriteLine($&quot;circle with radius {c.Radius}&quot;);
+        break;
+    case Rectangle s when (s.Length == s.Height):
+        WriteLine($&quot;{s.Length} x {s.Height} square&quot;);
+        break;
+    case Rectangle r:
+        WriteLine($&quot;{r.Length} x {r.Height} rectangle&quot;);
+        break;
+    default:
+        WriteLine(&quot;&lt;unknown shape&gt;&quot;);
+        break;
+    case null:
+        throw new ArgumentNullException(nameof(shape));
+}
 </code></pre>
-<p><code>AutomationProperties.Name</code>同样也支持Binding和TemplateBinding方式,你可以通过下面的方式来设置</p>
-<pre><code> &lt;TextBox …
-         Header=&quot;Hello&quot;
-         AutomationProperties.Name= &quot;{Binding Header, RelativeSource={RelativeSource Self}}&quot; /&gt;
+<p>关于这个新扩展的 switch 语句有一些需要注意的事项：</p>
+<ul>
+<li>现在 case 子句的顺序变得重要了：就如 catch 子句一样，case 子句不再一定不相交，第一个匹配的项将被选择。因此将正方形的情况（见上图例）放在矩形之前很重要。同样，编译器会帮你标出永远无法到达的分支。在此之前你无法指定计算顺序，因此这不会造成（旧代码）行为的大变化。</li>
+<li>default 子句将总是在最后被计算： 即使 null 的情况被放在最后，它仍会在 default 子句被选中之前被检查。这是为了与现存的语义兼容。然而，良好的习惯通常会将 default 子句放在最后。</li>
+<li>在最后的 null 子句不会无法到达： 这是因为类型模式（的行为）以目前的 is 表达式为例子，且不会与 null 匹配。这保证了 null 值不会意外地被类型模式抢先匹配；你需要更加明确如何处理它们（或是将它们留给 default 子句）。</li>
+</ul>
+<p>由 case …: 标签引入的模式变量只在当前的 switch 节有效。</p>
+<h2 id="out-变量out-variables">Out 变量（Out variables)</h2>
+<p>在之前的 C# 版本中，使用 out 参数并不像我们期盼的那样流畅。在你能够使用 out 参数来调用一个函数之前，你首先需要声明待传入的变量。同时由于你一般不会初始化这些变量（它们毕竟会被这些方法覆写），你也无法使用 var 来声明它们，而是需要指定完整的类型：</p>
+<pre><code>public void PrintCoordinates(Point p)
+{
+    int x, y; // 需要“预声明”
+    p.GetCoordinates(out x, out y);
+    WriteLine($&quot;({x}, {y})&quot;);
+}
 </code></pre>
-<p>当然同样可以采用C#代码来设置</p>
-<pre><code>using Windows.UI.Xaml.Automation;
-myControl.SetValue(AutomationProperties.NameProperty, 'Hello');
+<p>在 C# 7.0 中我们添加了 out 变量；使你能够在传入一个 out 参数的地方声明一个变量：</p>
+<pre><code>public void PrintCoordinates(Point p)
+{
+    p.GetCoordinates(out int x, out int y);
+    WriteLine($&quot;({x}, {y})&quot;);
+}
 </code></pre>
-<p>虽然微软并不强制要求使用<code>AutomationProperties.Name</code>属性，但是对于提升一个APP的质量还是有必要学习的。</p>
+<p>请注意，这些变量位于包含它们的代码块的作用域，因此之后的代码可以使用它们。许多种类的语句不会建立它们自己的代码块，因此在这些语句中声明的 out 变量通常被引入到（这个）封闭作用域中。</p>
+<p>由于 out 变量直接以 out 参数的形式声明，编译器通常可以分辨它们的类型应该是什么（除非有冲突的重载），所以完全可以用 var 替代类型来声明它们：</p>
+<pre><code>p.GetCoordinates(out var x, out var y);
+</code></pre>
+<p>Out 参数的一个常见使用场景是会返回一个指示是否成功的 Try… 模式，然后 out 参数来携带获得的结果：</p>
+<pre><code>public void PrintStars(string s)
+{
+    if (int.TryParse(s, out var i)) { WriteLine(new string('*', i)); }
+    else { WriteLine(&quot;Cloudy - no stars tonight!&quot;); }
+} 
+</code></pre>
+<p>我们也允许以 _（下划线）形式“舍弃” out 参数，来使你忽略你不关心的参数：</p>
+<pre><code>p.GetCoordinates(out var x, out _); // 我只关心 x
+</code></pre>
+<h2 id="元组tuples">元组（Tuples）</h2>
+<p>我们经常希望能从一个方法中返回一个以上的结果。旧版本的 C# 中的选项远远达不到令人满意的程度：</p>
+<ul>
+<li>Out 参数： 使用起来很笨拙（哪怕你使用了上面所述的改进），并且无法在 async 方法中使用。</li>
+<li>System.Tuple&lt;...&gt; 返回类型： 用起来很啰嗦，并且需要分配一个元组对象。</li>
+<li>自定义每个方法的传输类型： 需要用一大堆代码来实现一个类，而目的仅仅是临时打包几个变量。</li>
+<li>通过动态类型返回匿名类： 性能有瓶颈，且没有静态类型检查。</li>
+</ul>
+<p>为了在这方面做得更好，C# 7.0 加入了元组类型（tuple types）和元组字面量（tuple literals）：</p>
+<pre><code>(string, string, string) LookupName(long id) // 元组返回类型
+{
+    ... // 从数据储存中取出第一个、中间和最后一个数据
+    return (first, middle, last); // 元组字面量
+}
+</code></pre>
+<p>这种方法现在会很有效率地返回三个字符串，包装成一个元组值中的元素。</p>
+<p>方法的调用者将会收到一个元组，并可以分别访问各个元素：</p>
+<pre><code>var names = LookupName(id);
+WriteLine($&quot;found {names.Item1} {names.Item3}.&quot;);
+</code></pre>
+<p>Item1 等是元组元素的默认名称，并且总是可用的。但是这样描述性不是非常好，因此你可以选择性地使用另一种更好的方法：</p>
+<pre><code>(string first, string middle, string last) LookupName(long id) // 元组元素拥有了名称
+</code></pre>
+<p>现在元组的接收者可以使用更具描述性的名字了：</p>
+<pre><code>var names = LookupName(id);
+WriteLine($&quot;found {names.first} {names.last}.&quot;);
+</code></pre>
+<p>你也可以直接在元组字面量中指定元素名称：</p>
+<pre><code>    return (first: first, middle: middle, last: last); // 在字面量中命名元组元素
+</code></pre>
+<p>通常来说你可以无视名字而将元组类型互相转换：只要每个元素之间是可转换的（assignable），元组类型即可自由地互相转换。</p>
+<p>元组是值类型，它们的元素是简单的公共、可修改的字段。它们具有值相等性，意味着如果两个元组间每个元素两两相等（且拥有相同的哈希值）则两个元组相等（且拥有相同的哈希值）。</p>
+<p>这使得元组在多返回值之外的许多场景也很有用。例如，如果你需要一个拥有多个键的字典，使用一个元组作为你的键，一切都会正常运行。如果你需要一个每个位置有多个值的列表，使用元组吧，诸如搜索列表这样的功能将会正确的工作。</p>
+<p>元组依赖于一族被称为 ValueTuple&lt;...&gt; 的底层泛型结构类型。如果你指向了一个还未包含这些类型的框架，你可以从 Nuget 中获得它们：</p>
+<ul>
+<li>在解决方案管理器中右击项目并选中“管理 NuGet 程序包”</li>
+<li>选择“浏览”标签并将“nuget.org”选为“程序包源”</li>
+<li>搜索“System.ValueTuple”并安装它。</li>
+</ul>
+<h2 id="解构deconstruction">解构（Deconstruction）</h2>
+<p>另一个使用元组的方法是去解构它们。一个_解构声明（deconstructing declaration__）_是一种用来将一个元组（或其他值类型)分成许多部分并将这些部分分别转换为全新的变量的语法：</p>
+<pre><code>(string first, string middle, string last) = LookupName(id1); // 解构声明
+WriteLine($&quot;found {first} {last}.&quot;);
+</code></pre>
+<p>在一个解构声明中，你可以为独立的变量声明使用 var：</p>
+<pre><code>(var first, var middle, var last) = LookupName(id1); // 在内部使用 var
+</code></pre>
+<p>甚至把一个单独的 var 放在括号外作为缩写：</p>
+<pre><code>var (first, middle, last) = LookupName(id1); // 在外部使用 var
+</code></pre>
+<p>你也可以通过 解构分配（deconstructing assignment）将其解构到已存在的变量上：</p>
+<pre><code>(first, middle, last) = LookupName(id2); // 解构分配
+</code></pre>
+<p>解构不仅仅适用于元组。任何类型都可以被解构，只要它拥有一个如下形式的（实例或扩展）解构方法（deconstructor method）：</p>
+<pre><code>public void Deconstruct(out T1 x1, ..., out Tn xn) { ... }
+</code></pre>
+<p>Out 参数构成解构的结果。</p>
+<p>（为什么它使用 out 参数而不是返回一个元组？那是因为这样一来你可以对不同的值的数量拥有不同的重载了）。</p>
+<pre><code>class Point
+{
+    public int X { get; }
+    public int Y { get; }
+
+    public Point(int x, int y) { X = x; Y = y; }
+    public void Deconstruct(out int x, out int y) { x = X; y = Y; }
+}
+
+(var myX, var myY) = GetPoint(); // 调用 Deconstruct(out myX, out myY);
+</code></pre>
+<p>它将成为一种常见的模式，通过以这种方式“对称地”拥有构造器和解构器。</p>
+<p>如同 out 变量，我们允许在解构中“舍弃”你不关心的部分：</p>
+<pre><code>(var myX, _) = GetPoint(); // 我只关心 myX
+</code></pre>
+<h2 id="本地方法local-functions">本地方法（Local functions）</h2>
+<p>有时一个辅助函数只在某个使用到它的函数中有用。现在你可以在其他函数体内将这类函数定义为 本地函数（local function）：</p>
+<pre><code>public int Fibonacci(int x)
+{
+    if (x &lt; 0) throw new ArgumentException(&quot;Less negativity please!&quot;, nameof(x));
+    return Fib(x).current;
+
+    (int current, int previous) Fib(int i)
+    {
+        if (i == 0) return (1, 0);
+        var (p, pp) = Fib(i - 1);
+        return (p + pp, p);
+    }
+}
+</code></pre>
+<p>作用域内的参数和本地变量都在本地方法中可用，就如同在 lambda 表达式中一样。</p>
+<p>例如，被实现为迭代器的方法通常需要一个非迭代的包装函数以在调用时检查参数。（迭代器本身在 MoveNext 被调用之前不会开始）。本地方法完美的适用于这种场景：</p>
+<pre><code>public IEnumerable&lt;T&gt; Filter&lt;T&gt;(IEnumerable&lt;T&gt; source, Func&lt;T, bool&gt; filter)
+{
+    if (source == null) throw new ArgumentNullException(nameof(source));
+    if (filter == null) throw new ArgumentNullException(nameof(filter));
+
+    return Iterator();
+
+    IEnumerable&lt;T&gt; Iterator()
+    {
+        foreach (var element in source) 
+        {
+            if (filter(element)) { yield return element; }
+        }
+    }
+}
+</code></pre>
+<p>如果 Iterator 是 Filter 旁的私有函数，它可能会被其他成员意外地直接使用（而没有参数检查）。同时，它还需要接收与 Filter 相同的参数，而不是直接在作用域中使用它们。</p>
+<h2 id="字面量改进">字面量改进</h2>
+<p>C# 7.0 允许 _（下划线）在数字字面量中作为数字分隔符 （digit separator）：</p>
+<pre><code>var d = 123_456;
+var x = 0xAB_CD_EF;
+</code></pre>
+<p>你可以将它们放置在任意位置来增强可读性。它们不会影响值。</p>
+<p>同时，C# 7.0 引入了二进制字面量（binary literals），这样你可以直接指定位模板而不用将十六进制记号牢记于心。</p>
+<pre><code>var b = 0b1010_1011_1100_1101_1110_1111;
+</code></pre>
+<h2 id="引用返回和引用本地变量ref-returns-and-locals">引用返回和引用本地变量（Ref returns and locals）</h2>
+<p>就像你可以在 C# 中以引用方式传值（使用 ref 修饰符）一样，你现在可以以引用方式返回值，并将它们以引用的方式存在本地变量中。</p>
+<pre><code>public ref int Find(int number, int[] numbers)
+{
+    for (int i = 0; i &lt; numbers.Length; i++)
+    {
+        if (numbers[i] == number) 
+        {
+            return ref numbers[i]; // 返回储存的位置，而不是值
+        }
+    }
+    throw new IndexOutOfRangeException($&quot;{nameof(number)} not found&quot;);
+}
+
+int[] array = { 1, 15, -39, 0, 7, 14, -12 };
+ref int place = ref Find(7, array); // 为 7 在数列中的位置起个别名
+place = 9; // 在数列中以 9 替换 7
+WriteLine(array[4]); // 输出 9
+</code></pre>
+<p>这对向很大的数据结构中传递占位符来说非常有用。例如，一个游戏可能将它的数据存在一个庞大的预先分配好的结构体数组（以避免垃圾回收的停顿）中。现在方法可以返回直接指向这种解构的引用，调用者可以借此来读或者修改数据。</p>
+<p>为了确保这样做是安全的，有一些限制：</p>
+<ul>
+<li>你只能返回“可以安全返回”的引用：一种是传给你的，另一种是指向对象中的字段的。</li>
+<li>引用本地变量被初始化到一个确定的储存位置，且不可被修改为指向另一个（引用变量）。</li>
+</ul>
+<h2 id="更加一般化的-async-返回类型">更加一般化的 Async 返回类型</h2>
+<p>在此之前，C# 中的 async 方法只能返回 void，Task 或是 Task<T> 中的一个。C# 7.0 允许用这样的方式定义其他的类型以使它们可以从被 async 方法所返回。</p>
+<p>例如，我们现在有一个 ValueTask<T> 结构类型。它被用来防止 async 操作的结果在仍在 await 的时候就可用的情况下的 Task<T> 对象的创建。对大多数 async 场景，例如使用到缓存，这可以大幅减少内存分配并可以获得巨大的性能提升。</p>
+<p>你可以想象得到，有许多种能使这种“类 Task”类型非常有用的方法。正确的创建它们可能不是那么直观，因此我们并不期待大多数人来造自己的轮子，但是它们将会出现在框架和 API 中，然后调用者们就可以像今天使用 Task 一样地返回并 await 它们了。</p>
+<h2 id="更多的表达式体成员expression-bodied-members">更多的表达式体成员（Expression bodied members）</h2>
+<p>表达式体方法，属性等是 C# 6.0 中的一大亮点，但我们并未所有成员上启用它。C# 7.0 在可以拥有表达式体的列表中添加了访问器、构造器和析构器：</p>
+<pre><code>class Person
+{
+    private static ConcurrentDictionary&lt;int, string&gt; names = new ConcurrentDictionary&lt;int, string&gt;();
+    private int id = GetId();
+
+    public Person(string name) =&gt; names.TryAdd(id, name); // 构造器
+    ~Person() =&gt; names.TryRemove(id, out *);              // 析构器
+    public string Name
+    {
+        get =&gt; names[id];                                 // get 访问器
+        set =&gt; names[id] = value;                         // set 访问器
+    }
+}
+</code></pre>
+<p>这是由社区贡献的特性的一个例子，而不是微软 C# 编译器团队（贡献的）。对，开源！</p>
+<h2 id="抛出表达式throw-expressions">抛出表达式（Throw expressions）</h2>
+<p>在表达式中抛出异常非常简单：只要调用一个为你做这件事的方法！但是在 C# 7.0 中我们直接允许将 throw 在特定位置作为一个表达式：</p>
+<pre><code>class Person
+{
+    public string Name { get; }
+    public Person(string name) =&gt; Name = name ?? throw new ArgumentNullException(nameof(name));
+    public string GetFirstName()
+    {
+        var parts = Name.Split(&quot; &quot;);
+        return (parts.Length &gt; 0) ? parts[0] : throw new InvalidOperationException(&quot;No name!&quot;);
+    }
+    public string GetLastName() =&gt; throw new NotImplementedException();
+}
+</code></pre>
+<p>如果你想了解更多C#的语言特性和发展，可以去<a href="https://github.com/dotnet/csharplang">GitHub</a>找到更多的讨论。</p>
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Java 反编译工具]]></title>
-        <id>https://songsong.org/post/java-decompiler</id>
-        <link href="https://songsong.org/post/java-decompiler">
+        <title type="html"><![CDATA[使用Yeoman创建ASP.NET Core项目]]></title>
+        <id>https://songsong.org/post/yeoman-aspnet-core</id>
+        <link href="https://songsong.org/post/yeoman-aspnet-core">
         </link>
-        <updated>2017-05-25T15:49:36.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="jadx">Jadx</h2>
-<p>下载：<a href="https://github.com/skylot/jadx">https://github.com/skylot/jadx</a></p>
-<h2 id="jd-gui">JD-GUI</h2>
-<p>最新的版本是是1.4.0，还停留在2015年。</p>
-<p>下载：<a href="https://github.com/java-decompiler/jd-gui/releases">https://github.com/java-decompiler/jd-gui/releases</a></p>
-<h2 id="fernflower">Fernflower</h2>
-<p>比较好用，能够解决JD-GUI的一些错误。</p>
-<p>下载：<a href="https://github.com/fesh0r/fernflower">https://github.com/fesh0r/fernflower</a></p>
-<h2 id="procyon">Procyon</h2>
-<p>下载：<a href="https://bitbucket.org/mstrobel/procyon/overview">https://bitbucket.org/mstrobel/procyon/overview</a></p>
-<h2 id="cfr">CFR</h2>
-<p>下载：<a href="http://www.benf.org/other/cfr/">http://www.benf.org/other/cfr/</a></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[UWP基础教程 - GB2312编码]]></title>
-        <id>https://songsong.org/post/uwp-gb2312</id>
-        <link href="https://songsong.org/post/uwp-gb2312">
-        </link>
-        <updated>2017-05-20T15:48:51.000Z</updated>
-        <content type="html"><![CDATA[<p>在开发UWP应用的时候，如果要读取一些文本或者网站，大部分都是UTF-8编码的，但是难免会遇到使用GB2312编码的，这时候UWP应用就会出现乱码，在UWP以前会有人将特定编码提取出来做成扩展包，很早之前我写了一个<a href="https://github.com/chenrensong/Encoding.UWP">Encoding.UWP</a>基于之前的Encoding4Silverlight里面实现了GB2312、BIG5编码，如果想自己做一些特定编码，可以参考下我的源码，如果你只想在UWP中使用GB2312那么没必要这么麻烦了。</p>
-<pre><code>EncodingProvider provider = CodePagesEncodingProvider.Instance;
-Encoding.RegisterProvider(provider);
+        <updated>2017-11-08T15:53:57.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="1yeoman-是什么">1.Yeoman 是什么？</h2>
+<p>Yeoman是一个自动化脚手架工具。它提供很多generator，generator相当于模板，用来初始化项目。具体的大家可以看 <a href="http://yeoman.io/">http://yeoman.io/</a></p>
+<h2 id="2安装-yeoman">2.安装 Yeoman</h2>
+<p>安装yeoman之前你需要先安装npm。npm是一个JavaScript的包管理工具，一般跟nodejs配合使用。https://docs.npmjs.com/getting-started/what-is-npm</p>
+<p>使用npm来安装 Yeoman：</p>
+<pre><code>npm install -g yo
 </code></pre>
-<p>首先注册一个EncodingProvider，然后就可以使用</p>
-<pre><code>Encoding gb2312 = Encoding.GetEncoding(&quot;gb2312&quot;);
+<h2 id="3安装-generator-aspnet">3.安装 generator-aspnet</h2>
+<p>generator-aspnet就是asp.net core的构建器了，我们需要安装它,由于它还依赖bower工具，所以我们要一起安装。</p>
+<pre><code>npm install -g bower
+npm install -g generator-aspnet
 </code></pre>
-<p>目前.Net Core也引入了这个概念，需要注意的是.Net Core需要引入Nuget包 <code>System.Text.Encoding.CodePages</code> 其他的使用方法和UWP相同。</p>
+<h2 id="4使用-yeoman">4.使用 Yeoman</h2>
+<p>使用之前我们先假设一下我们的项目叫YeomanDemo,我们先新建一个项目的根目录YeomanDemo</p>
+<h3 id="使用yeoman创建yeomandemo">使用Yeoman创建YeomanDemo</h3>
+<p>Yeoman会显示一个界面让你去选择创建的项目的类型
+<img src="https://songsong.org/post-images/1558972505301.png" alt="">
+选中<code>Empty Web Application</code>项目之后回车
+<img src="https://songsong.org/post-images/1558972509588.png" alt="">
+接着输入项目名称 <code>YeomanDemo</code> 之后项目就创建成功了。</p>
+<p>你可以执行以下命令，来运行项目。</p>
+<pre><code>dotnet restore
+dotnet build
+dotnet run
+</code></pre>
+<h3 id="使用yeoman创建middleware">使用Yeoman创建middleware</h3>
+<p>Yeoman功能很强大，还可以安装其他的generator，比如</p>
+<pre><code>npm install -g generator-aspnetcore-middleware
+</code></pre>
+<p>安装完成后，你可以输入</p>
+<pre><code>yo aspnetcore-middleware
+</code></pre>
+<p>输入中间件名称后，就成功创建了Middleware模板。</p>
+<h2 id="5总结">5.总结</h2>
+<p>使用Yeoman只要几个简单的命令，就帮助我们建立一个项目，感兴趣的可以自己编写一个generator玩玩</p>
 ]]></content>
     </entry>
 </feed>

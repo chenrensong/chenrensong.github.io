@@ -1,0 +1,415 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C# 7.0 探索之旅 | 陈仁松博客</title>
+<link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972821336">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://songsong.org/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://songsong.org">
+  <img class="avatar" src="https://songsong.org/images/avatar.png?v=1558972821336" alt="">
+  </a>
+  <h1 class="site-title">
+    陈仁松博客
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/chenrensong" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              C# 7.0 探索之旅
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2017-11-25 ·
+              </time>
+              
+            </div>
+            
+            <div class="post-content">
+              <h2 id="模式匹配pattern-matching">模式匹配（Pattern matching）</h2>
+<p>C# 7.0 引入了模式匹配的概念，一种从抽象的角度来说，指可以测试一个值是否有某种特定的“形状”、并在满足这一条件的时候从值中提取信息的句法元素。</p>
+<p>C# 7.0 中的模式的例子有：</p>
+<ul>
+<li>无序列表c（c 为 C# 中的一个常量表达式）形式的常量模式（Constant pattern），来测试输入是否等于 c</li>
+<li>T x（T 为一个类型，x 为一个标识符）形式的类型模式（Type pattern），来测试输入是否有类型 T，并在满足条件的时候将值提取成全新的 T 类型的变量 x</li>
+<li>var x（x 为一个标识符）形式的变量匹配（Var patterns），这种匹配总是能够成功，并会将输入的值简单的放入一个全新的与输入类型相同的变量 x 中。</li>
+</ul>
+<p>这只是个开始——模式现在是 C# 中的一种新的语言元素了，我们也希望在未来能向 C# 中加入更多的模式。</p>
+<p>在 C# 7.0 中我们用模式改进了两个已有的语言结构：</p>
+<ul>
+<li>is 表达式的右边现在可以是表达式，而不仅仅是类型了</li>
+<li>switch 语句中的 case 子句现在可以匹配模式，而不仅仅是常量了
+在未来的 C# 版本中我们会添加更多可以使用模式的地方。</li>
+</ul>
+<h2 id="具有模式的-is-表达式">具有模式的 Is 表达式</h2>
+<p>这里有一个用常量模式和类型模式来使用 is 表达式的例子：</p>
+<pre><code>public void PrintStars(object o)
+{
+    if (o is null)return;     // 常量模式 “null”
+    if (!(o is int i)) return; // 类型模式 “int i”    
+    WriteLine(new string('*', i));
+} 
+</code></pre>
+<p>如你所见，模式变量（pattern variables）——通过模式引入的变量——和之前描述过的 out 变量很像，都可以在表达式中声明，也可以在最近的作用域中使用。和 out 变量一样，模式变量也是可以修改的。我们经常以“表达式变量”来统称 out 变量和模式变量。</p>
+<p>模式和 Try 模式通常可以被很好地组合使用：</p>
+<pre><code>if (o is int i || (o is string s &amp;&amp; int.TryParse(s, out i)) { /* 使用 i */ }
+</code></pre>
+<h2 id="具有模式的-switch-语句">具有模式的 Switch 语句</h2>
+<p>我们正在使 switch 语句一般化，因此：</p>
+<p>你可以筛选任意类型（不仅仅是原生类型）</p>
+<ul>
+<li>模式可以被用在 case 子句中</li>
+<li>Case 子句可以有额外的限制条件</li>
+<li>这是个简单的例子：</li>
+</ul>
+<pre><code>switch(shape)
+{
+    case Circle c:
+        WriteLine($&quot;circle with radius {c.Radius}&quot;);
+        break;
+    case Rectangle s when (s.Length == s.Height):
+        WriteLine($&quot;{s.Length} x {s.Height} square&quot;);
+        break;
+    case Rectangle r:
+        WriteLine($&quot;{r.Length} x {r.Height} rectangle&quot;);
+        break;
+    default:
+        WriteLine(&quot;&lt;unknown shape&gt;&quot;);
+        break;
+    case null:
+        throw new ArgumentNullException(nameof(shape));
+}
+</code></pre>
+<p>关于这个新扩展的 switch 语句有一些需要注意的事项：</p>
+<ul>
+<li>现在 case 子句的顺序变得重要了：就如 catch 子句一样，case 子句不再一定不相交，第一个匹配的项将被选择。因此将正方形的情况（见上图例）放在矩形之前很重要。同样，编译器会帮你标出永远无法到达的分支。在此之前你无法指定计算顺序，因此这不会造成（旧代码）行为的大变化。</li>
+<li>default 子句将总是在最后被计算： 即使 null 的情况被放在最后，它仍会在 default 子句被选中之前被检查。这是为了与现存的语义兼容。然而，良好的习惯通常会将 default 子句放在最后。</li>
+<li>在最后的 null 子句不会无法到达： 这是因为类型模式（的行为）以目前的 is 表达式为例子，且不会与 null 匹配。这保证了 null 值不会意外地被类型模式抢先匹配；你需要更加明确如何处理它们（或是将它们留给 default 子句）。</li>
+</ul>
+<p>由 case …: 标签引入的模式变量只在当前的 switch 节有效。</p>
+<h2 id="out-变量out-variables">Out 变量（Out variables)</h2>
+<p>在之前的 C# 版本中，使用 out 参数并不像我们期盼的那样流畅。在你能够使用 out 参数来调用一个函数之前，你首先需要声明待传入的变量。同时由于你一般不会初始化这些变量（它们毕竟会被这些方法覆写），你也无法使用 var 来声明它们，而是需要指定完整的类型：</p>
+<pre><code>public void PrintCoordinates(Point p)
+{
+    int x, y; // 需要“预声明”
+    p.GetCoordinates(out x, out y);
+    WriteLine($&quot;({x}, {y})&quot;);
+}
+</code></pre>
+<p>在 C# 7.0 中我们添加了 out 变量；使你能够在传入一个 out 参数的地方声明一个变量：</p>
+<pre><code>public void PrintCoordinates(Point p)
+{
+    p.GetCoordinates(out int x, out int y);
+    WriteLine($&quot;({x}, {y})&quot;);
+}
+</code></pre>
+<p>请注意，这些变量位于包含它们的代码块的作用域，因此之后的代码可以使用它们。许多种类的语句不会建立它们自己的代码块，因此在这些语句中声明的 out 变量通常被引入到（这个）封闭作用域中。</p>
+<p>由于 out 变量直接以 out 参数的形式声明，编译器通常可以分辨它们的类型应该是什么（除非有冲突的重载），所以完全可以用 var 替代类型来声明它们：</p>
+<pre><code>p.GetCoordinates(out var x, out var y);
+</code></pre>
+<p>Out 参数的一个常见使用场景是会返回一个指示是否成功的 Try… 模式，然后 out 参数来携带获得的结果：</p>
+<pre><code>public void PrintStars(string s)
+{
+    if (int.TryParse(s, out var i)) { WriteLine(new string('*', i)); }
+    else { WriteLine(&quot;Cloudy - no stars tonight!&quot;); }
+} 
+</code></pre>
+<p>我们也允许以 _（下划线）形式“舍弃” out 参数，来使你忽略你不关心的参数：</p>
+<pre><code>p.GetCoordinates(out var x, out _); // 我只关心 x
+</code></pre>
+<h2 id="元组tuples">元组（Tuples）</h2>
+<p>我们经常希望能从一个方法中返回一个以上的结果。旧版本的 C# 中的选项远远达不到令人满意的程度：</p>
+<ul>
+<li>Out 参数： 使用起来很笨拙（哪怕你使用了上面所述的改进），并且无法在 async 方法中使用。</li>
+<li>System.Tuple&lt;...&gt; 返回类型： 用起来很啰嗦，并且需要分配一个元组对象。</li>
+<li>自定义每个方法的传输类型： 需要用一大堆代码来实现一个类，而目的仅仅是临时打包几个变量。</li>
+<li>通过动态类型返回匿名类： 性能有瓶颈，且没有静态类型检查。</li>
+</ul>
+<p>为了在这方面做得更好，C# 7.0 加入了元组类型（tuple types）和元组字面量（tuple literals）：</p>
+<pre><code>(string, string, string) LookupName(long id) // 元组返回类型
+{
+    ... // 从数据储存中取出第一个、中间和最后一个数据
+    return (first, middle, last); // 元组字面量
+}
+</code></pre>
+<p>这种方法现在会很有效率地返回三个字符串，包装成一个元组值中的元素。</p>
+<p>方法的调用者将会收到一个元组，并可以分别访问各个元素：</p>
+<pre><code>var names = LookupName(id);
+WriteLine($&quot;found {names.Item1} {names.Item3}.&quot;);
+</code></pre>
+<p>Item1 等是元组元素的默认名称，并且总是可用的。但是这样描述性不是非常好，因此你可以选择性地使用另一种更好的方法：</p>
+<pre><code>(string first, string middle, string last) LookupName(long id) // 元组元素拥有了名称
+</code></pre>
+<p>现在元组的接收者可以使用更具描述性的名字了：</p>
+<pre><code>var names = LookupName(id);
+WriteLine($&quot;found {names.first} {names.last}.&quot;);
+</code></pre>
+<p>你也可以直接在元组字面量中指定元素名称：</p>
+<pre><code>    return (first: first, middle: middle, last: last); // 在字面量中命名元组元素
+</code></pre>
+<p>通常来说你可以无视名字而将元组类型互相转换：只要每个元素之间是可转换的（assignable），元组类型即可自由地互相转换。</p>
+<p>元组是值类型，它们的元素是简单的公共、可修改的字段。它们具有值相等性，意味着如果两个元组间每个元素两两相等（且拥有相同的哈希值）则两个元组相等（且拥有相同的哈希值）。</p>
+<p>这使得元组在多返回值之外的许多场景也很有用。例如，如果你需要一个拥有多个键的字典，使用一个元组作为你的键，一切都会正常运行。如果你需要一个每个位置有多个值的列表，使用元组吧，诸如搜索列表这样的功能将会正确的工作。</p>
+<p>元组依赖于一族被称为 ValueTuple&lt;...&gt; 的底层泛型结构类型。如果你指向了一个还未包含这些类型的框架，你可以从 Nuget 中获得它们：</p>
+<ul>
+<li>在解决方案管理器中右击项目并选中“管理 NuGet 程序包”</li>
+<li>选择“浏览”标签并将“nuget.org”选为“程序包源”</li>
+<li>搜索“System.ValueTuple”并安装它。</li>
+</ul>
+<h2 id="解构deconstruction">解构（Deconstruction）</h2>
+<p>另一个使用元组的方法是去解构它们。一个_解构声明（deconstructing declaration__）_是一种用来将一个元组（或其他值类型)分成许多部分并将这些部分分别转换为全新的变量的语法：</p>
+<pre><code>(string first, string middle, string last) = LookupName(id1); // 解构声明
+WriteLine($&quot;found {first} {last}.&quot;);
+</code></pre>
+<p>在一个解构声明中，你可以为独立的变量声明使用 var：</p>
+<pre><code>(var first, var middle, var last) = LookupName(id1); // 在内部使用 var
+</code></pre>
+<p>甚至把一个单独的 var 放在括号外作为缩写：</p>
+<pre><code>var (first, middle, last) = LookupName(id1); // 在外部使用 var
+</code></pre>
+<p>你也可以通过 解构分配（deconstructing assignment）将其解构到已存在的变量上：</p>
+<pre><code>(first, middle, last) = LookupName(id2); // 解构分配
+</code></pre>
+<p>解构不仅仅适用于元组。任何类型都可以被解构，只要它拥有一个如下形式的（实例或扩展）解构方法（deconstructor method）：</p>
+<pre><code>public void Deconstruct(out T1 x1, ..., out Tn xn) { ... }
+</code></pre>
+<p>Out 参数构成解构的结果。</p>
+<p>（为什么它使用 out 参数而不是返回一个元组？那是因为这样一来你可以对不同的值的数量拥有不同的重载了）。</p>
+<pre><code>class Point
+{
+    public int X { get; }
+    public int Y { get; }
+
+    public Point(int x, int y) { X = x; Y = y; }
+    public void Deconstruct(out int x, out int y) { x = X; y = Y; }
+}
+
+(var myX, var myY) = GetPoint(); // 调用 Deconstruct(out myX, out myY);
+</code></pre>
+<p>它将成为一种常见的模式，通过以这种方式“对称地”拥有构造器和解构器。</p>
+<p>如同 out 变量，我们允许在解构中“舍弃”你不关心的部分：</p>
+<pre><code>(var myX, _) = GetPoint(); // 我只关心 myX
+</code></pre>
+<h2 id="本地方法local-functions">本地方法（Local functions）</h2>
+<p>有时一个辅助函数只在某个使用到它的函数中有用。现在你可以在其他函数体内将这类函数定义为 本地函数（local function）：</p>
+<pre><code>public int Fibonacci(int x)
+{
+    if (x &lt; 0) throw new ArgumentException(&quot;Less negativity please!&quot;, nameof(x));
+    return Fib(x).current;
+
+    (int current, int previous) Fib(int i)
+    {
+        if (i == 0) return (1, 0);
+        var (p, pp) = Fib(i - 1);
+        return (p + pp, p);
+    }
+}
+</code></pre>
+<p>作用域内的参数和本地变量都在本地方法中可用，就如同在 lambda 表达式中一样。</p>
+<p>例如，被实现为迭代器的方法通常需要一个非迭代的包装函数以在调用时检查参数。（迭代器本身在 MoveNext 被调用之前不会开始）。本地方法完美的适用于这种场景：</p>
+<pre><code>public IEnumerable&lt;T&gt; Filter&lt;T&gt;(IEnumerable&lt;T&gt; source, Func&lt;T, bool&gt; filter)
+{
+    if (source == null) throw new ArgumentNullException(nameof(source));
+    if (filter == null) throw new ArgumentNullException(nameof(filter));
+
+    return Iterator();
+
+    IEnumerable&lt;T&gt; Iterator()
+    {
+        foreach (var element in source) 
+        {
+            if (filter(element)) { yield return element; }
+        }
+    }
+}
+</code></pre>
+<p>如果 Iterator 是 Filter 旁的私有函数，它可能会被其他成员意外地直接使用（而没有参数检查）。同时，它还需要接收与 Filter 相同的参数，而不是直接在作用域中使用它们。</p>
+<h2 id="字面量改进">字面量改进</h2>
+<p>C# 7.0 允许 _（下划线）在数字字面量中作为数字分隔符 （digit separator）：</p>
+<pre><code>var d = 123_456;
+var x = 0xAB_CD_EF;
+</code></pre>
+<p>你可以将它们放置在任意位置来增强可读性。它们不会影响值。</p>
+<p>同时，C# 7.0 引入了二进制字面量（binary literals），这样你可以直接指定位模板而不用将十六进制记号牢记于心。</p>
+<pre><code>var b = 0b1010_1011_1100_1101_1110_1111;
+</code></pre>
+<h2 id="引用返回和引用本地变量ref-returns-and-locals">引用返回和引用本地变量（Ref returns and locals）</h2>
+<p>就像你可以在 C# 中以引用方式传值（使用 ref 修饰符）一样，你现在可以以引用方式返回值，并将它们以引用的方式存在本地变量中。</p>
+<pre><code>public ref int Find(int number, int[] numbers)
+{
+    for (int i = 0; i &lt; numbers.Length; i++)
+    {
+        if (numbers[i] == number) 
+        {
+            return ref numbers[i]; // 返回储存的位置，而不是值
+        }
+    }
+    throw new IndexOutOfRangeException($&quot;{nameof(number)} not found&quot;);
+}
+
+int[] array = { 1, 15, -39, 0, 7, 14, -12 };
+ref int place = ref Find(7, array); // 为 7 在数列中的位置起个别名
+place = 9; // 在数列中以 9 替换 7
+WriteLine(array[4]); // 输出 9
+</code></pre>
+<p>这对向很大的数据结构中传递占位符来说非常有用。例如，一个游戏可能将它的数据存在一个庞大的预先分配好的结构体数组（以避免垃圾回收的停顿）中。现在方法可以返回直接指向这种解构的引用，调用者可以借此来读或者修改数据。</p>
+<p>为了确保这样做是安全的，有一些限制：</p>
+<ul>
+<li>你只能返回“可以安全返回”的引用：一种是传给你的，另一种是指向对象中的字段的。</li>
+<li>引用本地变量被初始化到一个确定的储存位置，且不可被修改为指向另一个（引用变量）。</li>
+</ul>
+<h2 id="更加一般化的-async-返回类型">更加一般化的 Async 返回类型</h2>
+<p>在此之前，C# 中的 async 方法只能返回 void，Task 或是 Task<T> 中的一个。C# 7.0 允许用这样的方式定义其他的类型以使它们可以从被 async 方法所返回。</p>
+<p>例如，我们现在有一个 ValueTask<T> 结构类型。它被用来防止 async 操作的结果在仍在 await 的时候就可用的情况下的 Task<T> 对象的创建。对大多数 async 场景，例如使用到缓存，这可以大幅减少内存分配并可以获得巨大的性能提升。</p>
+<p>你可以想象得到，有许多种能使这种“类 Task”类型非常有用的方法。正确的创建它们可能不是那么直观，因此我们并不期待大多数人来造自己的轮子，但是它们将会出现在框架和 API 中，然后调用者们就可以像今天使用 Task 一样地返回并 await 它们了。</p>
+<h2 id="更多的表达式体成员expression-bodied-members">更多的表达式体成员（Expression bodied members）</h2>
+<p>表达式体方法，属性等是 C# 6.0 中的一大亮点，但我们并未所有成员上启用它。C# 7.0 在可以拥有表达式体的列表中添加了访问器、构造器和析构器：</p>
+<pre><code>class Person
+{
+    private static ConcurrentDictionary&lt;int, string&gt; names = new ConcurrentDictionary&lt;int, string&gt;();
+    private int id = GetId();
+
+    public Person(string name) =&gt; names.TryAdd(id, name); // 构造器
+    ~Person() =&gt; names.TryRemove(id, out *);              // 析构器
+    public string Name
+    {
+        get =&gt; names[id];                                 // get 访问器
+        set =&gt; names[id] = value;                         // set 访问器
+    }
+}
+</code></pre>
+<p>这是由社区贡献的特性的一个例子，而不是微软 C# 编译器团队（贡献的）。对，开源！</p>
+<h2 id="抛出表达式throw-expressions">抛出表达式（Throw expressions）</h2>
+<p>在表达式中抛出异常非常简单：只要调用一个为你做这件事的方法！但是在 C# 7.0 中我们直接允许将 throw 在特定位置作为一个表达式：</p>
+<pre><code>class Person
+{
+    public string Name { get; }
+    public Person(string name) =&gt; Name = name ?? throw new ArgumentNullException(nameof(name));
+    public string GetFirstName()
+    {
+        var parts = Name.Split(&quot; &quot;);
+        return (parts.Length &gt; 0) ? parts[0] : throw new InvalidOperationException(&quot;No name!&quot;);
+    }
+    public string GetLastName() =&gt; throw new NotImplementedException();
+}
+</code></pre>
+<p>如果你想了解更多C#的语言特性和发展，可以去<a href="https://github.com/dotnet/csharplang">GitHub</a>找到更多的讨论。</p>
+
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://songsong.org/post/yeoman-aspnet-core">
+              <h3 class="post-title">
+                使用Yeoman创建ASP.NET Core项目
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '382981c785b131b4a314',
+    clientSecret: '048bc4e7cb57301643ef37a9b2a2ab6a08299deb',
+    repo: 'chenrensong.github.io',
+    owner: 'chenrensong',
+    admin: ['chenrensong'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  京ICP备14060483号 | 
+  <a class="rss" href="https://songsong.org/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>
