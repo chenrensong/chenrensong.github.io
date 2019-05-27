@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://songsong.org</id>
     <title>陈仁松博客</title>
-    <updated>2019-05-26T15:14:58.790Z</updated>
+    <updated>2019-05-27T15:27:34.240Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://songsong.org"/>
     <link rel="self" href="https://songsong.org/atom.xml"/>
@@ -18,11 +18,11 @@
         <updated>2019-05-26T10:26:19.000Z</updated>
         <content type="html"><![CDATA[<p>需要的工具：抓包工具（这里我使用的是<code>WireShark</code>）、<code>Rtmpdump</code></p>
 <p>一开始我思路是想分析下html查看下是否有直接的下载地址：
-<img src="/data/2017/2/rtmp_1.png" alt="">
+<img src="https://songsong.org/post-images/1558970800340.png" alt="">
 查询到了meta.xml,在里面发现了stream的path，这时候发现是rtmp的无法直接下载， 于是想到使用WireShark工具抓包,利用meta.xml里面的 cp11276.edgefcs.net/ondemand ，首先ping 获取ip
-<img src="/data/2017/2/rtmp_2.png" alt="">
+<img src="https://songsong.org/post-images/1558970807504.png" alt="">
 得到96.17.102.28，通过过滤ip得到下面rtmp的信息
-<img src="/data/2017/2/rtmp_3.png" alt="">
+<img src="https://songsong.org/post-images/1558970820436.png" alt="">
 url:</p>
 <pre><code>rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net
 </code></pre>

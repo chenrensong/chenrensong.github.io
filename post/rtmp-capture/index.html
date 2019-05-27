@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>抓取RTMP视频&amp;音频数据 | 陈仁松博客</title>
-<link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558883695808">
+<link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558970843412">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://songsong.org/styles/main.css">
@@ -20,7 +20,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://songsong.org">
-  <img class="avatar" src="https://songsong.org/images/avatar.png?v=1558883695808" alt="">
+  <img class="avatar" src="https://songsong.org/images/avatar.png?v=1558970843412" alt="">
   </a>
   <h1 class="site-title">
     陈仁松博客
@@ -93,11 +93,11 @@
             <div class="post-content">
               <p>需要的工具：抓包工具（这里我使用的是<code>WireShark</code>）、<code>Rtmpdump</code></p>
 <p>一开始我思路是想分析下html查看下是否有直接的下载地址：
-<img src="/data/2017/2/rtmp_1.png" alt="">
+<img src="https://songsong.org/post-images/1558970800340.png" alt="">
 查询到了meta.xml,在里面发现了stream的path，这时候发现是rtmp的无法直接下载， 于是想到使用WireShark工具抓包,利用meta.xml里面的 cp11276.edgefcs.net/ondemand ，首先ping 获取ip
-<img src="/data/2017/2/rtmp_2.png" alt="">
+<img src="https://songsong.org/post-images/1558970807504.png" alt="">
 得到96.17.102.28，通过过滤ip得到下面rtmp的信息
-<img src="/data/2017/2/rtmp_3.png" alt="">
+<img src="https://songsong.org/post-images/1558970820436.png" alt="">
 url:</p>
 <pre><code>rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net
 </code></pre>
