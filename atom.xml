@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://songsong.org</id>
     <title>陈仁松博客</title>
-    <updated>2019-05-27T16:00:43.398Z</updated>
+    <updated>2019-05-27T16:03:39.118Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://songsong.org"/>
     <link rel="self" href="https://songsong.org/atom.xml"/>
@@ -108,9 +108,9 @@ document.body.appendChild(button);
         <updated>2018-03-18T15:58:15.000Z</updated>
         <content type="html"><![CDATA[<p>前一段博客在百度云上明明已经备案过了，但是<strong>百度云</strong>却检测出没有备案，不知道是什么原因，导致网站一直不能访问，无奈我又将博客迁移到了Azure，这篇教程主要和大家介绍下在Azure上如何开启HTTPS。</p>
 <p>首先打开 应用程序服务 - 选中你的应用 （我这里是chenrensong） - SSL证书，导入一个私有证书，导入成功后就会如下图所示显示出来。
-<img src="/data/2017/2/ssl_1.png" alt=""></p>
+<img src="https://songsong.org/post-images/1558972937101.png" alt=""></p>
 <p>再添加SSL绑定域名，我这里绑定了chenrensong.com 以及 www.chenrensong.com
-<img src="/data/2017/2/ssl_2.png" alt=""></p>
+<img src="https://songsong.org/post-images/1558972941423.png" alt=""></p>
 <p>到这里在Azure的配置基本算完成了，如果你使用ASP.NET Core作为网站框架，还需要在Startup.cs文件的<code>ConfigureServices</code>方法中配置强制HTTPS服务。</p>
 <pre><code>mvcBuilder.AddMvcOptions(options =&gt; options.Filters.Add(new RequireHttpsAttribute()));
 </code></pre>
@@ -128,7 +128,7 @@ document.body.appendChild(button);
 <p>1、 <a href="https://servicewechat.com/weapp/release/$%7Bappid%7D/$%7Bversion_num%7D.wxapkg"><s>https://servicewechat.com/weapp/release/<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mrow><mi>a</mi><mi>p</mi><mi>p</mi><mi>i</mi><mi>d</mi></mrow><mi mathvariant="normal">/</mi></mrow><annotation encoding="application/x-tex">{appid}/</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault">a</span><span class="mord mathdefault">p</span><span class="mord mathdefault">p</span><span class="mord mathdefault">i</span><span class="mord mathdefault">d</span></span><span class="mord">/</span></span></span></span>{version_num}.wxapkg</s></a></p>
 <p>2、在android手机中/data/data/com.tencent.mm/MicroMsg/${userid}/appband/pkg</p>
 <p>找到安装包后，源码就在里面，那么要怎么来解析？</p>
-<p><img src="/data/2018/1/wxapkgstruct.png" alt=""></p>
+<p><img src="https://songsong.org/post-images/1558972971233.png" alt=""></p>
 <p>我整理了wxapkg文件格式，写了一款解压工具<a href="https://github.com/chenrensong/SS.UnWxapkg">SS.UnWxapkg</a>，核心代码如下</p>
 <pre><code class="language-public">    {
         public static void UnWxapkg(string filePath)

@@ -4,7 +4,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>微信小程序.wxapkg文件分析 | 陈仁松博客</title>
-<link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972821336">
+<link rel="shortcut icon" href="https://songsong.org/favicon.ico?v=1558972972522">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://songsong.org/styles/main.css">
@@ -20,7 +20,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://songsong.org">
-  <img class="avatar" src="https://songsong.org/images/avatar.png?v=1558972821336" alt="">
+  <img class="avatar" src="https://songsong.org/images/avatar.png?v=1558972972522" alt="">
   </a>
   <h1 class="site-title">
     陈仁松博客
@@ -97,7 +97,7 @@
 <p>1、 <a href="https://servicewechat.com/weapp/release/$%7Bappid%7D/$%7Bversion_num%7D.wxapkg"><s>https://servicewechat.com/weapp/release/<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mrow><mi>a</mi><mi>p</mi><mi>p</mi><mi>i</mi><mi>d</mi></mrow><mi mathvariant="normal">/</mi></mrow><annotation encoding="application/x-tex">{appid}/</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault">a</span><span class="mord mathdefault">p</span><span class="mord mathdefault">p</span><span class="mord mathdefault">i</span><span class="mord mathdefault">d</span></span><span class="mord">/</span></span></span></span>{version_num}.wxapkg</s></a></p>
 <p>2、在android手机中/data/data/com.tencent.mm/MicroMsg/${userid}/appband/pkg</p>
 <p>找到安装包后，源码就在里面，那么要怎么来解析？</p>
-<p><img src="/data/2018/1/wxapkgstruct.png" alt=""></p>
+<p><img src="https://songsong.org/post-images/1558972971233.png" alt=""></p>
 <p>我整理了wxapkg文件格式，写了一款解压工具<a href="https://github.com/chenrensong/SS.UnWxapkg">SS.UnWxapkg</a>，核心代码如下</p>
 <pre><code class="language-public">    {
         public static void UnWxapkg(string filePath)
