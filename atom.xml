@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://songsong.org</id>
     <title>陈仁松博客</title>
-    <updated>2019-05-27T15:27:34.240Z</updated>
+    <updated>2019-05-27T15:29:41.404Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://songsong.org"/>
     <link rel="self" href="https://songsong.org/atom.xml"/>
@@ -32,9 +32,9 @@ url:</p>
 <p>在RtmpDump下面执行</p>
 <pre><code>rtmpdump -r &quot;rtmp://96.17.102.28/ondemand?_fcs_vhost=cp11276.edgefcs.net&quot; -y &quot;mp3:media.thomson-webcast.net/index=/1/4/2/5/3/3/6/2/0/0/~/m/instances/8qfcz37z/items/5wurmfcb/clips/dvzgs4dr/0/clip?itemview=b8cchdaae5q3bafgzebcqk55w55m2g4sqc2f68z2nckpafpx_105059808&amp;mmc_installation=mmc_production&amp;mmc_installation_type=prod&quot; -o webcast.mp3
 </code></pre>
-<p><img src="/data/2017/2/rtmp_4.png" alt="">
+<p><img src="https://songsong.org/post-images/1558970970320.png" alt="">
 下载成功得到webcast.mp3
-<img src="/data/2017/2/rtmp_5.png" alt=""></p>
+<img src="https://songsong.org/post-images/1558970974335.png" alt=""></p>
 ]]></content>
     </entry>
     <entry>
